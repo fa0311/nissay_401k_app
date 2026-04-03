@@ -1,17 +1,22 @@
 # nissay_401k
 
-A new Flutter project.
+`flutter_inappwebview` で NISSAY 401k のログイン画面を開くサンプルです。
 
-## Getting Started
+## Setup
 
-This project is a starting point for a Flutter application.
+このプロジェクトは `mise` で Flutter を管理しています。
 
-A few resources to get you started if this is your first Flutter project:
+```bash
+mise x flutter -- flutter pub get
+mise x flutter -- dart run build_runner build --delete-conflicting-outputs
+mise x flutter -- flutter run
+```
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Riverpod / Generator
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- `hooks_riverpod` と `riverpod_annotation` を使っています
+- `lib/app/providers/nissay_login_provider.dart` にログインURLをハードコードしています
+- `lib/app/providers/login_request_provider.dart` は `Dio` とログイン状態管理だけに絞っています
+- `lib/app/interceptors/chrome_like_headers_interceptor.dart` で Chrome ライクなヘッダを `Dio` に付与しています
+- `lib/app/services/nissay_login_service.dart` がそのままログイン通信を行います
+- 生成ファイルは `build_runner` で更新してください
