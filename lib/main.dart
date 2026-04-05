@@ -12,7 +12,12 @@ Future<void> main() async {
     await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
   }
 
-  runApp(const ProviderScope(child: Nissay401kApp()));
+  runApp(
+    ProviderScope(
+      retry: (_, _) => null,
+      child: const Nissay401kApp(),
+    ),
+  );
 }
 
 class Nissay401kApp extends ConsumerWidget {

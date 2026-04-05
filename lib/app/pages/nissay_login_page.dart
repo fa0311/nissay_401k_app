@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nissay_401k/app/hooks/single_action_guard.dart';
+import 'package:nissay_401k/app/providers/auth.dart';
 import 'package:nissay_401k/app/providers/logger.dart';
 import 'package:nissay_401k/app/providers/login_request_provider.dart';
+import 'package:nissay_401k/app/router/app_router.dart';
+import 'package:nissay_401k/app/services/nissay_login_service.dart';
 import 'package:nissay_401k/app/ui/future_button.dart';
 
 class NissayLoginPage extends HookConsumerWidget {
@@ -12,8 +15,19 @@ class NissayLoginPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final logger = ref.watch(loggerProvider);
-    final useridController = useTextEditingController();
-    final passwordController = useTextEditingController();
+    final auth = ref.watch(authStorageProvider);
+    final useridController = useTextEditingController(text: auth.value?.userid);
+    final passwordController = useTextEditingController(text: auth.value?.password);
+
+    ref.listen(loginCheckProvider, (previous, next) {
+      if (next case AsyncError(:final NissayAuthException error)) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Login check failed: $error')),
+          );
+        }
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(title: const Text('NISSAY 401k Login')),

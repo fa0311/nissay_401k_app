@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nissay_401k/app/pages/webview_page.dart';
 import 'package:nissay_401k/app/providers/login_request_provider.dart';
+import 'package:nissay_401k/app/router/app_router.dart';
 
 class DashboardPage extends ConsumerWidget {
   const DashboardPage({super.key});
@@ -12,6 +14,40 @@ class DashboardPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('NISSAY 401k Dashboard'),
       ),
+      drawer: Drawer(
+        child: SafeArea(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.web),
+                title: const Text('Web'),
+                onTap: () async {
+                  await updateCookies(await ref.read(loginCookieJarProvider.future));
+                  if (context.mounted) {
+                    await const WebViewRoute().push<void>(context);
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.refresh),
+                title: const Text('Refresh Token'),
+                onTap: () async {
+                  await ref.read(nissayAuthProvider.notifier).refresh();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.logout),
+                title: const Text('Logout'),
+                onTap: () async {
+                  await ref.read(nissayAuthProvider.notifier).logout();
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+
       body: _Body(
         child: switch (nissayData) {
           AsyncData(:final value) => ListView(

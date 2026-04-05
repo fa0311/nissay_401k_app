@@ -6,13 +6,18 @@ part of 'app_router.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$splashRoute, $loginRoute, $dashboardRoute];
+List<RouteBase> get $appRoutes => [
+  $splashRoute,
+  $loginRoute,
+  $dashboardRoute,
+  $webViewRoute,
+];
 
 RouteBase get $splashRoute =>
     GoRouteData.$route(path: '/splash', factory: $SplashRoute._fromState);
 
 mixin $SplashRoute on GoRouteData {
-  static SplashRoute _fromState(GoRouterState state) => const SplashRoute();
+  static SplashRoute _fromState(GoRouterState state) => SplashRoute();
 
   @override
   String get location => GoRouteData.$location('/splash');
@@ -78,6 +83,29 @@ mixin $DashboardRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
+RouteBase get $webViewRoute =>
+    GoRouteData.$route(path: '/webview', factory: $WebViewRoute._fromState);
+
+mixin $WebViewRoute on GoRouteData {
+  static WebViewRoute _fromState(GoRouterState state) => const WebViewRoute();
+
+  @override
+  String get location => GoRouteData.$location('/webview');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
@@ -97,7 +125,7 @@ final class LoginCheckProvider
         argument: null,
         retry: null,
         name: r'loginCheckProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -116,7 +144,7 @@ final class LoginCheckProvider
   }
 }
 
-String _$loginCheckHash() => r'00fe77365b2e378ffd3e7408f6b4ebbb7fc00124';
+String _$loginCheckHash() => r'd6240b19eb14ad8882b2e0b5e530e333ef98ec17';
 
 @ProviderFor(RootStatus)
 final rootStatusProvider = RootStatusProvider._();
@@ -150,7 +178,7 @@ final class RootStatusProvider
   }
 }
 
-String _$rootStatusHash() => r'3f817ed97d8206dec4db93a7f25259f7a3dbe704';
+String _$rootStatusHash() => r'4a1b8f0b01e8ad757cd9c3e7c9b32c28c5168432';
 
 abstract class _$RootStatus extends $Notifier<RouterStatusValue> {
   RouterStatusValue build();

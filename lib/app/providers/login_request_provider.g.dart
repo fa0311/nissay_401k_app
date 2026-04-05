@@ -112,7 +112,7 @@ final class NissayAuthProvider
   NissayAuth create() => NissayAuth();
 }
 
-String _$nissayAuthHash() => r'a875928af71dfbd31715fa0a5bc9c51146ebcd7b';
+String _$nissayAuthHash() => r'521d8530322487d27f19df3c8a4662afbe6511e2';
 
 abstract class _$NissayAuth extends $AsyncNotifier<AuthState?> {
   FutureOr<AuthState?> build();
@@ -138,11 +138,13 @@ final getNissayDataProvider = GetNissayDataProvider._();
 final class GetNissayDataProvider
     extends
         $FunctionalProvider<
-          AsyncValue<NissayDataModel>,
-          NissayDataModel,
-          FutureOr<NissayDataModel>
+          AsyncValue<NissayCurrentAssetsModel>,
+          NissayCurrentAssetsModel,
+          FutureOr<NissayCurrentAssetsModel>
         >
-    with $FutureModifier<NissayDataModel>, $FutureProvider<NissayDataModel> {
+    with
+        $FutureModifier<NissayCurrentAssetsModel>,
+        $FutureProvider<NissayCurrentAssetsModel> {
   GetNissayDataProvider._()
     : super(
         from: null,
@@ -159,14 +161,14 @@ final class GetNissayDataProvider
 
   @$internal
   @override
-  $FutureProviderElement<NissayDataModel> $createElement(
+  $FutureProviderElement<NissayCurrentAssetsModel> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<NissayDataModel> create(Ref ref) {
+  FutureOr<NissayCurrentAssetsModel> create(Ref ref) {
     return getNissayData(ref);
   }
 }
 
-String _$getNissayDataHash() => r'6dd750ee528231aec871b8686b0bed0a51e4f42a';
+String _$getNissayDataHash() => r'02d11f3377dac36b269c70d0ad5cc0254d339151';

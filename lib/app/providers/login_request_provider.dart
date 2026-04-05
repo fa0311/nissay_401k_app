@@ -62,6 +62,7 @@ class NissayAuth extends _$NissayAuth {
     await nissay.repository.login(userid: userid, password: password);
     final storage = ref.read(authStorageProvider.notifier);
     await storage.save(userid: userid, password: password);
+    ref.invalidate(nissayRepositoryProvider);
   }
 
   Future<void> logout() async {
@@ -69,11 +70,18 @@ class NissayAuth extends _$NissayAuth {
     await nissay.cookieJar.deleteAll();
     final storage = ref.read(authStorageProvider.notifier);
     await storage.clear();
+    ref.invalidate(nissayRepositoryProvider);
+  }
+
+  Future<void> refresh() async {
+    final nissay = await ref.read(nissayRepositoryProvider.future);
+    await nissay.cookieJar.deleteAll();
+    ref.invalidate(nissayRepositoryProvider);
   }
 }
 
 @riverpod
-Future<NissayDataModel> getNissayData(Ref ref) async {
+Future<NissayCurrentAssetsModel> getNissayData(Ref ref) async {
   final nissay = await ref.watch(nissayRepositoryProvider.future);
-  return nissay.repository.data();
+  return nissay.repository.fetchCurrentAsset();
 }
