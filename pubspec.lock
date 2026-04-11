@@ -226,7 +226,7 @@ packages:
     source: hosted
     version: "3.1.3"
   dio:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: dio
       sha256: aff32c08f92787a557dd5c0145ac91536481831a01b4648136373cddb0e64f8c
@@ -234,7 +234,7 @@ packages:
     source: hosted
     version: "5.9.2"
   dio_cookie_manager:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: dio_cookie_manager
       sha256: "0db1a7b997a0455e488ac35744c68eed3f2a4280d3ab531835a65641b0a08744"
@@ -242,7 +242,7 @@ packages:
     source: hosted
     version: "3.4.0"
   dio_redirect_interceptor:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: dio_redirect_interceptor
       sha256: f7f19cd66c72be89aebab9621008df3bce0d8dd880d01f928b89594ceb74ec2c
@@ -526,7 +526,7 @@ packages:
     source: hosted
     version: "3.3.1"
   html:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: html
       sha256: "6d1264f2dffa1b1101c25a91dff0dc2daee4c18e87cd8538729773c073dbf602"

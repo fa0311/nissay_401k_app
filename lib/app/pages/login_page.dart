@@ -5,11 +5,11 @@ import 'package:nissay_401k/app/hooks/single_action_guard.dart';
 import 'package:nissay_401k/app/providers/auth.dart';
 import 'package:nissay_401k/app/providers/logger.dart';
 import 'package:nissay_401k/app/providers/nissay_session_provider.dart';
-import 'package:nissay_401k/app/services/nissay_repository.dart';
 import 'package:nissay_401k/app/ui/future_button.dart';
+import 'package:nissay_client/nissay_client.dart' as api;
 
-class NissayLoginPage extends HookConsumerWidget {
-  const NissayLoginPage({super.key});
+class LoginPage extends HookConsumerWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,7 +19,7 @@ class NissayLoginPage extends HookConsumerWidget {
     final passwordController = useTextEditingController(text: auth.value?.password);
 
     ref.listen(nissaySessionCheckProvider, (previous, next) {
-      if (next case AsyncError(:final NissayAuthException error)) {
+      if (next case AsyncError(:final api.NissayAuthException error)) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Login check failed: $error')),

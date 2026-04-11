@@ -1,43 +1,9 @@
 import 'package:nissay_401k/app/providers/auth.dart';
 import 'package:nissay_401k/app/providers/logger.dart';
-import 'package:nissay_401k/app/providers/nissay_repository_provider.dart';
-import 'package:nissay_401k/app/router/app_route_paths.dart';
+import 'package:nissay_401k/app/providers/nissay_client_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'nissay_session_provider.g.dart';
-
-enum SessionRouteState {
-  loading,
-  unauthenticated,
-  authenticated,
-}
-
-SessionRouteState sessionRouteStateFromCheck(AsyncValue<void> sessionCheck) {
-  return switch (sessionCheck) {
-    AsyncLoading() => SessionRouteState.loading,
-    AsyncError() => SessionRouteState.unauthenticated,
-    AsyncData() => SessionRouteState.authenticated,
-  };
-}
-
-String? redirectLocationForSessionState(
-  SessionRouteState state,
-  String location,
-) {
-  const authenticatedPaths = {
-    AppRoutePaths.dashboard,
-    AppRoutePaths.webView,
-  };
-  const unauthenticatedPaths = {
-    AppRoutePaths.login,
-  };
-
-  return switch (state) {
-    SessionRouteState.loading => location == AppRoutePaths.splash ? null : AppRoutePaths.splash,
-    SessionRouteState.unauthenticated => unauthenticatedPaths.contains(location) ? null : AppRoutePaths.login,
-    SessionRouteState.authenticated => authenticatedPaths.contains(location) ? null : AppRoutePaths.dashboard,
-  };
-}
 
 @Riverpod(keepAlive: true)
 Future<void> nissaySessionCheck(Ref ref) async {
@@ -46,7 +12,7 @@ Future<void> nissaySessionCheck(Ref ref) async {
   final log = ref.watch(loggerProvider);
 
   try {
-    await ref.watch(nissayCurrentAssetsProvider.future);
+    await ref.watch(nissayHeaderProvider.future);
   } on Exception catch (error, stackTrace) {
     log.error('Failed to fetch Nissay data', error, stackTrace);
 
@@ -55,22 +21,10 @@ Future<void> nissaySessionCheck(Ref ref) async {
         userId: auth.userId,
         password: auth.password,
       );
-      await ref.watch(nissayCurrentAssetsProvider.future);
+      await ref.watch(nissayHeaderProvider.future);
     } else {
       rethrow;
     }
-  }
-}
-
-@riverpod
-class SessionRouteStatus extends _$SessionRouteStatus {
-  @override
-  SessionRouteState build() {
-    return sessionRouteStateFromCheck(ref.watch(nissaySessionCheckProvider));
-  }
-
-  String? redirectForLocation(String location) {
-    return redirectLocationForSessionState(state, location);
   }
 }
 
@@ -96,7 +50,6 @@ class NissaySession extends _$NissaySession {
             password: password,
           );
       ref.invalidate(nissayRepositoryProvider);
-      ref.invalidate(nissayCurrentAssetsProvider);
       return AuthState(userId: userId, password: password);
     });
   }
@@ -106,7 +59,6 @@ class NissaySession extends _$NissaySession {
     await cookieJar.deleteAll();
     await ref.read(authStorageProvider.notifier).clear();
     ref.invalidate(nissayRepositoryProvider);
-    ref.invalidate(nissayCurrentAssetsProvider);
     state = const AsyncData(null);
   }
 
@@ -114,7 +66,6 @@ class NissaySession extends _$NissaySession {
     final cookieJar = await ref.read(nissayCookieJarProvider.future);
     await cookieJar.deleteAll();
     ref.invalidate(nissayRepositoryProvider);
-    ref.invalidate(nissayCurrentAssetsProvider);
     state = await AsyncValue.guard(() => ref.read(authStorageProvider.future));
   }
 }

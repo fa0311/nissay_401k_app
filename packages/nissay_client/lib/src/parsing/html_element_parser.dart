@@ -1,13 +1,5 @@
 import 'package:html/dom.dart';
-
-class HtmlDocumentParseException implements Exception {
-  HtmlDocumentParseException(this.message);
-
-  final String message;
-
-  @override
-  String toString() => 'HtmlDocumentParseException: $message';
-}
+import 'package:nissay_client/src/exceptions.dart';
 
 class HtmlElementParser {
   HtmlElementParser(this.element);
@@ -15,7 +7,7 @@ class HtmlElementParser {
   factory HtmlElementParser.fromDocument(Document document) {
     final body = document.body;
     if (body == null) {
-      throw HtmlDocumentParseException('Document has no body');
+      throw NissayException('Document has no body');
     }
     return HtmlElementParser(body);
   }
@@ -27,7 +19,7 @@ class HtmlElementParser {
   HtmlElementParser querySelector(String selector) {
     final child = element.querySelector(selector);
     if (child == null) {
-      throw HtmlDocumentParseException('Element not found: $selector');
+      throw NissayException('Element not found: $selector');
     }
     return HtmlElementParser(child);
   }
@@ -35,7 +27,7 @@ class HtmlElementParser {
   List<HtmlElementParser> querySelectorAll(String selector, {int? length}) {
     final children = element.querySelectorAll(selector);
     if (length != null && children.length != length) {
-      throw HtmlDocumentParseException(
+      throw NissayException(
         'Expected $length elements, but found ${children.length}',
       );
     }

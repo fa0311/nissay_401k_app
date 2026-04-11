@@ -1,115 +1,31 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:nissay_401k/app/providers/nissay_repository_provider.dart';
-import 'package:nissay_401k/app/providers/nissay_session_provider.dart';
-import 'package:nissay_401k/app/router/app_router.dart';
-import 'package:nissay_401k/app/services/webview_cookie_sync.dart';
+import 'package:nissay_401k/app/models/nissay_dashboard_model.dart';
+import 'package:nissay_401k/app/pages/dashboard/dashboard_style.dart';
 
-final _currencyFormat = NumberFormat.currency(
-  locale: 'ja_JP',
-  symbol: '¥',
-  decimalDigits: 0,
-);
-final _percentFormat = NumberFormat('0.##', 'ja_JP');
-final _dateTimeFormat = DateFormat('yyyy/MM/dd HH:mm');
+class DashboardLoadedView extends StatelessWidget {
+  const DashboardLoadedView({required this.data, super.key});
 
-class DashboardPage extends ConsumerWidget {
-  const DashboardPage({super.key});
-
-  Future<void> _openWeb(BuildContext context, WidgetRef ref) async {
-    await syncCookieJarToWebView(await ref.read(nissayCookieJarProvider.future));
-    if (context.mounted) {
-      await const WebViewRoute().push<void>(context);
-    }
-  }
-
-  Future<void> _refreshData(WidgetRef ref) async {
-    ref.invalidate(nissayRepositoryProvider);
-    await ref.read(nissayAllAssetsProvider.future);
-  }
-
-  Future<void> _refreshSession(WidgetRef ref) async {
-    await ref.read(nissaySessionProvider.notifier).refresh();
-    ref.invalidate(nissaySessionCheckProvider);
-    await ref.read(nissaySessionCheckProvider.future);
-  }
-
-  Future<void> _logout(WidgetRef ref) async {
-    await ref.read(nissaySessionProvider.notifier).logout();
-  }
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final nissayData = ref.watch(nissayAllAssetsProvider);
-    final theme = Theme.of(context);
-
-    return Scaffold(
-      backgroundColor: _DashboardPalette.background,
-      appBar: AppBar(
-        title: Text(
-          'NISSAY 401k',
-          style: theme.textTheme.labelLarge?.copyWith(
-            color: _DashboardPalette.ink.withValues(alpha: 0.68),
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.1,
-          ),
-        ),
-      ),
-      body: switch (nissayData) {
-        AsyncData(:final value) => DecoratedBox(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Color(0xFFF7F1E4),
-                Color(0xFFE8F0F1),
-              ],
-            ),
-          ),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                _HeroCard(data: value),
-                _DashboardLoadedView(data: value),
-              ],
-            ),
-          ),
-        ),
-        AsyncError(:final error, :final stackTrace) => Text('Error: $error\n$stackTrace'),
-        AsyncLoading() => const Center(child: CircularProgressIndicator()),
-      },
-    );
-  }
-}
-
-class _DashboardLoadedView extends StatelessWidget {
-  const _DashboardLoadedView({required this.data});
-
-  final NissayModel data;
+  final NissayDashboard data;
 
   @override
   Widget build(BuildContext context) {
-    final sortedDetails = [...data.details]..sort((a, b) => b.assetRatio.compareTo(a.assetRatio));
+    final sortedHoldings = [...data.holdings]..sort((a, b) => b.assetRatio.compareTo(a.assetRatio));
 
     return Column(
       children: [
+        DashboardHeroCard(data: data),
         const SizedBox(height: 28),
-        const _SectionHeader(
+        const DashboardSectionHeader(
           eyebrow: 'HOLDINGS',
           title: '保有商品のスナップショット',
         ),
         const SizedBox(height: 14),
-        for (var index = 0; index < sortedDetails.length; index++)
+        for (var index = 0; index < sortedHoldings.length; index++)
           Padding(
             padding: const EdgeInsets.all(16),
-            child: _HoldingCard(
-              detail: sortedDetails[index],
-              color: _allocationColor(index),
+            child: DashboardHoldingCard(
+              holding: sortedHoldings[index],
+              color: dashboardAllocationColor(index),
             ),
           ),
       ],
@@ -117,10 +33,10 @@ class _DashboardLoadedView extends StatelessWidget {
   }
 }
 
-class _HeroCard extends StatelessWidget {
-  const _HeroCard({required this.data});
+class DashboardHeroCard extends StatelessWidget {
+  const DashboardHeroCard({required this.data, super.key});
 
-  final NissayModel data;
+  final NissayDashboard data;
 
   @override
   Widget build(BuildContext context) {
@@ -132,13 +48,13 @@ class _HeroCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            _DashboardPalette.navy,
-            _DashboardPalette.teal,
+            DashboardPalette.navy,
+            DashboardPalette.teal,
           ],
         ),
         boxShadow: [
           BoxShadow(
-            color: _DashboardPalette.navy.withValues(alpha: 0.22),
+            color: DashboardPalette.navy.withValues(alpha: 0.22),
             blurRadius: 32,
             offset: const Offset(0, 18),
           ),
@@ -179,7 +95,7 @@ class _HeroCard extends StatelessWidget {
               fit: BoxFit.scaleDown,
               alignment: Alignment.centerLeft,
               child: Text(
-                _formatCurrency(data.totalAsset),
+                formatDashboardCurrency(data.totalAsset),
                 style: theme.textTheme.displaySmall?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w800,
@@ -188,25 +104,25 @@ class _HeroCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 18),
-            _HeroMetaTile(
+            DashboardHeroMetaTile(
               icon: Icons.trending_up_rounded,
               label: '評価損益',
-              value: _formatSignedCurrency(data.totalProfitLoss),
-              accent: _valueColor(data.totalProfitLoss),
+              value: formatDashboardSignedCurrency(data.totalProfitLoss),
+              accent: dashboardValueColor(data.totalProfitLoss),
             ),
             const SizedBox(height: 12),
-            _HeroMetaTile(
+            DashboardHeroMetaTile(
               icon: Icons.show_chart_rounded,
               label: '利回り',
-              value: '${_formatPercent(data.roi)}%',
-              accent: _DashboardPalette.gold,
+              value: '${formatDashboardPercent(data.roi)}%',
+              accent: DashboardPalette.gold,
             ),
             const SizedBox(height: 12),
-            _HeroMetaTile(
+            DashboardHeroMetaTile(
               icon: Icons.schedule_rounded,
               label: '最終ログイン',
-              value: _dateTimeFormat.format(data.lastLogin),
-              accent: _DashboardPalette.sky,
+              value: dashboardDateTimeFormat.format(data.lastLogin),
+              accent: DashboardPalette.sky,
             ),
           ],
         ),
@@ -215,19 +131,20 @@ class _HeroCard extends StatelessWidget {
   }
 }
 
-class _HoldingCard extends StatelessWidget {
-  const _HoldingCard({
-    required this.detail,
+class DashboardHoldingCard extends StatelessWidget {
+  const DashboardHoldingCard({
+    required this.holding,
     required this.color,
+    super.key,
   });
 
-  final NissayDetailsModel detail;
+  final NissayDashboardHolding holding;
   final Color color;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return _GlassCard(
+    return DashboardGlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -244,7 +161,7 @@ class _HoldingCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
-                  detail.operationType,
+                  holding.operationType,
                   style: theme.textTheme.labelMedium?.copyWith(
                     color: color,
                     fontWeight: FontWeight.w700,
@@ -254,18 +171,18 @@ class _HoldingCard extends StatelessWidget {
               const SizedBox(width: 14),
               Expanded(
                 child: Text(
-                  detail.productName,
+                  holding.productName,
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: _DashboardPalette.ink,
+                    color: DashboardPalette.ink,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
               ),
               const SizedBox(width: 12),
               Text(
-                _formatCurrency(detail.totalAsset),
+                formatDashboardCurrency(holding.totalAsset),
                 style: theme.textTheme.titleMedium?.copyWith(
-                  color: _DashboardPalette.ink,
+                  color: DashboardPalette.ink,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -277,26 +194,26 @@ class _HoldingCard extends StatelessWidget {
             child: Row(
               spacing: 12,
               children: [
-                _InfoChip(
+                DashboardInfoChip(
                   icon: Icons.donut_small_rounded,
                   label: '資産比率',
-                  value: '${_formatPercent(detail.assetRatio)}%',
+                  value: '${formatDashboardPercent(holding.assetRatio)}%',
                   color: color,
                 ),
-                _InfoChip(
+                DashboardInfoChip(
                   icon: Icons.trending_up_rounded,
                   label: '評価損益',
-                  value: _formatSignedCurrency(detail.profitLoss),
-                  color: _valueColor(detail.profitLoss),
+                  value: formatDashboardSignedCurrency(holding.profitLoss),
+                  color: dashboardValueColor(holding.profitLoss),
                 ),
-                _InfoChip(
+                DashboardInfoChip(
                   icon: Icons.show_chart_rounded,
                   label: '利回り',
                   value:
-                      '${_formatPercent(
-                        detail.assetRatio == 0 ? 0 : (detail.profitLoss / detail.totalAsset) * 100,
+                      '${formatDashboardPercent(
+                        holding.assetRatio == 0 ? 0 : (holding.profitLoss / holding.totalAsset) * 100,
                       )}%',
-                  color: _DashboardPalette.gold,
+                  color: DashboardPalette.gold,
                 ),
               ],
             ),
@@ -307,9 +224,10 @@ class _HoldingCard extends StatelessWidget {
   }
 }
 
-class _GlassCard extends StatelessWidget {
-  const _GlassCard({
+class DashboardGlassCard extends StatelessWidget {
+  const DashboardGlassCard({
     required this.child,
+    super.key,
   });
 
   final Widget child;
@@ -337,10 +255,11 @@ class _GlassCard extends StatelessWidget {
   }
 }
 
-class _SectionHeader extends StatelessWidget {
-  const _SectionHeader({
+class DashboardSectionHeader extends StatelessWidget {
+  const DashboardSectionHeader({
     required this.eyebrow,
     required this.title,
+    super.key,
   });
 
   final String eyebrow;
@@ -355,7 +274,7 @@ class _SectionHeader extends StatelessWidget {
         Text(
           eyebrow,
           style: theme.textTheme.labelLarge?.copyWith(
-            color: _DashboardPalette.ink.withValues(alpha: 0.52),
+            color: DashboardPalette.ink.withValues(alpha: 0.52),
             fontWeight: FontWeight.w700,
             letterSpacing: 1.2,
           ),
@@ -364,7 +283,7 @@ class _SectionHeader extends StatelessWidget {
         Text(
           title,
           style: theme.textTheme.headlineSmall?.copyWith(
-            color: _DashboardPalette.ink,
+            color: DashboardPalette.ink,
             fontWeight: FontWeight.w800,
             letterSpacing: -0.5,
           ),
@@ -374,12 +293,13 @@ class _SectionHeader extends StatelessWidget {
   }
 }
 
-class _HeroMetaTile extends StatelessWidget {
-  const _HeroMetaTile({
+class DashboardHeroMetaTile extends StatelessWidget {
+  const DashboardHeroMetaTile({
     required this.icon,
     required this.label,
     required this.value,
     required this.accent,
+    super.key,
   });
 
   final IconData icon;
@@ -437,12 +357,13 @@ class _HeroMetaTile extends StatelessWidget {
   }
 }
 
-class _InfoChip extends StatelessWidget {
-  const _InfoChip({
+class DashboardInfoChip extends StatelessWidget {
+  const DashboardInfoChip({
     required this.icon,
     required this.label,
     required this.value,
     required this.color,
+    super.key,
   });
 
   final IconData icon;
@@ -467,14 +388,14 @@ class _InfoChip extends StatelessWidget {
           Text(
             '$label  ',
             style: theme.textTheme.labelMedium?.copyWith(
-              color: _DashboardPalette.ink.withValues(alpha: 0.64),
+              color: DashboardPalette.ink.withValues(alpha: 0.64),
               fontWeight: FontWeight.w600,
             ),
           ),
           Text(
             value,
             style: theme.textTheme.labelLarge?.copyWith(
-              color: _DashboardPalette.ink,
+              color: DashboardPalette.ink,
               fontWeight: FontWeight.w800,
             ),
           ),
@@ -482,45 +403,4 @@ class _InfoChip extends StatelessWidget {
       ),
     );
   }
-}
-
-class _DashboardPalette {
-  static const background = Color(0xFFF3EEE3);
-  static const ink = Color(0xFF102334);
-  static const navy = Color(0xFF18314A);
-  static const teal = Color(0xFF226D72);
-  static const gold = Color(0xFFE0AE5D);
-  static const coral = Color(0xFFD16D5F);
-  static const sky = Color(0xFF5B92B1);
-}
-
-Color _valueColor(int value) {
-  if (value > 0) {
-    return const Color(0xFF11835F);
-  }
-  if (value < 0) {
-    return const Color(0xFFC25548);
-  }
-  return _DashboardPalette.ink.withValues(alpha: 0.52);
-}
-
-String _formatCurrency(int value) => _currencyFormat.format(value);
-
-String _formatSignedCurrency(int value) {
-  final sign = value > 0 ? '+' : '';
-  return '$sign${_currencyFormat.format(value)}';
-}
-
-String _formatPercent(double value) => _percentFormat.format(value);
-
-Color _allocationColor(int index) {
-  const colors = [
-    _DashboardPalette.gold,
-    _DashboardPalette.teal,
-    _DashboardPalette.sky,
-    _DashboardPalette.coral,
-    Color(0xFF6C8C7C),
-    Color(0xFF8B7AA8),
-  ];
-  return colors[index % colors.length];
 }

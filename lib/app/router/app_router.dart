@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nissay_401k/app/pages/dashboard_page.dart';
-import 'package:nissay_401k/app/pages/nissay_login_page.dart';
+import 'package:nissay_401k/app/pages/dashboard/dashboard_page.dart';
+import 'package:nissay_401k/app/pages/login_page.dart';
 import 'package:nissay_401k/app/pages/splash_page.dart';
 import 'package:nissay_401k/app/pages/webview_page.dart';
-import 'package:nissay_401k/app/providers/nissay_session_provider.dart';
 import 'package:nissay_401k/app/router/app_route_paths.dart';
+import 'package:nissay_401k/app/router/session_route_guard.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'app_router.g.dart';
@@ -43,7 +43,7 @@ class LoginRoute extends GoRouteData with $LoginRoute {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const NissayLoginPage();
+    return const LoginPage();
   }
 }
 

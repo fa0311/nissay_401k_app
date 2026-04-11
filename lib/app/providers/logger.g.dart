@@ -12,7 +12,8 @@ part of 'logger.dart';
 @ProviderFor(logger)
 final loggerProvider = LoggerProvider._();
 
-final class LoggerProvider extends $FunctionalProvider<Talker, Talker, Talker> with $Provider<Talker> {
+final class LoggerProvider extends $FunctionalProvider<Talker, Talker, Talker>
+    with $Provider<Talker> {
   LoggerProvider._()
     : super(
         from: null,
@@ -29,7 +30,8 @@ final class LoggerProvider extends $FunctionalProvider<Talker, Talker, Talker> w
 
   @$internal
   @override
-  $ProviderElement<Talker> $createElement($ProviderPointer pointer) => $ProviderElement(pointer);
+  $ProviderElement<Talker> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
   Talker create(Ref ref) {

@@ -43,59 +43,6 @@ final class NissaySessionCheckProvider
 String _$nissaySessionCheckHash() =>
     r'81a782af0929f327d0d07f3cd14be3f9d0ece462';
 
-@ProviderFor(SessionRouteStatus)
-final sessionRouteStatusProvider = SessionRouteStatusProvider._();
-
-final class SessionRouteStatusProvider
-    extends $NotifierProvider<SessionRouteStatus, SessionRouteState> {
-  SessionRouteStatusProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'sessionRouteStatusProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$sessionRouteStatusHash();
-
-  @$internal
-  @override
-  SessionRouteStatus create() => SessionRouteStatus();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SessionRouteState value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<SessionRouteState>(value),
-    );
-  }
-}
-
-String _$sessionRouteStatusHash() =>
-    r'145d297de72f23140f5bb3c8175245ecd69808f6';
-
-abstract class _$SessionRouteStatus extends $Notifier<SessionRouteState> {
-  SessionRouteState build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final ref = this.ref as $Ref<SessionRouteState, SessionRouteState>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<SessionRouteState, SessionRouteState>,
-              SessionRouteState,
-              Object?,
-              Object?
-            >;
-    element.handleCreate(ref, build);
-  }
-}
-
 @ProviderFor(NissaySession)
 final nissaySessionProvider = NissaySessionProvider._();
 
