@@ -12,7 +12,8 @@ part of 'nissay_session_provider.dart';
 @ProviderFor(nissaySessionCheck)
 final nissaySessionCheckProvider = NissaySessionCheckProvider._();
 
-final class NissaySessionCheckProvider extends $FunctionalProvider<AsyncValue<void>, void, FutureOr<void>>
+final class NissaySessionCheckProvider
+    extends $FunctionalProvider<AsyncValue<void>, void, FutureOr<void>>
     with $FutureModifier<void>, $FutureProvider<void> {
   NissaySessionCheckProvider._()
     : super(
@@ -30,7 +31,8 @@ final class NissaySessionCheckProvider extends $FunctionalProvider<AsyncValue<vo
 
   @$internal
   @override
-  $FutureProviderElement<void> $createElement($ProviderPointer pointer) => $FutureProviderElement(pointer);
+  $FutureProviderElement<void> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
 
   @override
   FutureOr<void> create(Ref ref) {
@@ -38,12 +40,14 @@ final class NissaySessionCheckProvider extends $FunctionalProvider<AsyncValue<vo
   }
 }
 
-String _$nissaySessionCheckHash() => r'81a782af0929f327d0d07f3cd14be3f9d0ece462';
+String _$nissaySessionCheckHash() =>
+    r'81a782af0929f327d0d07f3cd14be3f9d0ece462';
 
 @ProviderFor(SessionRouteStatus)
 final sessionRouteStatusProvider = SessionRouteStatusProvider._();
 
-final class SessionRouteStatusProvider extends $NotifierProvider<SessionRouteStatus, SessionRouteState> {
+final class SessionRouteStatusProvider
+    extends $NotifierProvider<SessionRouteStatus, SessionRouteState> {
   SessionRouteStatusProvider._()
     : super(
         from: null,
@@ -71,7 +75,8 @@ final class SessionRouteStatusProvider extends $NotifierProvider<SessionRouteSta
   }
 }
 
-String _$sessionRouteStatusHash() => r'25144731badb8d5db65b8605d7b9ea77cef1139b';
+String _$sessionRouteStatusHash() =>
+    r'145d297de72f23140f5bb3c8175245ecd69808f6';
 
 abstract class _$SessionRouteStatus extends $Notifier<SessionRouteState> {
   SessionRouteState build();
@@ -94,7 +99,8 @@ abstract class _$SessionRouteStatus extends $Notifier<SessionRouteState> {
 @ProviderFor(NissaySession)
 final nissaySessionProvider = NissaySessionProvider._();
 
-final class NissaySessionProvider extends $AsyncNotifierProvider<NissaySession, AuthState?> {
+final class NissaySessionProvider
+    extends $AsyncNotifierProvider<NissaySession, AuthState?> {
   NissaySessionProvider._()
     : super(
         from: null,

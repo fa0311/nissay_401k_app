@@ -12,7 +12,13 @@ part of 'nissay_repository_provider.dart';
 @ProviderFor(nissayCookieJar)
 final nissayCookieJarProvider = NissayCookieJarProvider._();
 
-final class NissayCookieJarProvider extends $FunctionalProvider<AsyncValue<CookieJar>, CookieJar, FutureOr<CookieJar>>
+final class NissayCookieJarProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<CookieJar>,
+          CookieJar,
+          FutureOr<CookieJar>
+        >
     with $FutureModifier<CookieJar>, $FutureProvider<CookieJar> {
   NissayCookieJarProvider._()
     : super(
@@ -30,7 +36,8 @@ final class NissayCookieJarProvider extends $FunctionalProvider<AsyncValue<Cooki
 
   @$internal
   @override
-  $FutureProviderElement<CookieJar> $createElement($ProviderPointer pointer) => $FutureProviderElement(pointer);
+  $FutureProviderElement<CookieJar> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
 
   @override
   FutureOr<CookieJar> create(Ref ref) {
@@ -44,7 +51,12 @@ String _$nissayCookieJarHash() => r'a78968952cb6c784083f9c2e63acaff608106214';
 final nissayRepositoryProvider = NissayRepositoryProvider._();
 
 final class NissayRepositoryProvider
-    extends $FunctionalProvider<AsyncValue<NissayRepository>, NissayRepository, FutureOr<NissayRepository>>
+    extends
+        $FunctionalProvider<
+          AsyncValue<NissayRepository>,
+          NissayRepository,
+          FutureOr<NissayRepository>
+        >
     with $FutureModifier<NissayRepository>, $FutureProvider<NissayRepository> {
   NissayRepositoryProvider._()
     : super(
@@ -84,7 +96,9 @@ final class NissayCurrentAssetsProvider
           NissayCurrentAssetsModel,
           FutureOr<NissayCurrentAssetsModel>
         >
-    with $FutureModifier<NissayCurrentAssetsModel>, $FutureProvider<NissayCurrentAssetsModel> {
+    with
+        $FutureModifier<NissayCurrentAssetsModel>,
+        $FutureProvider<NissayCurrentAssetsModel> {
   NissayCurrentAssetsProvider._()
     : super(
         from: null,
@@ -111,4 +125,5 @@ final class NissayCurrentAssetsProvider
   }
 }
 
-String _$nissayCurrentAssetsHash() => r'2fe582cf48c5e0b21fd55c82f9b8ae86bdecc327';
+String _$nissayCurrentAssetsHash() =>
+    r'2fe582cf48c5e0b21fd55c82f9b8ae86bdecc327';

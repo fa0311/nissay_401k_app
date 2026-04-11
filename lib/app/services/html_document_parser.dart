@@ -44,25 +44,23 @@ class HtmlElementParser {
 }
 
 extension NissayTextParsing on String {
-  String get _normalizedText => trim();
-
   int parseSignedInt() {
-    final value = _normalizedText;
-    if (value.startsWith('▲')) {
-      return -int.parse(value.substring(1).replaceAll(',', ''));
+    if (startsWith('▲')) {
+      return -int.parse(substring(1).replaceAll(',', ''));
     }
-    return int.parse(value.replaceAll(',', ''));
+    if (startsWith('＋')) {
+      return int.parse(substring(1).replaceAll(',', ''));
+    }
+    return int.parse(replaceAll(',', ''));
   }
 
   double parseSignedDouble() {
-    final value = _normalizedText;
-    if (value.startsWith('▲')) {
-      return -double.parse(value.substring(1).replaceAll(',', ''));
+    if (startsWith('▲')) {
+      return -double.parse(substring(1).replaceAll(',', ''));
     }
-    return double.parse(value.replaceAll(',', ''));
-  }
-
-  DateTime parseSlashSeparatedDate() {
-    return DateTime.parse(_normalizedText.replaceAll('/', '-'));
+    if (startsWith('＋')) {
+      return double.parse(substring(1).replaceAll(',', ''));
+    }
+    return double.parse(replaceAll(',', ''));
   }
 }

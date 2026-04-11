@@ -14,7 +14,9 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$NissayCurrentAssetsModel {
 
-// 総資産評価額
+// プラン名
+ String get planName;// 最終ログイン日時
+ DateTime get lastLogin;// 総資産評価額
  int get totalAsset;// 拠出金額累計
  int get totalContribution;// 評価損益
  int get totalProfitLoss;// 利回り
@@ -32,16 +34,16 @@ $NissayCurrentAssetsModelCopyWith<NissayCurrentAssetsModel> get copyWith => _$Ni
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NissayCurrentAssetsModel&&(identical(other.totalAsset, totalAsset) || other.totalAsset == totalAsset)&&(identical(other.totalContribution, totalContribution) || other.totalContribution == totalContribution)&&(identical(other.totalProfitLoss, totalProfitLoss) || other.totalProfitLoss == totalProfitLoss)&&(identical(other.roi, roi) || other.roi == roi)&&(identical(other.date, date) || other.date == date)&&const DeepCollectionEquality().equals(other.details, details)&&(identical(other.detailsSum, detailsSum) || other.detailsSum == detailsSum));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NissayCurrentAssetsModel&&(identical(other.planName, planName) || other.planName == planName)&&(identical(other.lastLogin, lastLogin) || other.lastLogin == lastLogin)&&(identical(other.totalAsset, totalAsset) || other.totalAsset == totalAsset)&&(identical(other.totalContribution, totalContribution) || other.totalContribution == totalContribution)&&(identical(other.totalProfitLoss, totalProfitLoss) || other.totalProfitLoss == totalProfitLoss)&&(identical(other.roi, roi) || other.roi == roi)&&(identical(other.date, date) || other.date == date)&&const DeepCollectionEquality().equals(other.details, details)&&(identical(other.detailsSum, detailsSum) || other.detailsSum == detailsSum));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,totalAsset,totalContribution,totalProfitLoss,roi,date,const DeepCollectionEquality().hash(details),detailsSum);
+int get hashCode => Object.hash(runtimeType,planName,lastLogin,totalAsset,totalContribution,totalProfitLoss,roi,date,const DeepCollectionEquality().hash(details),detailsSum);
 
 @override
 String toString() {
-  return 'NissayCurrentAssetsModel(totalAsset: $totalAsset, totalContribution: $totalContribution, totalProfitLoss: $totalProfitLoss, roi: $roi, date: $date, details: $details, detailsSum: $detailsSum)';
+  return 'NissayCurrentAssetsModel(planName: $planName, lastLogin: $lastLogin, totalAsset: $totalAsset, totalContribution: $totalContribution, totalProfitLoss: $totalProfitLoss, roi: $roi, date: $date, details: $details, detailsSum: $detailsSum)';
 }
 
 
@@ -52,7 +54,7 @@ abstract mixin class $NissayCurrentAssetsModelCopyWith<$Res>  {
   factory $NissayCurrentAssetsModelCopyWith(NissayCurrentAssetsModel value, $Res Function(NissayCurrentAssetsModel) _then) = _$NissayCurrentAssetsModelCopyWithImpl;
 @useResult
 $Res call({
- int totalAsset, int totalContribution, int totalProfitLoss, double roi, DateTime date, List<NissayTotalDetailsModel> details, NissayTotalDetailsSumModel? detailsSum
+ String planName, DateTime lastLogin, int totalAsset, int totalContribution, int totalProfitLoss, double roi, DateTime date, List<NissayTotalDetailsModel> details, NissayTotalDetailsSumModel? detailsSum
 });
 
 
@@ -69,9 +71,11 @@ class _$NissayCurrentAssetsModelCopyWithImpl<$Res>
 
 /// Create a copy of NissayCurrentAssetsModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? totalAsset = null,Object? totalContribution = null,Object? totalProfitLoss = null,Object? roi = null,Object? date = null,Object? details = null,Object? detailsSum = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? planName = null,Object? lastLogin = null,Object? totalAsset = null,Object? totalContribution = null,Object? totalProfitLoss = null,Object? roi = null,Object? date = null,Object? details = null,Object? detailsSum = freezed,}) {
   return _then(_self.copyWith(
-totalAsset: null == totalAsset ? _self.totalAsset : totalAsset // ignore: cast_nullable_to_non_nullable
+planName: null == planName ? _self.planName : planName // ignore: cast_nullable_to_non_nullable
+as String,lastLogin: null == lastLogin ? _self.lastLogin : lastLogin // ignore: cast_nullable_to_non_nullable
+as DateTime,totalAsset: null == totalAsset ? _self.totalAsset : totalAsset // ignore: cast_nullable_to_non_nullable
 as int,totalContribution: null == totalContribution ? _self.totalContribution : totalContribution // ignore: cast_nullable_to_non_nullable
 as int,totalProfitLoss: null == totalProfitLoss ? _self.totalProfitLoss : totalProfitLoss // ignore: cast_nullable_to_non_nullable
 as int,roi: null == roi ? _self.roi : roi // ignore: cast_nullable_to_non_nullable
@@ -175,10 +179,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int totalAsset,  int totalContribution,  int totalProfitLoss,  double roi,  DateTime date,  List<NissayTotalDetailsModel> details,  NissayTotalDetailsSumModel? detailsSum)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String planName,  DateTime lastLogin,  int totalAsset,  int totalContribution,  int totalProfitLoss,  double roi,  DateTime date,  List<NissayTotalDetailsModel> details,  NissayTotalDetailsSumModel? detailsSum)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _NissayCurrentAssetsModel() when $default != null:
-return $default(_that.totalAsset,_that.totalContribution,_that.totalProfitLoss,_that.roi,_that.date,_that.details,_that.detailsSum);case _:
+return $default(_that.planName,_that.lastLogin,_that.totalAsset,_that.totalContribution,_that.totalProfitLoss,_that.roi,_that.date,_that.details,_that.detailsSum);case _:
   return orElse();
 
 }
@@ -196,10 +200,10 @@ return $default(_that.totalAsset,_that.totalContribution,_that.totalProfitLoss,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int totalAsset,  int totalContribution,  int totalProfitLoss,  double roi,  DateTime date,  List<NissayTotalDetailsModel> details,  NissayTotalDetailsSumModel? detailsSum)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String planName,  DateTime lastLogin,  int totalAsset,  int totalContribution,  int totalProfitLoss,  double roi,  DateTime date,  List<NissayTotalDetailsModel> details,  NissayTotalDetailsSumModel? detailsSum)  $default,) {final _that = this;
 switch (_that) {
 case _NissayCurrentAssetsModel():
-return $default(_that.totalAsset,_that.totalContribution,_that.totalProfitLoss,_that.roi,_that.date,_that.details,_that.detailsSum);case _:
+return $default(_that.planName,_that.lastLogin,_that.totalAsset,_that.totalContribution,_that.totalProfitLoss,_that.roi,_that.date,_that.details,_that.detailsSum);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -216,10 +220,10 @@ return $default(_that.totalAsset,_that.totalContribution,_that.totalProfitLoss,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int totalAsset,  int totalContribution,  int totalProfitLoss,  double roi,  DateTime date,  List<NissayTotalDetailsModel> details,  NissayTotalDetailsSumModel? detailsSum)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String planName,  DateTime lastLogin,  int totalAsset,  int totalContribution,  int totalProfitLoss,  double roi,  DateTime date,  List<NissayTotalDetailsModel> details,  NissayTotalDetailsSumModel? detailsSum)?  $default,) {final _that = this;
 switch (_that) {
 case _NissayCurrentAssetsModel() when $default != null:
-return $default(_that.totalAsset,_that.totalContribution,_that.totalProfitLoss,_that.roi,_that.date,_that.details,_that.detailsSum);case _:
+return $default(_that.planName,_that.lastLogin,_that.totalAsset,_that.totalContribution,_that.totalProfitLoss,_that.roi,_that.date,_that.details,_that.detailsSum);case _:
   return null;
 
 }
@@ -231,9 +235,13 @@ return $default(_that.totalAsset,_that.totalContribution,_that.totalProfitLoss,_
 
 
 class _NissayCurrentAssetsModel implements NissayCurrentAssetsModel {
-  const _NissayCurrentAssetsModel({required this.totalAsset, required this.totalContribution, required this.totalProfitLoss, required this.roi, required this.date, required final  List<NissayTotalDetailsModel> details, this.detailsSum}): _details = details;
+  const _NissayCurrentAssetsModel({required this.planName, required this.lastLogin, required this.totalAsset, required this.totalContribution, required this.totalProfitLoss, required this.roi, required this.date, required final  List<NissayTotalDetailsModel> details, this.detailsSum}): _details = details;
   
 
+// プラン名
+@override final  String planName;
+// 最終ログイン日時
+@override final  DateTime lastLogin;
 // 総資産評価額
 @override final  int totalAsset;
 // 拠出金額累計
@@ -266,16 +274,16 @@ _$NissayCurrentAssetsModelCopyWith<_NissayCurrentAssetsModel> get copyWith => __
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NissayCurrentAssetsModel&&(identical(other.totalAsset, totalAsset) || other.totalAsset == totalAsset)&&(identical(other.totalContribution, totalContribution) || other.totalContribution == totalContribution)&&(identical(other.totalProfitLoss, totalProfitLoss) || other.totalProfitLoss == totalProfitLoss)&&(identical(other.roi, roi) || other.roi == roi)&&(identical(other.date, date) || other.date == date)&&const DeepCollectionEquality().equals(other._details, _details)&&(identical(other.detailsSum, detailsSum) || other.detailsSum == detailsSum));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NissayCurrentAssetsModel&&(identical(other.planName, planName) || other.planName == planName)&&(identical(other.lastLogin, lastLogin) || other.lastLogin == lastLogin)&&(identical(other.totalAsset, totalAsset) || other.totalAsset == totalAsset)&&(identical(other.totalContribution, totalContribution) || other.totalContribution == totalContribution)&&(identical(other.totalProfitLoss, totalProfitLoss) || other.totalProfitLoss == totalProfitLoss)&&(identical(other.roi, roi) || other.roi == roi)&&(identical(other.date, date) || other.date == date)&&const DeepCollectionEquality().equals(other._details, _details)&&(identical(other.detailsSum, detailsSum) || other.detailsSum == detailsSum));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,totalAsset,totalContribution,totalProfitLoss,roi,date,const DeepCollectionEquality().hash(_details),detailsSum);
+int get hashCode => Object.hash(runtimeType,planName,lastLogin,totalAsset,totalContribution,totalProfitLoss,roi,date,const DeepCollectionEquality().hash(_details),detailsSum);
 
 @override
 String toString() {
-  return 'NissayCurrentAssetsModel(totalAsset: $totalAsset, totalContribution: $totalContribution, totalProfitLoss: $totalProfitLoss, roi: $roi, date: $date, details: $details, detailsSum: $detailsSum)';
+  return 'NissayCurrentAssetsModel(planName: $planName, lastLogin: $lastLogin, totalAsset: $totalAsset, totalContribution: $totalContribution, totalProfitLoss: $totalProfitLoss, roi: $roi, date: $date, details: $details, detailsSum: $detailsSum)';
 }
 
 
@@ -286,7 +294,7 @@ abstract mixin class _$NissayCurrentAssetsModelCopyWith<$Res> implements $Nissay
   factory _$NissayCurrentAssetsModelCopyWith(_NissayCurrentAssetsModel value, $Res Function(_NissayCurrentAssetsModel) _then) = __$NissayCurrentAssetsModelCopyWithImpl;
 @override @useResult
 $Res call({
- int totalAsset, int totalContribution, int totalProfitLoss, double roi, DateTime date, List<NissayTotalDetailsModel> details, NissayTotalDetailsSumModel? detailsSum
+ String planName, DateTime lastLogin, int totalAsset, int totalContribution, int totalProfitLoss, double roi, DateTime date, List<NissayTotalDetailsModel> details, NissayTotalDetailsSumModel? detailsSum
 });
 
 
@@ -303,9 +311,11 @@ class __$NissayCurrentAssetsModelCopyWithImpl<$Res>
 
 /// Create a copy of NissayCurrentAssetsModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? totalAsset = null,Object? totalContribution = null,Object? totalProfitLoss = null,Object? roi = null,Object? date = null,Object? details = null,Object? detailsSum = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? planName = null,Object? lastLogin = null,Object? totalAsset = null,Object? totalContribution = null,Object? totalProfitLoss = null,Object? roi = null,Object? date = null,Object? details = null,Object? detailsSum = freezed,}) {
   return _then(_NissayCurrentAssetsModel(
-totalAsset: null == totalAsset ? _self.totalAsset : totalAsset // ignore: cast_nullable_to_non_nullable
+planName: null == planName ? _self.planName : planName // ignore: cast_nullable_to_non_nullable
+as String,lastLogin: null == lastLogin ? _self.lastLogin : lastLogin // ignore: cast_nullable_to_non_nullable
+as DateTime,totalAsset: null == totalAsset ? _self.totalAsset : totalAsset // ignore: cast_nullable_to_non_nullable
 as int,totalContribution: null == totalContribution ? _self.totalContribution : totalContribution // ignore: cast_nullable_to_non_nullable
 as int,totalProfitLoss: null == totalProfitLoss ? _self.totalProfitLoss : totalProfitLoss // ignore: cast_nullable_to_non_nullable
 as int,roi: null == roi ? _self.roi : roi // ignore: cast_nullable_to_non_nullable

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
+import 'package:intl/intl.dart';
 import 'package:nissay_401k/app/services/html_document_parser.dart';
 import 'package:nissay_401k/app/services/nissay_models.dart';
 
@@ -110,15 +111,14 @@ class NissayRepository {
 
 NissayCurrentAssetsModel parseCurrentAssetsPage(Document document) {
   final parser = HtmlElementParser.fromDocument(document);
+
+  final bodyHead = parser.querySelectorAll('.bodyHead p');
+
   final summary = parser.querySelectorAll(
     'div#presentAsset .tableWrapper tr>td>span',
     length: 4,
   );
-  final capturedAt = parser.querySelector('div#presentAsset .lineNotes01');
-  final capturedAtMatch = RegExp(r'\d{4}/\d{2}/\d{2}').firstMatch(capturedAt.text);
-  if (capturedAtMatch == null) {
-    throw HtmlDocumentParseException('Failed to parse captured date: ${capturedAt.text}');
-  }
+  final date = parser.querySelector('div#presentAsset .lineNotes01');
 
   final detailRows = parser
       .querySelectorAll('div#presentAsset .clrStyle01 .btmborderSolid')
@@ -127,16 +127,18 @@ NissayCurrentAssetsModel parseCurrentAssetsPage(Document document) {
   final detailSummary = detailRows.singleWhere((cells) => cells.length == 3);
 
   return NissayCurrentAssetsModel(
+    planName: bodyHead[0].text,
+    lastLogin: DateFormat('yyyy/MM/dd\u00A0\u00A0HH:mm').parse(bodyHead[1].querySelector('.date').text),
     totalAsset: summary[0].text.parseSignedInt(),
     totalContribution: summary[1].text.parseSignedInt(),
     totalProfitLoss: summary[2].text.parseSignedInt(),
     roi: summary[3].text.parseSignedDouble(),
-    date: capturedAtMatch.group(0)!.parseSlashSeparatedDate(),
+    date: DateFormat('照会日時：　yyyy/MM/dd HH:mm').parse(date.text),
     details: [
       for (final detail in detailBodies)
         NissayTotalDetailsModel(
           operationType: detail[0].text,
-          productName: detail[1].text,
+          productName: detail[1].text.trim(),
           totalAsset: detail[2].text.parseSignedInt(),
           profitLoss: detail[3].text.parseSignedInt(),
           assetRatio: detail[4].text.parseSignedDouble(),

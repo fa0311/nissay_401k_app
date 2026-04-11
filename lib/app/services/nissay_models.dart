@@ -5,6 +5,10 @@ part 'nissay_models.freezed.dart';
 @freezed
 abstract class NissayCurrentAssetsModel with _$NissayCurrentAssetsModel {
   const factory NissayCurrentAssetsModel({
+    // プラン名
+    required String planName,
+    // 最終ログイン日時
+    required DateTime lastLogin,
     // 総資産評価額
     required int totalAsset,
     // 拠出金額累計

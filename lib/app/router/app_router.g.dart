@@ -13,7 +13,8 @@ List<RouteBase> get $appRoutes => [
   $webViewRoute,
 ];
 
-RouteBase get $splashRoute => GoRouteData.$route(path: '/splash', factory: $SplashRoute._fromState);
+RouteBase get $splashRoute =>
+    GoRouteData.$route(path: '/splash', factory: $SplashRoute._fromState);
 
 mixin $SplashRoute on GoRouteData {
   static SplashRoute _fromState(GoRouterState state) => const SplashRoute();
@@ -28,13 +29,15 @@ mixin $SplashRoute on GoRouteData {
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
   @override
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   @override
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $loginRoute => GoRouteData.$route(path: '/login', factory: $LoginRoute._fromState);
+RouteBase get $loginRoute =>
+    GoRouteData.$route(path: '/login', factory: $LoginRoute._fromState);
 
 mixin $LoginRoute on GoRouteData {
   static LoginRoute _fromState(GoRouterState state) => const LoginRoute();
@@ -49,16 +52,19 @@ mixin $LoginRoute on GoRouteData {
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
   @override
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   @override
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $dashboardRoute => GoRouteData.$route(path: '/dashboard', factory: $DashboardRoute._fromState);
+RouteBase get $dashboardRoute =>
+    GoRouteData.$route(path: '/dashboard', factory: $DashboardRoute._fromState);
 
 mixin $DashboardRoute on GoRouteData {
-  static DashboardRoute _fromState(GoRouterState state) => const DashboardRoute();
+  static DashboardRoute _fromState(GoRouterState state) =>
+      const DashboardRoute();
 
   @override
   String get location => GoRouteData.$location('/dashboard');
@@ -70,13 +76,15 @@ mixin $DashboardRoute on GoRouteData {
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
   @override
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   @override
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $webViewRoute => GoRouteData.$route(path: '/webview', factory: $WebViewRoute._fromState);
+RouteBase get $webViewRoute =>
+    GoRouteData.$route(path: '/webview', factory: $WebViewRoute._fromState);
 
 mixin $WebViewRoute on GoRouteData {
   static WebViewRoute _fromState(GoRouterState state) => const WebViewRoute();
@@ -91,7 +99,8 @@ mixin $WebViewRoute on GoRouteData {
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
   @override
-  void pushReplacement(BuildContext context) => context.pushReplacement(location);
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
 
   @override
   void replace(BuildContext context) => context.replace(location);
@@ -107,7 +116,9 @@ mixin $WebViewRoute on GoRouteData {
 @ProviderFor(appRouter)
 final appRouterProvider = AppRouterProvider._();
 
-final class AppRouterProvider extends $FunctionalProvider<GoRouter, GoRouter, GoRouter> with $Provider<GoRouter> {
+final class AppRouterProvider
+    extends $FunctionalProvider<GoRouter, GoRouter, GoRouter>
+    with $Provider<GoRouter> {
   AppRouterProvider._()
     : super(
         from: null,
@@ -124,7 +135,8 @@ final class AppRouterProvider extends $FunctionalProvider<GoRouter, GoRouter, Go
 
   @$internal
   @override
-  $ProviderElement<GoRouter> $createElement($ProviderPointer pointer) => $ProviderElement(pointer);
+  $ProviderElement<GoRouter> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
   GoRouter create(Ref ref) {
@@ -140,4 +152,4 @@ final class AppRouterProvider extends $FunctionalProvider<GoRouter, GoRouter, Go
   }
 }
 
-String _$appRouterHash() => r'bdf0a9524a482ad19836bce11c2cdd3c58f148c0';
+String _$appRouterHash() => r'652ec9dc0a6cb8f7266f90c3e9ab4149c6b58451';
