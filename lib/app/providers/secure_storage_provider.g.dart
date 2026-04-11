@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'storage.dart';
+part of 'secure_storage_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,30 +9,25 @@ part of 'storage.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(flutterSecureStorage)
-final flutterSecureStorageProvider = FlutterSecureStorageProvider._();
+@ProviderFor(secureStorage)
+final secureStorageProvider = SecureStorageProvider._();
 
-final class FlutterSecureStorageProvider
-    extends
-        $FunctionalProvider<
-          FlutterSecureStorage,
-          FlutterSecureStorage,
-          FlutterSecureStorage
-        >
+final class SecureStorageProvider
+    extends $FunctionalProvider<FlutterSecureStorage, FlutterSecureStorage, FlutterSecureStorage>
     with $Provider<FlutterSecureStorage> {
-  FlutterSecureStorageProvider._()
+  SecureStorageProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'flutterSecureStorageProvider',
+        name: r'secureStorageProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$flutterSecureStorageHash();
+  String debugGetCreateSourceHash() => _$secureStorageHash();
 
   @$internal
   @override
@@ -42,7 +37,7 @@ final class FlutterSecureStorageProvider
 
   @override
   FlutterSecureStorage create(Ref ref) {
-    return flutterSecureStorage(ref);
+    return secureStorage(ref);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -54,5 +49,4 @@ final class FlutterSecureStorageProvider
   }
 }
 
-String _$flutterSecureStorageHash() =>
-    r'132518052299c35f5cce2b11d13576caa903c36e';
+String _$secureStorageHash() => r'326df2c85d83decc015d2433c59b32ea5fcfe672';

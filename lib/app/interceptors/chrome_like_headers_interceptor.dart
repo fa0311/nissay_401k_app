@@ -9,8 +9,7 @@ class ChromeLikeHeadersInterceptor extends Interceptor {
     'accept-language': 'ja,en;q=0.9,zh-CN;q=0.8,zh;q=0.7',
     'cache-control': 'no-cache',
     'pragma': 'no-cache',
-    'sec-ch-ua':
-        '"Chromium";v="146", "Not-A.Brand";v="24", "Google Chrome";v="146"',
+    'sec-ch-ua': '"Chromium";v="146", "Not-A.Brand";v="24", "Google Chrome";v="146"',
     'sec-ch-ua-mobile': '?0',
     'sec-ch-ua-platform': '"macOS"',
     'sec-fetch-dest': 'document',

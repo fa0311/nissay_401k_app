@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nissay_401k/app/pages/webview_page.dart';
-import 'package:nissay_401k/app/providers/login_request_provider.dart';
+import 'package:nissay_401k/app/providers/nissay_repository_provider.dart';
+import 'package:nissay_401k/app/providers/nissay_session_provider.dart';
 import 'package:nissay_401k/app/router/app_router.dart';
+import 'package:nissay_401k/app/services/webview_cookie_sync.dart';
 
 class DashboardPage extends ConsumerWidget {
   const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final nissayData = ref.watch(getNissayDataProvider);
+    final nissayData = ref.watch(nissayCurrentAssetsProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('NISSAY 401k Dashboard'),
@@ -23,7 +24,7 @@ class DashboardPage extends ConsumerWidget {
                 leading: const Icon(Icons.web),
                 title: const Text('Web'),
                 onTap: () async {
-                  await updateCookies(await ref.read(loginCookieJarProvider.future));
+                  await syncCookieJarToWebView(await ref.read(nissayCookieJarProvider.future));
                   if (context.mounted) {
                     await const WebViewRoute().push<void>(context);
                   }
@@ -33,14 +34,14 @@ class DashboardPage extends ConsumerWidget {
                 leading: const Icon(Icons.refresh),
                 title: const Text('Refresh Token'),
                 onTap: () async {
-                  await ref.read(nissayAuthProvider.notifier).refresh();
+                  await ref.read(nissaySessionProvider.notifier).refresh();
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.logout),
                 title: const Text('Logout'),
                 onTap: () async {
-                  await ref.read(nissayAuthProvider.notifier).logout();
+                  await ref.read(nissaySessionProvider.notifier).logout();
                 },
               ),
             ],
@@ -69,6 +70,15 @@ class DashboardPage extends ConsumerWidget {
                 title: const Text('利回り'),
                 trailing: Text('${value.roi}%'),
               ),
+              ListTile(
+                title: const Text('照会日時'),
+                trailing: Text('${value.date}'),
+              ),
+              for (final detail in value.details)
+                ListTile(
+                  title: Text('${detail.operationType} - ${detail.productName}'),
+                  subtitle: Text('資産比率: ${detail.assetRatio}%'),
+                ),
             ],
           ),
           AsyncError(:final error) => Center(

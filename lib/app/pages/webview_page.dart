@@ -1,22 +1,6 @@
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-
-Future<void> updateCookies(CookieJar cookies) async {
-  final cookieManager = CookieManager.instance();
-  await cookieManager.deleteAllCookies();
-  final uri = Uri.https('401k.nissay.co.jp');
-  final cookieList = await cookies.loadForRequest(uri);
-  for (final cookie in cookieList) {
-    await cookieManager.setCookie(
-      url: WebUri.uri(uri),
-      name: cookie.name,
-      value: cookie.value,
-      domain: cookie.domain,
-    );
-  }
-}
 
 class WebViewPage extends StatelessWidget {
   const WebViewPage({super.key});
@@ -24,7 +8,9 @@ class WebViewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _WebView(
-      initialUrl: WebUri('https://401k.nissay.co.jp/dmckanyusha/transactions/menu_init'),
+      initialUrl: WebUri(
+        'https://401k.nissay.co.jp/dmckanyusha/transactions/menu_init',
+      ),
     );
   }
 }

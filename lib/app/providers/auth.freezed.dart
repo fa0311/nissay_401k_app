@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AuthState {
 
- String get userid; String get password;
+ String get userId; String get password;
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $AuthStateCopyWith<AuthState> get copyWith => _$AuthStateCopyWithImpl<AuthState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthState&&(identical(other.userid, userid) || other.userid == userid)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthState&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.password, password) || other.password == password));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userid,password);
+int get hashCode => Object.hash(runtimeType,userId,password);
 
 @override
 String toString() {
-  return 'AuthState(userid: $userid, password: $password)';
+  return 'AuthState(userId: $userId, password: $password)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $AuthStateCopyWith<$Res>  {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) _then) = _$AuthStateCopyWithImpl;
 @useResult
 $Res call({
- String userid, String password
+ String userId, String password
 });
 
 
@@ -62,9 +62,9 @@ class _$AuthStateCopyWithImpl<$Res>
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? userid = null,Object? password = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? password = null,}) {
   return _then(_self.copyWith(
-userid: null == userid ? _self.userid : userid // ignore: cast_nullable_to_non_nullable
+userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -151,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userid,  String password)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userId,  String password)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthState() when $default != null:
-return $default(_that.userid,_that.password);case _:
+return $default(_that.userId,_that.password);case _:
   return orElse();
 
 }
@@ -172,10 +172,10 @@ return $default(_that.userid,_that.password);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userid,  String password)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userId,  String password)  $default,) {final _that = this;
 switch (_that) {
 case _AuthState():
-return $default(_that.userid,_that.password);case _:
+return $default(_that.userId,_that.password);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -192,10 +192,10 @@ return $default(_that.userid,_that.password);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userid,  String password)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userId,  String password)?  $default,) {final _that = this;
 switch (_that) {
 case _AuthState() when $default != null:
-return $default(_that.userid,_that.password);case _:
+return $default(_that.userId,_that.password);case _:
   return null;
 
 }
@@ -207,10 +207,10 @@ return $default(_that.userid,_that.password);case _:
 
 
 class _AuthState implements AuthState {
-  const _AuthState({required this.userid, required this.password});
+  const _AuthState({required this.userId, required this.password});
   
 
-@override final  String userid;
+@override final  String userId;
 @override final  String password;
 
 /// Create a copy of AuthState
@@ -223,16 +223,16 @@ _$AuthStateCopyWith<_AuthState> get copyWith => __$AuthStateCopyWithImpl<_AuthSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthState&&(identical(other.userid, userid) || other.userid == userid)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthState&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.password, password) || other.password == password));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userid,password);
+int get hashCode => Object.hash(runtimeType,userId,password);
 
 @override
 String toString() {
-  return 'AuthState(userid: $userid, password: $password)';
+  return 'AuthState(userId: $userId, password: $password)';
 }
 
 
@@ -243,7 +243,7 @@ abstract mixin class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Re
   factory _$AuthStateCopyWith(_AuthState value, $Res Function(_AuthState) _then) = __$AuthStateCopyWithImpl;
 @override @useResult
 $Res call({
- String userid, String password
+ String userId, String password
 });
 
 
@@ -260,9 +260,9 @@ class __$AuthStateCopyWithImpl<$Res>
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? userid = null,Object? password = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? password = null,}) {
   return _then(_AuthState(
-userid: null == userid ? _self.userid : userid // ignore: cast_nullable_to_non_nullable
+userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,
   ));

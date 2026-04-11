@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'nissay_login_service.dart';
+part of 'nissay_models.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -231,7 +231,7 @@ return $default(_that.totalAsset,_that.totalContribution,_that.totalProfitLoss,_
 
 
 class _NissayCurrentAssetsModel implements NissayCurrentAssetsModel {
-   _NissayCurrentAssetsModel({required this.totalAsset, required this.totalContribution, required this.totalProfitLoss, required this.roi, required this.date, required final  List<NissayTotalDetailsModel> details, this.detailsSum}): _details = details;
+  const _NissayCurrentAssetsModel({required this.totalAsset, required this.totalContribution, required this.totalProfitLoss, required this.roi, required this.date, required final  List<NissayTotalDetailsModel> details, this.detailsSum}): _details = details;
   
 
 // 総資産評価額
@@ -535,7 +535,7 @@ return $default(_that.operationType,_that.productName,_that.totalAsset,_that.pro
 
 
 class _NissayTotalDetailsModel implements NissayTotalDetailsModel {
-   _NissayTotalDetailsModel({required this.operationType, required this.productName, required this.totalAsset, required this.profitLoss, required this.assetRatio});
+  const _NissayTotalDetailsModel({required this.operationType, required this.productName, required this.totalAsset, required this.profitLoss, required this.assetRatio});
   
 
 // 運用タイプ
@@ -810,7 +810,7 @@ return $default(_that.totalAsset,_that.profitLoss,_that.assetRatio);case _:
 
 
 class _NissayTotalDetailsSumModel implements NissayTotalDetailsSumModel {
-   _NissayTotalDetailsSumModel({required this.totalAsset, required this.profitLoss, required this.assetRatio});
+  const _NissayTotalDetailsSumModel({required this.totalAsset, required this.profitLoss, required this.assetRatio});
   
 
 // 総資産評価額

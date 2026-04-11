@@ -4,9 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nissay_401k/app/hooks/single_action_guard.dart';
 import 'package:nissay_401k/app/providers/auth.dart';
 import 'package:nissay_401k/app/providers/logger.dart';
-import 'package:nissay_401k/app/providers/login_request_provider.dart';
-import 'package:nissay_401k/app/router/app_router.dart';
-import 'package:nissay_401k/app/services/nissay_login_service.dart';
+import 'package:nissay_401k/app/providers/nissay_session_provider.dart';
+import 'package:nissay_401k/app/services/nissay_repository.dart';
 import 'package:nissay_401k/app/ui/future_button.dart';
 
 class NissayLoginPage extends HookConsumerWidget {
@@ -16,10 +15,10 @@ class NissayLoginPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final logger = ref.watch(loggerProvider);
     final auth = ref.watch(authStorageProvider);
-    final useridController = useTextEditingController(text: auth.value?.userid);
+    final userIdController = useTextEditingController(text: auth.value?.userId);
     final passwordController = useTextEditingController(text: auth.value?.password);
 
-    ref.listen(loginCheckProvider, (previous, next) {
+    ref.listen(nissaySessionCheckProvider, (previous, next) {
       if (next case AsyncError(:final NissayAuthException error)) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -36,7 +35,7 @@ class NissayLoginPage extends HookConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
-              controller: useridController,
+              controller: userIdController,
               decoration: const InputDecoration(labelText: 'User ID'),
               textInputAction: TextInputAction.next,
             ),
@@ -51,9 +50,9 @@ class NissayLoginPage extends HookConsumerWidget {
               onPressed: () async {
                 try {
                   await ref
-                      .read(nissayAuthProvider.notifier)
+                      .read(nissaySessionProvider.notifier)
                       .login(
-                        userid: useridController.text,
+                        userId: userIdController.text,
                         password: passwordController.text,
                       );
 

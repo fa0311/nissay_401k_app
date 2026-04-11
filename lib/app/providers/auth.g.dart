@@ -12,8 +12,7 @@ part of 'auth.dart';
 @ProviderFor(AuthStorage)
 final authStorageProvider = AuthStorageProvider._();
 
-final class AuthStorageProvider
-    extends $AsyncNotifierProvider<AuthStorage, AuthState?> {
+final class AuthStorageProvider extends $AsyncNotifierProvider<AuthStorage, AuthState?> {
   AuthStorageProvider._()
     : super(
         from: null,
@@ -33,7 +32,7 @@ final class AuthStorageProvider
   AuthStorage create() => AuthStorage();
 }
 
-String _$authStorageHash() => r'e32fda46abd202a19bf5e9f4b7d508608271c245';
+String _$authStorageHash() => r'dcaa7c5a560afd377379318fc163ac8cb10d76b3';
 
 abstract class _$AuthStorage extends $AsyncNotifier<AuthState?> {
   FutureOr<AuthState?> build();
