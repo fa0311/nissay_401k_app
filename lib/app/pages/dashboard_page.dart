@@ -43,7 +43,7 @@ class DashboardPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final nissayData = ref.watch(nissayAllAssetsProvider).requireValue;
+    final nissayData = ref.watch(nissayAllAssetsProvider);
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -58,29 +58,31 @@ class DashboardPage extends ConsumerWidget {
           ),
         ),
       ),
-      body: DecoratedBox(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFF7F1E4),
-              Color(0xFFE8F0F1),
-            ],
+      body: switch (nissayData) {
+        AsyncData(:final value) => DecoratedBox(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFFF7F1E4),
+                Color(0xFFE8F0F1),
+              ],
+            ),
+          ),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                _HeroCard(data: value),
+                _DashboardLoadedView(data: value),
+              ],
+            ),
           ),
         ),
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              _HeroCard(data: nissayData),
-              _DashboardLoadedView(
-                data: nissayData,
-              ),
-            ],
-          ),
-        ),
-      ),
+        AsyncError(:final error, :final stackTrace) => Text('Error: $error\n$stackTrace'),
+        AsyncLoading() => const Center(child: CircularProgressIndicator()),
+      },
     );
   }
 }

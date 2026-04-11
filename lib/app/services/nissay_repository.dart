@@ -119,10 +119,10 @@ class NissayRepository {
   }
 
   Future<NissayHeadModel> fetchHead() async {
-    final document = await fetch('/dmckanyusha/transactions/ck1._V300100_ck100041');
+    final document = await fetch('/dmckanyusha/transactions/ck1._V300100_ck100001');
     final parser = HtmlElementParser.fromDocument(document);
-    final bodyHead = parser.querySelectorAll('.bodyHead p');
-    return NissayHeadModel(name: bodyHead[0].text);
+    final bodyHead = parser.querySelector('.headerContents p');
+    return NissayHeadModel(name: bodyHead.text);
   }
 
   Future<NissayCurrentAssetsModel> fetchCurrentAssets() async {
@@ -179,7 +179,7 @@ class NissayRepository {
           NissayPremiumDetailsModel(
             operationType: detail[0].text,
             productName: detail[1].text.trim(),
-            contributionRatio: detail[4].text.parseSignedDouble(),
+            contributionRatio: detail[2].text.parseSignedDouble(),
           ),
       ],
     );
