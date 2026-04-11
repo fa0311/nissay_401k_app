@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:nissay_401k/app/providers/nissay_repository_provider.dart';
 import 'package:nissay_401k/app/providers/nissay_session_provider.dart';
 import 'package:nissay_401k/app/router/app_router.dart';
-import 'package:nissay_401k/app/services/nissay_models.dart';
 import 'package:nissay_401k/app/services/webview_cookie_sync.dart';
 
 final _currencyFormat = NumberFormat.currency(
@@ -28,8 +27,8 @@ class DashboardPage extends ConsumerWidget {
   }
 
   Future<void> _refreshData(WidgetRef ref) async {
-    ref.invalidate(nissayCurrentAssetsProvider);
-    await ref.read(nissayCurrentAssetsProvider.future);
+    ref.invalidate(nissayRepositoryProvider);
+    await ref.read(nissayAllAssetsProvider.future);
   }
 
   Future<void> _refreshSession(WidgetRef ref) async {
@@ -44,13 +43,8 @@ class DashboardPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final nissayData = ref.watch(nissayCurrentAssetsProvider).requireValue;
+    final nissayData = ref.watch(nissayAllAssetsProvider).requireValue;
     final theme = Theme.of(context);
-
-    Future<void> refreshData() => _refreshData(ref);
-    Future<void> openWeb() => _openWeb(context, ref);
-    Future<void> refreshSession() => _refreshSession(ref);
-    Future<void> logout() => _logout(ref);
 
     return Scaffold(
       backgroundColor: _DashboardPalette.background,
@@ -82,11 +76,6 @@ class DashboardPage extends ConsumerWidget {
               _HeroCard(data: nissayData),
               _DashboardLoadedView(
                 data: nissayData,
-                onPullToRefresh: refreshData,
-                onOpenWeb: openWeb,
-                onRefreshData: refreshData,
-                onRefreshSession: refreshSession,
-                onLogout: logout,
               ),
             ],
           ),
@@ -97,21 +86,9 @@ class DashboardPage extends ConsumerWidget {
 }
 
 class _DashboardLoadedView extends StatelessWidget {
-  const _DashboardLoadedView({
-    required this.data,
-    this.onPullToRefresh,
-    this.onOpenWeb,
-    this.onRefreshData,
-    this.onRefreshSession,
-    this.onLogout,
-  });
+  const _DashboardLoadedView({required this.data});
 
-  final NissayCurrentAssetsModel data;
-  final Future<void> Function()? onPullToRefresh;
-  final Future<void> Function()? onOpenWeb;
-  final Future<void> Function()? onRefreshData;
-  final Future<void> Function()? onRefreshSession;
-  final Future<void> Function()? onLogout;
+  final NissayModel data;
 
   @override
   Widget build(BuildContext context) {
@@ -125,14 +102,14 @@ class _DashboardLoadedView extends StatelessWidget {
           title: '保有商品のスナップショット',
         ),
         const SizedBox(height: 14),
-        for (var index = 0; index < sortedDetails.length; index++) ...[
-          _HoldingCard(
-            detail: sortedDetails[index],
-            color: _allocationColor(index),
+        for (var index = 0; index < sortedDetails.length; index++)
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: _HoldingCard(
+              detail: sortedDetails[index],
+              color: _allocationColor(index),
+            ),
           ),
-          if (index < sortedDetails.length - 1) const SizedBox(height: 14),
-        ],
-        const SizedBox(height: 18),
       ],
     );
   }
@@ -141,7 +118,7 @@ class _DashboardLoadedView extends StatelessWidget {
 class _HeroCard extends StatelessWidget {
   const _HeroCard({required this.data});
 
-  final NissayCurrentAssetsModel data;
+  final NissayModel data;
 
   @override
   Widget build(BuildContext context) {
@@ -242,14 +219,13 @@ class _HoldingCard extends StatelessWidget {
     required this.color,
   });
 
-  final NissayTotalDetailsModel detail;
+  final NissayDetailsModel detail;
   final Color color;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return _GlassCard(
-      padding: const EdgeInsets.all(18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -332,11 +308,9 @@ class _HoldingCard extends StatelessWidget {
 class _GlassCard extends StatelessWidget {
   const _GlassCard({
     required this.child,
-    this.padding = const EdgeInsets.all(16),
   });
 
   final Widget child;
-  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
@@ -347,14 +321,14 @@ class _GlassCard extends StatelessWidget {
         border: Border.all(color: Colors.white.withValues(alpha: 0.56)),
         boxShadow: [
           BoxShadow(
-            color: _DashboardPalette.ink.withValues(alpha: 0.08),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 18,
             offset: const Offset(0, 10),
           ),
         ],
       ),
       child: Padding(
-        padding: padding,
+        padding: const EdgeInsets.all(18),
         child: child,
       ),
     );
