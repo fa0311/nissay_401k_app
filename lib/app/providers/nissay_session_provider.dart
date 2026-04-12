@@ -52,6 +52,9 @@ class NissaySession extends _$NissaySession {
       ref.invalidate(nissayRepositoryProvider);
       return AuthState(userId: userId, password: password);
     });
+    if (state case AsyncError(:final Exception error)) {
+      throw error;
+    }
   }
 
   Future<void> logout() async {
@@ -67,5 +70,8 @@ class NissaySession extends _$NissaySession {
     await cookieJar.deleteAll();
     ref.invalidate(nissayRepositoryProvider);
     state = await AsyncValue.guard(() => ref.read(authStorageProvider.future));
+    if (state case AsyncError(:final Exception error)) {
+      throw error;
+    }
   }
 }

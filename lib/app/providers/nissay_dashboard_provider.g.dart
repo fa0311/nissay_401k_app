@@ -46,4 +46,4 @@ final class NissayDashboardProvider
   }
 }
 
-String _$nissayDashboardHash() => r'f321e63d0d061964fe914aaee7d5ad6b8fad6830';
+String _$nissayDashboardHash() => r'3626c96b4fdf3aff7630e8ace0d6994667b83207';

@@ -19,7 +19,7 @@ class LoginPage extends HookConsumerWidget {
     final passwordController = useTextEditingController(text: auth.value?.password);
 
     ref.listen(nissaySessionCheckProvider, (previous, next) {
-      if (next case AsyncError(:final api.NissayAuthException error)) {
+      if (next case AsyncError(:final api.NissayException error)) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Login check failed: $error')),

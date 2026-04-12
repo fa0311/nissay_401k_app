@@ -25,6 +25,7 @@ String? redirectLocationForSessionState(
   const authenticatedPaths = {
     AppRoutePaths.dashboard,
     AppRoutePaths.webView,
+    AppRoutePaths.user,
   };
   const unauthenticatedPaths = {
     AppRoutePaths.login,

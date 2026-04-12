@@ -3,4 +3,5 @@ abstract final class AppRoutePaths {
   static const login = '/login';
   static const dashboard = '/dashboard';
   static const webView = '/webview';
+  static const user = '/user';
 }

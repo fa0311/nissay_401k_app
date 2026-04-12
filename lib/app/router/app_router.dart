@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nissay_401k/app/pages/dashboard/dashboard_page.dart';
 import 'package:nissay_401k/app/pages/login_page.dart';
 import 'package:nissay_401k/app/pages/splash_page.dart';
+import 'package:nissay_401k/app/pages/user_page.dart';
 import 'package:nissay_401k/app/pages/webview_page.dart';
 import 'package:nissay_401k/app/router/app_route_paths.dart';
 import 'package:nissay_401k/app/router/session_route_guard.dart';
@@ -47,7 +48,50 @@ class LoginRoute extends GoRouteData with $LoginRoute {
   }
 }
 
-@TypedGoRoute<DashboardRoute>(path: AppRoutePaths.dashboard)
+@TypedStatefulShellRoute<AuthenticatedShellRoute>(
+  branches: <TypedStatefulShellBranch<StatefulShellBranchData>>[
+    TypedStatefulShellBranch<DashboardBranchData>(
+      routes: <TypedRoute<RouteData>>[
+        TypedGoRoute<DashboardRoute>(path: AppRoutePaths.dashboard),
+      ],
+    ),
+    TypedStatefulShellBranch<WebBranchData>(
+      routes: <TypedRoute<RouteData>>[
+        TypedGoRoute<WebViewRoute>(path: AppRoutePaths.webView),
+      ],
+    ),
+    TypedStatefulShellBranch<UserBranchData>(
+      routes: <TypedRoute<RouteData>>[
+        TypedGoRoute<UserRoute>(path: AppRoutePaths.user),
+      ],
+    ),
+  ],
+)
+class AuthenticatedShellRoute extends StatefulShellRouteData {
+  const AuthenticatedShellRoute();
+
+  @override
+  Widget builder(
+    BuildContext context,
+    GoRouterState state,
+    StatefulNavigationShell navigationShell,
+  ) {
+    return _AuthenticatedShellScaffold(navigationShell: navigationShell);
+  }
+}
+
+class DashboardBranchData extends StatefulShellBranchData {
+  const DashboardBranchData();
+}
+
+class WebBranchData extends StatefulShellBranchData {
+  const WebBranchData();
+}
+
+class UserBranchData extends StatefulShellBranchData {
+  const UserBranchData();
+}
+
 class DashboardRoute extends GoRouteData with $DashboardRoute {
   const DashboardRoute();
 
@@ -57,12 +101,59 @@ class DashboardRoute extends GoRouteData with $DashboardRoute {
   }
 }
 
-@TypedGoRoute<WebViewRoute>(path: AppRoutePaths.webView)
 class WebViewRoute extends GoRouteData with $WebViewRoute {
   const WebViewRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const WebViewPage();
+  }
+}
+
+class UserRoute extends GoRouteData with $UserRoute {
+  const UserRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const UserPage();
+  }
+}
+
+class _AuthenticatedShellScaffold extends StatelessWidget {
+  const _AuthenticatedShellScaffold({required this.navigationShell});
+
+  final StatefulNavigationShell navigationShell;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: navigationShell,
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: navigationShell.currentIndex,
+        onDestinationSelected: (index) {
+          navigationShell.goBranch(
+            index,
+            initialLocation: index == navigationShell.currentIndex,
+          );
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.space_dashboard_outlined),
+            selectedIcon: Icon(Icons.space_dashboard_rounded),
+            label: 'Dashboard',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.public_outlined),
+            selectedIcon: Icon(Icons.public_rounded),
+            label: 'Web',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_outline_rounded),
+            selectedIcon: Icon(Icons.person_rounded),
+            label: 'User',
+          ),
+        ],
+      ),
+    );
   }
 }

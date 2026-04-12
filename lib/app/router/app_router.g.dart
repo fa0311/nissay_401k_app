@@ -9,8 +9,7 @@ part of 'app_router.dart';
 List<RouteBase> get $appRoutes => [
   $splashRoute,
   $loginRoute,
-  $dashboardRoute,
-  $webViewRoute,
+  $authenticatedShellRoute,
 ];
 
 RouteBase get $splashRoute =>
@@ -59,8 +58,34 @@ mixin $LoginRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $dashboardRoute =>
-    GoRouteData.$route(path: '/dashboard', factory: $DashboardRoute._fromState);
+RouteBase get $authenticatedShellRoute => StatefulShellRouteData.$route(
+  factory: $AuthenticatedShellRouteExtension._fromState,
+  branches: [
+    StatefulShellBranchData.$branch(
+      routes: [
+        GoRouteData.$route(
+          path: '/dashboard',
+          factory: $DashboardRoute._fromState,
+        ),
+      ],
+    ),
+    StatefulShellBranchData.$branch(
+      routes: [
+        GoRouteData.$route(path: '/webview', factory: $WebViewRoute._fromState),
+      ],
+    ),
+    StatefulShellBranchData.$branch(
+      routes: [
+        GoRouteData.$route(path: '/user', factory: $UserRoute._fromState),
+      ],
+    ),
+  ],
+);
+
+extension $AuthenticatedShellRouteExtension on AuthenticatedShellRoute {
+  static AuthenticatedShellRoute _fromState(GoRouterState state) =>
+      const AuthenticatedShellRoute();
+}
 
 mixin $DashboardRoute on GoRouteData {
   static DashboardRoute _fromState(GoRouterState state) =>
@@ -83,14 +108,31 @@ mixin $DashboardRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $webViewRoute =>
-    GoRouteData.$route(path: '/webview', factory: $WebViewRoute._fromState);
-
 mixin $WebViewRoute on GoRouteData {
   static WebViewRoute _fromState(GoRouterState state) => const WebViewRoute();
 
   @override
   String get location => GoRouteData.$location('/webview');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $UserRoute on GoRouteData {
+  static UserRoute _fromState(GoRouterState state) => const UserRoute();
+
+  @override
+  String get location => GoRouteData.$location('/user');
 
   @override
   void go(BuildContext context) => context.go(location);

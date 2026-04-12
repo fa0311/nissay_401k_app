@@ -9,14 +9,14 @@ class DashboardPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final nissayData = ref.watch(nissayDashboardProvider);
+    final dashboard = ref.watch(nissayDashboardProvider);
     final theme = Theme.of(context);
 
     return Scaffold(
       backgroundColor: DashboardPalette.background,
       appBar: AppBar(
         title: Text(
-          'NISSAY 401k',
+          'Dashboard',
           style: theme.textTheme.labelLarge?.copyWith(
             color: DashboardPalette.ink.withValues(alpha: 0.68),
             fontWeight: FontWeight.w700,
@@ -24,19 +24,26 @@ class DashboardPage extends ConsumerWidget {
           ),
         ),
       ),
-      body: switch (nissayData) {
-        AsyncData(:final value) => DecoratedBox(
-          decoration: const BoxDecoration(
-            gradient: dashboardBodyGradient,
-          ),
-          child: SingleChildScrollView(
+      body: DecoratedBox(
+        decoration: const BoxDecoration(
+          gradient: dashboardBodyGradient,
+        ),
+        child: switch (dashboard) {
+          AsyncData(:final value) => SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: DashboardLoadedView(data: value),
           ),
-        ),
-        AsyncError(:final error, :final stackTrace) => Text('Error: $error\n$stackTrace'),
-        AsyncLoading() => const Center(child: CircularProgressIndicator()),
-      },
+          AsyncError() => Center(
+            child: FilledButton(
+              onPressed: () => ref.invalidate(nissayDashboardProvider),
+              child: const Text('ダッシュボードを再読み込み'),
+            ),
+          ),
+          AsyncLoading() => const Center(
+            child: CircularProgressIndicator(),
+          ),
+        },
+      ),
     );
   }
 }

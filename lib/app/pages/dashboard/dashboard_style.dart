@@ -8,6 +8,8 @@ final _currencyFormat = NumberFormat.currency(
 );
 final _percentFormat = NumberFormat('0.##', 'ja_JP');
 final dashboardDateTimeFormat = DateFormat('yyyy/MM/dd HH:mm');
+final dashboardDateFormat = DateFormat('yyyy/MM/dd', 'ja_JP');
+final dashboardMonthFormat = DateFormat('yyyy/MM', 'ja_JP');
 
 const dashboardBodyGradient = LinearGradient(
   begin: Alignment.topLeft,
@@ -46,6 +48,12 @@ String formatDashboardSignedCurrency(int value) {
 }
 
 String formatDashboardPercent(double value) => _percentFormat.format(value);
+
+String formatDashboardDate(DateTime value) => dashboardDateFormat.format(value);
+
+String formatDashboardDateTime(DateTime value) => dashboardDateTimeFormat.format(value);
+
+String formatDashboardMonth(DateTime value) => dashboardMonthFormat.format(value);
 
 Color dashboardAllocationColor(int index) {
   const colors = [

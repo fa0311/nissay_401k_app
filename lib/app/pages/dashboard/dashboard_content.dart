@@ -10,25 +10,45 @@ class DashboardLoadedView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sortedHoldings = [...data.holdings]..sort((a, b) => b.assetRatio.compareTo(a.assetRatio));
+    final recentHistory = [...data.historyEntries]..sort((a, b) => b.date.compareTo(a.date));
 
-    return Column(
-      children: [
-        DashboardHeroCard(data: data),
-        const SizedBox(height: 28),
-        const DashboardSectionHeader(
-          eyebrow: 'HOLDINGS',
-          title: '保有商品のスナップショット',
-        ),
-        const SizedBox(height: 14),
-        for (var index = 0; index < sortedHoldings.length; index++)
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: DashboardHoldingCard(
-              holding: sortedHoldings[index],
-              color: dashboardAllocationColor(index),
-            ),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          DashboardHeroCard(data: data),
+          const SizedBox(height: 24),
+          DashboardSummarySection(data: data),
+          const SizedBox(height: 32),
+          const DashboardSectionHeader(
+            eyebrow: 'HOLDINGS',
+            title: '現在の資産',
           ),
-      ],
+          const SizedBox(height: 14),
+          if (sortedHoldings.isEmpty)
+            const DashboardEmptyCard(
+              message: '保有商品の情報はまだありません。',
+            ),
+          for (final holding in sortedHoldings)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: DashboardHoldingCard(
+                holding: holding,
+                color: dashboardAllocationColor(sortedHoldings.indexOf(holding)),
+              ),
+            ),
+          const SizedBox(height: 32),
+          const DashboardSectionHeader(
+            eyebrow: 'HISTORY',
+            title: '資産推移',
+          ),
+          const SizedBox(height: 14),
+          DashboardHistoryCard(
+            entries: recentHistory.toList(),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -52,6 +72,7 @@ class DashboardHeroCard extends StatelessWidget {
             DashboardPalette.teal,
           ],
         ),
+        borderRadius: BorderRadius.circular(32),
         boxShadow: [
           BoxShadow(
             color: DashboardPalette.navy.withValues(alpha: 0.22),
@@ -66,7 +87,7 @@ class DashboardHeroCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'CURRENT ASSET',
+              'ASSET OVERVIEW',
               style: theme.textTheme.labelLarge?.copyWith(
                 color: Colors.white.withValues(alpha: 0.72),
                 fontWeight: FontWeight.w700,
@@ -117,16 +138,77 @@ class DashboardHeroCard extends StatelessWidget {
               value: '${formatDashboardPercent(data.roi)}%',
               accent: DashboardPalette.gold,
             ),
-            const SizedBox(height: 12),
-            DashboardHeroMetaTile(
-              icon: Icons.schedule_rounded,
-              label: '最終ログイン',
-              value: dashboardDateTimeFormat.format(data.lastLogin),
-              accent: DashboardPalette.sky,
-            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class DashboardSummarySection extends StatelessWidget {
+  const DashboardSummarySection({required this.data, super.key});
+
+  final NissayDashboard data;
+
+  @override
+  Widget build(BuildContext context) {
+    final summaryTiles = [
+      DashboardSummaryTile(
+        icon: Icons.account_balance_wallet_outlined,
+        label: '拠出金額累計',
+        value: formatDashboardCurrency(data.totalContribution),
+      ),
+      DashboardSummaryTile(
+        icon: Icons.savings_outlined,
+        label: '次回掛金額',
+        value: formatDashboardCurrency(data.contributionAmount),
+      ),
+      DashboardSummaryTile(
+        icon: Icons.event_outlined,
+        label: '次回拠出日',
+        value: formatDashboardDate(data.contributionDate),
+      ),
+      DashboardSummaryTile(
+        icon: Icons.schedule_outlined,
+        label: '照会日時',
+        value: formatDashboardDateTime(data.date),
+      ),
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const DashboardSectionHeader(
+          eyebrow: 'SUMMARY',
+          title: 'サマリー',
+        ),
+        const SizedBox(height: 14),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            const spacing = 12.0;
+            final columns = switch (constraints.maxWidth) {
+              >= 980 => 4,
+              >= 560 => 2,
+              _ => 1,
+            };
+            final tileWidth = columns == 1
+                ? constraints.maxWidth
+                : (constraints.maxWidth - (spacing * (columns - 1))) / columns;
+
+            return Wrap(
+              spacing: spacing,
+              runSpacing: spacing,
+              children: [
+                for (final tile in summaryTiles)
+                  SizedBox(
+                    width: tileWidth,
+                    child: tile,
+                  ),
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 }
@@ -144,6 +226,7 @@ class DashboardHoldingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return DashboardGlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,10 +235,7 @@ class DashboardHoldingCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 6,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
                   color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(999),
@@ -188,7 +268,8 @@ class DashboardHoldingCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 16),
+
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -207,13 +288,109 @@ class DashboardHoldingCard extends StatelessWidget {
                   color: dashboardValueColor(holding.profitLoss),
                 ),
                 DashboardInfoChip(
-                  icon: Icons.show_chart_rounded,
-                  label: '利回り',
-                  value:
-                      '${formatDashboardPercent(
-                        holding.assetRatio == 0 ? 0 : (holding.profitLoss / holding.totalAsset) * 100,
-                      )}%',
-                  color: DashboardPalette.gold,
+                  icon: Icons.savings_outlined,
+                  label: '次回掛金配分',
+                  value: '${formatDashboardPercent(holding.nextContributionRatio ?? 0)}%',
+                  color: DashboardPalette.sky,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DashboardHistoryCard extends StatelessWidget {
+  const DashboardHistoryCard({
+    required this.entries,
+    super.key,
+  });
+
+  final List<NissayDashboardHistoryEntry> entries;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return DashboardGlassCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (entries.isEmpty)
+            Text(
+              '履歴はまだありません。',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: DashboardPalette.ink.withValues(alpha: 0.64),
+              ),
+            )
+          else
+            Column(
+              children: [
+                for (var index = 0; index < entries.length; index++) ...[
+                  _DashboardHistoryRow(entry: entries[index]),
+                  if (index != entries.length - 1)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      child: Divider(height: 1),
+                    ),
+                ],
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class DashboardSummaryTile extends StatelessWidget {
+  const DashboardSummaryTile({
+    required this.icon,
+    required this.label,
+    required this.value,
+    super.key,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return DashboardGlassCard(
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: DashboardPalette.teal.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(icon, color: DashboardPalette.teal),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: DashboardPalette.ink.withValues(alpha: 0.64),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  value,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: DashboardPalette.ink,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ],
             ),
@@ -255,6 +432,29 @@ class DashboardGlassCard extends StatelessWidget {
   }
 }
 
+class DashboardEmptyCard extends StatelessWidget {
+  const DashboardEmptyCard({
+    required this.message,
+    super.key,
+  });
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return DashboardGlassCard(
+      child: Text(
+        message,
+        style: theme.textTheme.bodyMedium?.copyWith(
+          color: DashboardPalette.ink.withValues(alpha: 0.64),
+        ),
+      ),
+    );
+  }
+}
+
 class DashboardSectionHeader extends StatelessWidget {
   const DashboardSectionHeader({
     required this.eyebrow,
@@ -268,6 +468,7 @@ class DashboardSectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -310,6 +511,7 @@ class DashboardHeroMetaTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -374,6 +576,7 @@ class DashboardInfoChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
@@ -401,6 +604,57 @@ class DashboardInfoChip extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _DashboardHistoryRow extends StatelessWidget {
+  const _DashboardHistoryRow({required this.entry});
+
+  final NissayDashboardHistoryEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          formatDashboardMonth(entry.date),
+          style: theme.textTheme.titleMedium?.copyWith(
+            color: DashboardPalette.ink,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: 12),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            spacing: 12,
+            children: [
+              DashboardInfoChip(
+                icon: Icons.account_balance_wallet_outlined,
+                label: '総資産',
+                value: formatDashboardCurrency(entry.totalAsset),
+                color: DashboardPalette.teal,
+              ),
+              DashboardInfoChip(
+                icon: Icons.savings_outlined,
+                label: '拠出累計',
+                value: formatDashboardCurrency(entry.totalContribution),
+                color: DashboardPalette.sky,
+              ),
+              DashboardInfoChip(
+                icon: Icons.trending_up_rounded,
+                label: '評価損益',
+                value: formatDashboardSignedCurrency(entry.totalProfitLoss),
+                color: dashboardValueColor(entry.totalProfitLoss),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

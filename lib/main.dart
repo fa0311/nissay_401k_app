@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nissay_401k/app/models/nissay_dashboard_model.dart';
+import 'package:nissay_401k/app/providers/nissay_dashboard_provider.dart';
 import 'package:nissay_401k/app/router/app_router.dart';
 
 Future<void> main() async {
@@ -14,6 +16,9 @@ Future<void> main() async {
 
   runApp(
     ProviderScope(
+      overrides: [
+        nissayDashboardProvider.overrideWith((_) => NissayDashboard.mock()),
+      ],
       retry: (_, _) => null,
       child: const Nissay401kApp(),
     ),

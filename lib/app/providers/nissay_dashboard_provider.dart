@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:nissay_401k/app/models/nissay_dashboard_model.dart';
 import 'package:nissay_401k/app/providers/nissay_client_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -6,7 +7,7 @@ part 'nissay_dashboard_provider.g.dart';
 
 @riverpod
 Future<NissayDashboard> nissayDashboard(Ref ref) async {
-  final (_, currentAssets, contribution, historicalAssets) = await (
+  final (header, currentAssets, contribution, historicalAssets) = await (
     ref.watch(nissayHeaderProvider.future),
     ref.watch(nissayCurrentAssetsProvider.future),
     ref.watch(nissayContributionProvider.future),
@@ -14,6 +15,7 @@ Future<NissayDashboard> nissayDashboard(Ref ref) async {
   ).wait;
 
   return NissayDashboard(
+    userName: header.name,
     planName: currentAssets.planName,
     lastLogin: currentAssets.lastLogin,
     totalAsset: currentAssets.totalAsset,
@@ -31,9 +33,9 @@ Future<NissayDashboard> nissayDashboard(Ref ref) async {
           totalAsset: holding.totalAsset,
           profitLoss: holding.profitLoss,
           assetRatio: holding.assetRatio,
-          operationRatio: contribution.allocations
-              .firstWhere((candidate) => candidate.productName == holding.productName)
-              .contributionRatio,
+          nextContributionRatio: contribution.allocations.firstWhereOrNull((allocation) {
+            return allocation.operationType == holding.operationType && allocation.productName == holding.productName;
+          })?.contributionRatio,
         ),
     ],
     historyEntries: [

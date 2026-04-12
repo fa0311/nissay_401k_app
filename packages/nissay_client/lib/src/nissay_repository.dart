@@ -35,9 +35,10 @@ class NissayRepository {
 
   void _throwIfAuthenticationFailed(String path, Document document) {
     if (path == '/dmckanyusha/transactions/login') {
-      final error = document.querySelector('div#emergencyInfo');
-      if (error != null) {
-        throw NissayAuthException(error.text.trim());
+      final error = document.querySelectorAll('div#emergencyInfo');
+      if (error.isNotEmpty) {
+        final notEmptyErrors = error.where((e) => e.text.trim().isNotEmpty);
+        throw NissayAuthException(notEmptyErrors.map((e) => e.text.trim()).join('\n'));
       }
     }
 
@@ -95,10 +96,6 @@ class NissayRepository {
         throw NissayAuthException('Unexpected response URI: $menuInitPath');
       }
     }
-  }
-
-  Future<void> logout() async {
-    await _dio.get<void>('/dmckanyusha/transactions/logout');
   }
 
   Future<Document> fetch(String path) async {

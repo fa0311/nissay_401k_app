@@ -14,7 +14,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$NissayDashboard {
 
-// プラン名
+// 加入者名
+ String get userName;// プラン名
  String get planName;// 前回ログイン日時
  DateTime get lastLogin;// 総資産評価額
  int get totalAsset;// 拠出金額累計
@@ -23,8 +24,8 @@ mixin _$NissayDashboard {
  double get roi;// 照会日時
  DateTime get date;// 次回拠出予定の掛金額
  int get contributionAmount;// 次回拠出日
- DateTime get contributionDate;// dashboard 表示用に整形した保有商品の内訳
- List<NissayDashboardHolding> get holdings;// dashboard 表示用に整形した資産推移
+ DateTime get contributionDate;// 内訳
+ List<NissayDashboardHolding> get holdings;// 資産推移
  List<NissayDashboardHistoryEntry> get historyEntries;
 /// Create a copy of NissayDashboard
 /// with the given fields replaced by the non-null parameter values.
@@ -36,16 +37,16 @@ $NissayDashboardCopyWith<NissayDashboard> get copyWith => _$NissayDashboardCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NissayDashboard&&(identical(other.planName, planName) || other.planName == planName)&&(identical(other.lastLogin, lastLogin) || other.lastLogin == lastLogin)&&(identical(other.totalAsset, totalAsset) || other.totalAsset == totalAsset)&&(identical(other.totalContribution, totalContribution) || other.totalContribution == totalContribution)&&(identical(other.totalProfitLoss, totalProfitLoss) || other.totalProfitLoss == totalProfitLoss)&&(identical(other.roi, roi) || other.roi == roi)&&(identical(other.date, date) || other.date == date)&&(identical(other.contributionAmount, contributionAmount) || other.contributionAmount == contributionAmount)&&(identical(other.contributionDate, contributionDate) || other.contributionDate == contributionDate)&&const DeepCollectionEquality().equals(other.holdings, holdings)&&const DeepCollectionEquality().equals(other.historyEntries, historyEntries));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NissayDashboard&&(identical(other.userName, userName) || other.userName == userName)&&(identical(other.planName, planName) || other.planName == planName)&&(identical(other.lastLogin, lastLogin) || other.lastLogin == lastLogin)&&(identical(other.totalAsset, totalAsset) || other.totalAsset == totalAsset)&&(identical(other.totalContribution, totalContribution) || other.totalContribution == totalContribution)&&(identical(other.totalProfitLoss, totalProfitLoss) || other.totalProfitLoss == totalProfitLoss)&&(identical(other.roi, roi) || other.roi == roi)&&(identical(other.date, date) || other.date == date)&&(identical(other.contributionAmount, contributionAmount) || other.contributionAmount == contributionAmount)&&(identical(other.contributionDate, contributionDate) || other.contributionDate == contributionDate)&&const DeepCollectionEquality().equals(other.holdings, holdings)&&const DeepCollectionEquality().equals(other.historyEntries, historyEntries));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,planName,lastLogin,totalAsset,totalContribution,totalProfitLoss,roi,date,contributionAmount,contributionDate,const DeepCollectionEquality().hash(holdings),const DeepCollectionEquality().hash(historyEntries));
+int get hashCode => Object.hash(runtimeType,userName,planName,lastLogin,totalAsset,totalContribution,totalProfitLoss,roi,date,contributionAmount,contributionDate,const DeepCollectionEquality().hash(holdings),const DeepCollectionEquality().hash(historyEntries));
 
 @override
 String toString() {
-  return 'NissayDashboard(planName: $planName, lastLogin: $lastLogin, totalAsset: $totalAsset, totalContribution: $totalContribution, totalProfitLoss: $totalProfitLoss, roi: $roi, date: $date, contributionAmount: $contributionAmount, contributionDate: $contributionDate, holdings: $holdings, historyEntries: $historyEntries)';
+  return 'NissayDashboard(userName: $userName, planName: $planName, lastLogin: $lastLogin, totalAsset: $totalAsset, totalContribution: $totalContribution, totalProfitLoss: $totalProfitLoss, roi: $roi, date: $date, contributionAmount: $contributionAmount, contributionDate: $contributionDate, holdings: $holdings, historyEntries: $historyEntries)';
 }
 
 
@@ -56,7 +57,7 @@ abstract mixin class $NissayDashboardCopyWith<$Res>  {
   factory $NissayDashboardCopyWith(NissayDashboard value, $Res Function(NissayDashboard) _then) = _$NissayDashboardCopyWithImpl;
 @useResult
 $Res call({
- String planName, DateTime lastLogin, int totalAsset, int totalContribution, int totalProfitLoss, double roi, DateTime date, int contributionAmount, DateTime contributionDate, List<NissayDashboardHolding> holdings, List<NissayDashboardHistoryEntry> historyEntries
+ String userName, String planName, DateTime lastLogin, int totalAsset, int totalContribution, int totalProfitLoss, double roi, DateTime date, int contributionAmount, DateTime contributionDate, List<NissayDashboardHolding> holdings, List<NissayDashboardHistoryEntry> historyEntries
 });
 
 
@@ -73,9 +74,10 @@ class _$NissayDashboardCopyWithImpl<$Res>
 
 /// Create a copy of NissayDashboard
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? planName = null,Object? lastLogin = null,Object? totalAsset = null,Object? totalContribution = null,Object? totalProfitLoss = null,Object? roi = null,Object? date = null,Object? contributionAmount = null,Object? contributionDate = null,Object? holdings = null,Object? historyEntries = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? userName = null,Object? planName = null,Object? lastLogin = null,Object? totalAsset = null,Object? totalContribution = null,Object? totalProfitLoss = null,Object? roi = null,Object? date = null,Object? contributionAmount = null,Object? contributionDate = null,Object? holdings = null,Object? historyEntries = null,}) {
   return _then(_self.copyWith(
-planName: null == planName ? _self.planName : planName // ignore: cast_nullable_to_non_nullable
+userName: null == userName ? _self.userName : userName // ignore: cast_nullable_to_non_nullable
+as String,planName: null == planName ? _self.planName : planName // ignore: cast_nullable_to_non_nullable
 as String,lastLogin: null == lastLogin ? _self.lastLogin : lastLogin // ignore: cast_nullable_to_non_nullable
 as DateTime,totalAsset: null == totalAsset ? _self.totalAsset : totalAsset // ignore: cast_nullable_to_non_nullable
 as int,totalContribution: null == totalContribution ? _self.totalContribution : totalContribution // ignore: cast_nullable_to_non_nullable
@@ -171,10 +173,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String planName,  DateTime lastLogin,  int totalAsset,  int totalContribution,  int totalProfitLoss,  double roi,  DateTime date,  int contributionAmount,  DateTime contributionDate,  List<NissayDashboardHolding> holdings,  List<NissayDashboardHistoryEntry> historyEntries)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userName,  String planName,  DateTime lastLogin,  int totalAsset,  int totalContribution,  int totalProfitLoss,  double roi,  DateTime date,  int contributionAmount,  DateTime contributionDate,  List<NissayDashboardHolding> holdings,  List<NissayDashboardHistoryEntry> historyEntries)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _NissayDashboard() when $default != null:
-return $default(_that.planName,_that.lastLogin,_that.totalAsset,_that.totalContribution,_that.totalProfitLoss,_that.roi,_that.date,_that.contributionAmount,_that.contributionDate,_that.holdings,_that.historyEntries);case _:
+return $default(_that.userName,_that.planName,_that.lastLogin,_that.totalAsset,_that.totalContribution,_that.totalProfitLoss,_that.roi,_that.date,_that.contributionAmount,_that.contributionDate,_that.holdings,_that.historyEntries);case _:
   return orElse();
 
 }
@@ -192,10 +194,10 @@ return $default(_that.planName,_that.lastLogin,_that.totalAsset,_that.totalContr
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String planName,  DateTime lastLogin,  int totalAsset,  int totalContribution,  int totalProfitLoss,  double roi,  DateTime date,  int contributionAmount,  DateTime contributionDate,  List<NissayDashboardHolding> holdings,  List<NissayDashboardHistoryEntry> historyEntries)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userName,  String planName,  DateTime lastLogin,  int totalAsset,  int totalContribution,  int totalProfitLoss,  double roi,  DateTime date,  int contributionAmount,  DateTime contributionDate,  List<NissayDashboardHolding> holdings,  List<NissayDashboardHistoryEntry> historyEntries)  $default,) {final _that = this;
 switch (_that) {
 case _NissayDashboard():
-return $default(_that.planName,_that.lastLogin,_that.totalAsset,_that.totalContribution,_that.totalProfitLoss,_that.roi,_that.date,_that.contributionAmount,_that.contributionDate,_that.holdings,_that.historyEntries);case _:
+return $default(_that.userName,_that.planName,_that.lastLogin,_that.totalAsset,_that.totalContribution,_that.totalProfitLoss,_that.roi,_that.date,_that.contributionAmount,_that.contributionDate,_that.holdings,_that.historyEntries);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -212,10 +214,10 @@ return $default(_that.planName,_that.lastLogin,_that.totalAsset,_that.totalContr
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String planName,  DateTime lastLogin,  int totalAsset,  int totalContribution,  int totalProfitLoss,  double roi,  DateTime date,  int contributionAmount,  DateTime contributionDate,  List<NissayDashboardHolding> holdings,  List<NissayDashboardHistoryEntry> historyEntries)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userName,  String planName,  DateTime lastLogin,  int totalAsset,  int totalContribution,  int totalProfitLoss,  double roi,  DateTime date,  int contributionAmount,  DateTime contributionDate,  List<NissayDashboardHolding> holdings,  List<NissayDashboardHistoryEntry> historyEntries)?  $default,) {final _that = this;
 switch (_that) {
 case _NissayDashboard() when $default != null:
-return $default(_that.planName,_that.lastLogin,_that.totalAsset,_that.totalContribution,_that.totalProfitLoss,_that.roi,_that.date,_that.contributionAmount,_that.contributionDate,_that.holdings,_that.historyEntries);case _:
+return $default(_that.userName,_that.planName,_that.lastLogin,_that.totalAsset,_that.totalContribution,_that.totalProfitLoss,_that.roi,_that.date,_that.contributionAmount,_that.contributionDate,_that.holdings,_that.historyEntries);case _:
   return null;
 
 }
@@ -227,9 +229,11 @@ return $default(_that.planName,_that.lastLogin,_that.totalAsset,_that.totalContr
 
 
 class _NissayDashboard implements NissayDashboard {
-  const _NissayDashboard({required this.planName, required this.lastLogin, required this.totalAsset, required this.totalContribution, required this.totalProfitLoss, required this.roi, required this.date, required this.contributionAmount, required this.contributionDate, required final  List<NissayDashboardHolding> holdings, required final  List<NissayDashboardHistoryEntry> historyEntries}): _holdings = holdings,_historyEntries = historyEntries;
+  const _NissayDashboard({required this.userName, required this.planName, required this.lastLogin, required this.totalAsset, required this.totalContribution, required this.totalProfitLoss, required this.roi, required this.date, required this.contributionAmount, required this.contributionDate, required final  List<NissayDashboardHolding> holdings, required final  List<NissayDashboardHistoryEntry> historyEntries}): _holdings = holdings,_historyEntries = historyEntries;
   
 
+// 加入者名
+@override final  String userName;
 // プラン名
 @override final  String planName;
 // 前回ログイン日時
@@ -248,18 +252,18 @@ class _NissayDashboard implements NissayDashboard {
 @override final  int contributionAmount;
 // 次回拠出日
 @override final  DateTime contributionDate;
-// dashboard 表示用に整形した保有商品の内訳
+// 内訳
  final  List<NissayDashboardHolding> _holdings;
-// dashboard 表示用に整形した保有商品の内訳
+// 内訳
 @override List<NissayDashboardHolding> get holdings {
   if (_holdings is EqualUnmodifiableListView) return _holdings;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_holdings);
 }
 
-// dashboard 表示用に整形した資産推移
+// 資産推移
  final  List<NissayDashboardHistoryEntry> _historyEntries;
-// dashboard 表示用に整形した資産推移
+// 資産推移
 @override List<NissayDashboardHistoryEntry> get historyEntries {
   if (_historyEntries is EqualUnmodifiableListView) return _historyEntries;
   // ignore: implicit_dynamic_type
@@ -277,16 +281,16 @@ _$NissayDashboardCopyWith<_NissayDashboard> get copyWith => __$NissayDashboardCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NissayDashboard&&(identical(other.planName, planName) || other.planName == planName)&&(identical(other.lastLogin, lastLogin) || other.lastLogin == lastLogin)&&(identical(other.totalAsset, totalAsset) || other.totalAsset == totalAsset)&&(identical(other.totalContribution, totalContribution) || other.totalContribution == totalContribution)&&(identical(other.totalProfitLoss, totalProfitLoss) || other.totalProfitLoss == totalProfitLoss)&&(identical(other.roi, roi) || other.roi == roi)&&(identical(other.date, date) || other.date == date)&&(identical(other.contributionAmount, contributionAmount) || other.contributionAmount == contributionAmount)&&(identical(other.contributionDate, contributionDate) || other.contributionDate == contributionDate)&&const DeepCollectionEquality().equals(other._holdings, _holdings)&&const DeepCollectionEquality().equals(other._historyEntries, _historyEntries));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NissayDashboard&&(identical(other.userName, userName) || other.userName == userName)&&(identical(other.planName, planName) || other.planName == planName)&&(identical(other.lastLogin, lastLogin) || other.lastLogin == lastLogin)&&(identical(other.totalAsset, totalAsset) || other.totalAsset == totalAsset)&&(identical(other.totalContribution, totalContribution) || other.totalContribution == totalContribution)&&(identical(other.totalProfitLoss, totalProfitLoss) || other.totalProfitLoss == totalProfitLoss)&&(identical(other.roi, roi) || other.roi == roi)&&(identical(other.date, date) || other.date == date)&&(identical(other.contributionAmount, contributionAmount) || other.contributionAmount == contributionAmount)&&(identical(other.contributionDate, contributionDate) || other.contributionDate == contributionDate)&&const DeepCollectionEquality().equals(other._holdings, _holdings)&&const DeepCollectionEquality().equals(other._historyEntries, _historyEntries));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,planName,lastLogin,totalAsset,totalContribution,totalProfitLoss,roi,date,contributionAmount,contributionDate,const DeepCollectionEquality().hash(_holdings),const DeepCollectionEquality().hash(_historyEntries));
+int get hashCode => Object.hash(runtimeType,userName,planName,lastLogin,totalAsset,totalContribution,totalProfitLoss,roi,date,contributionAmount,contributionDate,const DeepCollectionEquality().hash(_holdings),const DeepCollectionEquality().hash(_historyEntries));
 
 @override
 String toString() {
-  return 'NissayDashboard(planName: $planName, lastLogin: $lastLogin, totalAsset: $totalAsset, totalContribution: $totalContribution, totalProfitLoss: $totalProfitLoss, roi: $roi, date: $date, contributionAmount: $contributionAmount, contributionDate: $contributionDate, holdings: $holdings, historyEntries: $historyEntries)';
+  return 'NissayDashboard(userName: $userName, planName: $planName, lastLogin: $lastLogin, totalAsset: $totalAsset, totalContribution: $totalContribution, totalProfitLoss: $totalProfitLoss, roi: $roi, date: $date, contributionAmount: $contributionAmount, contributionDate: $contributionDate, holdings: $holdings, historyEntries: $historyEntries)';
 }
 
 
@@ -297,7 +301,7 @@ abstract mixin class _$NissayDashboardCopyWith<$Res> implements $NissayDashboard
   factory _$NissayDashboardCopyWith(_NissayDashboard value, $Res Function(_NissayDashboard) _then) = __$NissayDashboardCopyWithImpl;
 @override @useResult
 $Res call({
- String planName, DateTime lastLogin, int totalAsset, int totalContribution, int totalProfitLoss, double roi, DateTime date, int contributionAmount, DateTime contributionDate, List<NissayDashboardHolding> holdings, List<NissayDashboardHistoryEntry> historyEntries
+ String userName, String planName, DateTime lastLogin, int totalAsset, int totalContribution, int totalProfitLoss, double roi, DateTime date, int contributionAmount, DateTime contributionDate, List<NissayDashboardHolding> holdings, List<NissayDashboardHistoryEntry> historyEntries
 });
 
 
@@ -314,9 +318,10 @@ class __$NissayDashboardCopyWithImpl<$Res>
 
 /// Create a copy of NissayDashboard
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? planName = null,Object? lastLogin = null,Object? totalAsset = null,Object? totalContribution = null,Object? totalProfitLoss = null,Object? roi = null,Object? date = null,Object? contributionAmount = null,Object? contributionDate = null,Object? holdings = null,Object? historyEntries = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userName = null,Object? planName = null,Object? lastLogin = null,Object? totalAsset = null,Object? totalContribution = null,Object? totalProfitLoss = null,Object? roi = null,Object? date = null,Object? contributionAmount = null,Object? contributionDate = null,Object? holdings = null,Object? historyEntries = null,}) {
   return _then(_NissayDashboard(
-planName: null == planName ? _self.planName : planName // ignore: cast_nullable_to_non_nullable
+userName: null == userName ? _self.userName : userName // ignore: cast_nullable_to_non_nullable
+as String,planName: null == planName ? _self.planName : planName // ignore: cast_nullable_to_non_nullable
 as String,lastLogin: null == lastLogin ? _self.lastLogin : lastLogin // ignore: cast_nullable_to_non_nullable
 as DateTime,totalAsset: null == totalAsset ? _self.totalAsset : totalAsset // ignore: cast_nullable_to_non_nullable
 as int,totalContribution: null == totalContribution ? _self.totalContribution : totalContribution // ignore: cast_nullable_to_non_nullable
@@ -342,8 +347,8 @@ mixin _$NissayDashboardHolding {
  String get productName;// 資産評価額
  int get totalAsset;// 評価損益
  int get profitLoss;// 資産比率
- double get assetRatio;// 掛金の運用割合
- double get operationRatio;
+ double get assetRatio;// 次回掛金の運用割合
+ double? get nextContributionRatio;
 /// Create a copy of NissayDashboardHolding
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -354,16 +359,16 @@ $NissayDashboardHoldingCopyWith<NissayDashboardHolding> get copyWith => _$Nissay
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NissayDashboardHolding&&(identical(other.operationType, operationType) || other.operationType == operationType)&&(identical(other.productName, productName) || other.productName == productName)&&(identical(other.totalAsset, totalAsset) || other.totalAsset == totalAsset)&&(identical(other.profitLoss, profitLoss) || other.profitLoss == profitLoss)&&(identical(other.assetRatio, assetRatio) || other.assetRatio == assetRatio)&&(identical(other.operationRatio, operationRatio) || other.operationRatio == operationRatio));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NissayDashboardHolding&&(identical(other.operationType, operationType) || other.operationType == operationType)&&(identical(other.productName, productName) || other.productName == productName)&&(identical(other.totalAsset, totalAsset) || other.totalAsset == totalAsset)&&(identical(other.profitLoss, profitLoss) || other.profitLoss == profitLoss)&&(identical(other.assetRatio, assetRatio) || other.assetRatio == assetRatio)&&(identical(other.nextContributionRatio, nextContributionRatio) || other.nextContributionRatio == nextContributionRatio));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,operationType,productName,totalAsset,profitLoss,assetRatio,operationRatio);
+int get hashCode => Object.hash(runtimeType,operationType,productName,totalAsset,profitLoss,assetRatio,nextContributionRatio);
 
 @override
 String toString() {
-  return 'NissayDashboardHolding(operationType: $operationType, productName: $productName, totalAsset: $totalAsset, profitLoss: $profitLoss, assetRatio: $assetRatio, operationRatio: $operationRatio)';
+  return 'NissayDashboardHolding(operationType: $operationType, productName: $productName, totalAsset: $totalAsset, profitLoss: $profitLoss, assetRatio: $assetRatio, nextContributionRatio: $nextContributionRatio)';
 }
 
 
@@ -374,7 +379,7 @@ abstract mixin class $NissayDashboardHoldingCopyWith<$Res>  {
   factory $NissayDashboardHoldingCopyWith(NissayDashboardHolding value, $Res Function(NissayDashboardHolding) _then) = _$NissayDashboardHoldingCopyWithImpl;
 @useResult
 $Res call({
- String operationType, String productName, int totalAsset, int profitLoss, double assetRatio, double operationRatio
+ String operationType, String productName, int totalAsset, int profitLoss, double assetRatio, double? nextContributionRatio
 });
 
 
@@ -391,15 +396,15 @@ class _$NissayDashboardHoldingCopyWithImpl<$Res>
 
 /// Create a copy of NissayDashboardHolding
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? operationType = null,Object? productName = null,Object? totalAsset = null,Object? profitLoss = null,Object? assetRatio = null,Object? operationRatio = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? operationType = null,Object? productName = null,Object? totalAsset = null,Object? profitLoss = null,Object? assetRatio = null,Object? nextContributionRatio = freezed,}) {
   return _then(_self.copyWith(
 operationType: null == operationType ? _self.operationType : operationType // ignore: cast_nullable_to_non_nullable
 as String,productName: null == productName ? _self.productName : productName // ignore: cast_nullable_to_non_nullable
 as String,totalAsset: null == totalAsset ? _self.totalAsset : totalAsset // ignore: cast_nullable_to_non_nullable
 as int,profitLoss: null == profitLoss ? _self.profitLoss : profitLoss // ignore: cast_nullable_to_non_nullable
 as int,assetRatio: null == assetRatio ? _self.assetRatio : assetRatio // ignore: cast_nullable_to_non_nullable
-as double,operationRatio: null == operationRatio ? _self.operationRatio : operationRatio // ignore: cast_nullable_to_non_nullable
-as double,
+as double,nextContributionRatio: freezed == nextContributionRatio ? _self.nextContributionRatio : nextContributionRatio // ignore: cast_nullable_to_non_nullable
+as double?,
   ));
 }
 
@@ -484,10 +489,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String operationType,  String productName,  int totalAsset,  int profitLoss,  double assetRatio,  double operationRatio)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String operationType,  String productName,  int totalAsset,  int profitLoss,  double assetRatio,  double? nextContributionRatio)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _NissayDashboardHolding() when $default != null:
-return $default(_that.operationType,_that.productName,_that.totalAsset,_that.profitLoss,_that.assetRatio,_that.operationRatio);case _:
+return $default(_that.operationType,_that.productName,_that.totalAsset,_that.profitLoss,_that.assetRatio,_that.nextContributionRatio);case _:
   return orElse();
 
 }
@@ -505,10 +510,10 @@ return $default(_that.operationType,_that.productName,_that.totalAsset,_that.pro
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String operationType,  String productName,  int totalAsset,  int profitLoss,  double assetRatio,  double operationRatio)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String operationType,  String productName,  int totalAsset,  int profitLoss,  double assetRatio,  double? nextContributionRatio)  $default,) {final _that = this;
 switch (_that) {
 case _NissayDashboardHolding():
-return $default(_that.operationType,_that.productName,_that.totalAsset,_that.profitLoss,_that.assetRatio,_that.operationRatio);case _:
+return $default(_that.operationType,_that.productName,_that.totalAsset,_that.profitLoss,_that.assetRatio,_that.nextContributionRatio);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -525,10 +530,10 @@ return $default(_that.operationType,_that.productName,_that.totalAsset,_that.pro
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String operationType,  String productName,  int totalAsset,  int profitLoss,  double assetRatio,  double operationRatio)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String operationType,  String productName,  int totalAsset,  int profitLoss,  double assetRatio,  double? nextContributionRatio)?  $default,) {final _that = this;
 switch (_that) {
 case _NissayDashboardHolding() when $default != null:
-return $default(_that.operationType,_that.productName,_that.totalAsset,_that.profitLoss,_that.assetRatio,_that.operationRatio);case _:
+return $default(_that.operationType,_that.productName,_that.totalAsset,_that.profitLoss,_that.assetRatio,_that.nextContributionRatio);case _:
   return null;
 
 }
@@ -540,7 +545,7 @@ return $default(_that.operationType,_that.productName,_that.totalAsset,_that.pro
 
 
 class _NissayDashboardHolding implements NissayDashboardHolding {
-  const _NissayDashboardHolding({required this.operationType, required this.productName, required this.totalAsset, required this.profitLoss, required this.assetRatio, required this.operationRatio});
+  const _NissayDashboardHolding({required this.operationType, required this.productName, required this.totalAsset, required this.profitLoss, required this.assetRatio, required this.nextContributionRatio});
   
 
 // 運用タイプ
@@ -553,8 +558,8 @@ class _NissayDashboardHolding implements NissayDashboardHolding {
 @override final  int profitLoss;
 // 資産比率
 @override final  double assetRatio;
-// 掛金の運用割合
-@override final  double operationRatio;
+// 次回掛金の運用割合
+@override final  double? nextContributionRatio;
 
 /// Create a copy of NissayDashboardHolding
 /// with the given fields replaced by the non-null parameter values.
@@ -566,16 +571,16 @@ _$NissayDashboardHoldingCopyWith<_NissayDashboardHolding> get copyWith => __$Nis
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NissayDashboardHolding&&(identical(other.operationType, operationType) || other.operationType == operationType)&&(identical(other.productName, productName) || other.productName == productName)&&(identical(other.totalAsset, totalAsset) || other.totalAsset == totalAsset)&&(identical(other.profitLoss, profitLoss) || other.profitLoss == profitLoss)&&(identical(other.assetRatio, assetRatio) || other.assetRatio == assetRatio)&&(identical(other.operationRatio, operationRatio) || other.operationRatio == operationRatio));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NissayDashboardHolding&&(identical(other.operationType, operationType) || other.operationType == operationType)&&(identical(other.productName, productName) || other.productName == productName)&&(identical(other.totalAsset, totalAsset) || other.totalAsset == totalAsset)&&(identical(other.profitLoss, profitLoss) || other.profitLoss == profitLoss)&&(identical(other.assetRatio, assetRatio) || other.assetRatio == assetRatio)&&(identical(other.nextContributionRatio, nextContributionRatio) || other.nextContributionRatio == nextContributionRatio));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,operationType,productName,totalAsset,profitLoss,assetRatio,operationRatio);
+int get hashCode => Object.hash(runtimeType,operationType,productName,totalAsset,profitLoss,assetRatio,nextContributionRatio);
 
 @override
 String toString() {
-  return 'NissayDashboardHolding(operationType: $operationType, productName: $productName, totalAsset: $totalAsset, profitLoss: $profitLoss, assetRatio: $assetRatio, operationRatio: $operationRatio)';
+  return 'NissayDashboardHolding(operationType: $operationType, productName: $productName, totalAsset: $totalAsset, profitLoss: $profitLoss, assetRatio: $assetRatio, nextContributionRatio: $nextContributionRatio)';
 }
 
 
@@ -586,7 +591,7 @@ abstract mixin class _$NissayDashboardHoldingCopyWith<$Res> implements $NissayDa
   factory _$NissayDashboardHoldingCopyWith(_NissayDashboardHolding value, $Res Function(_NissayDashboardHolding) _then) = __$NissayDashboardHoldingCopyWithImpl;
 @override @useResult
 $Res call({
- String operationType, String productName, int totalAsset, int profitLoss, double assetRatio, double operationRatio
+ String operationType, String productName, int totalAsset, int profitLoss, double assetRatio, double? nextContributionRatio
 });
 
 
@@ -603,15 +608,15 @@ class __$NissayDashboardHoldingCopyWithImpl<$Res>
 
 /// Create a copy of NissayDashboardHolding
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? operationType = null,Object? productName = null,Object? totalAsset = null,Object? profitLoss = null,Object? assetRatio = null,Object? operationRatio = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? operationType = null,Object? productName = null,Object? totalAsset = null,Object? profitLoss = null,Object? assetRatio = null,Object? nextContributionRatio = freezed,}) {
   return _then(_NissayDashboardHolding(
 operationType: null == operationType ? _self.operationType : operationType // ignore: cast_nullable_to_non_nullable
 as String,productName: null == productName ? _self.productName : productName // ignore: cast_nullable_to_non_nullable
 as String,totalAsset: null == totalAsset ? _self.totalAsset : totalAsset // ignore: cast_nullable_to_non_nullable
 as int,profitLoss: null == profitLoss ? _self.profitLoss : profitLoss // ignore: cast_nullable_to_non_nullable
 as int,assetRatio: null == assetRatio ? _self.assetRatio : assetRatio // ignore: cast_nullable_to_non_nullable
-as double,operationRatio: null == operationRatio ? _self.operationRatio : operationRatio // ignore: cast_nullable_to_non_nullable
-as double,
+as double,nextContributionRatio: freezed == nextContributionRatio ? _self.nextContributionRatio : nextContributionRatio // ignore: cast_nullable_to_non_nullable
+as double?,
   ));
 }
 
