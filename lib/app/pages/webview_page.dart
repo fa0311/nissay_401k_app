@@ -40,11 +40,11 @@ class WebViewPage extends HookConsumerWidget {
   }
 }
 
-class _WebViewPageContent extends HookWidget {
+class _WebViewPageContent extends HookConsumerWidget {
   const _WebViewPageContent();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final title = useState('');
     final canGoBackWebView = useState(false);
     final webviewController = useRef<InAppWebViewController?>(null);
@@ -81,11 +81,8 @@ class _WebViewPageContent extends HookWidget {
           actions: [
             IconButton(
               icon: const Icon(Icons.refresh_rounded),
-              onPressed: () async {
-                final controller = webviewController.value;
-                if (controller != null) {
-                  await controller.reload();
-                }
+              onPressed: () {
+                ref.invalidate(_webInitProvider, asReload: true);
               },
             ),
           ],

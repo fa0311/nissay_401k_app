@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nissay_401k/app/hooks/single_action_guard.dart';
 import 'package:nissay_401k/app/providers/auth.dart';
-import 'package:nissay_401k/app/providers/logger.dart';
 import 'package:nissay_401k/app/providers/nissay_session_provider.dart';
 import 'package:nissay_401k/app/ui/future_button.dart';
 
@@ -12,7 +11,6 @@ class LoginPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final logger = ref.watch(loggerProvider);
     final auth = ref.watch(authStorageProvider);
     final userIdController = useTextEditingController(text: auth.value?.userId);
     final passwordController = useTextEditingController(text: auth.value?.password);
@@ -46,9 +44,7 @@ class LoginPage extends HookConsumerWidget {
                       );
 
                   return OnCompleted.keep;
-                } on Exception catch (e, trace) {
-                  logger.error('Login failed', e, trace);
-
+                } on Exception catch (e) {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Login failed: $e')),

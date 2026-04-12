@@ -5,9 +5,11 @@ import 'package:nissay_401k/app/pages/login_page.dart';
 import 'package:nissay_401k/app/pages/splash_page.dart';
 import 'package:nissay_401k/app/pages/user_page.dart';
 import 'package:nissay_401k/app/pages/webview_page.dart';
+import 'package:nissay_401k/app/providers/logger.dart';
 import 'package:nissay_401k/app/router/app_route_paths.dart';
 import 'package:nissay_401k/app/router/session_route_guard.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 part 'app_router.g.dart';
 
@@ -15,10 +17,14 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 @riverpod
 GoRouter appRouter(Ref ref) {
+  final logger = ref.watch(loggerProvider);
   final goRouter = GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: AppRoutePaths.dashboard,
     routes: $appRoutes,
+    observers: [
+      TalkerRouteObserver(logger),
+    ],
     redirect: (_, state) {
       return ref.read(sessionRouteStatusProvider.notifier).redirectForLocation(state.matchedLocation);
     },

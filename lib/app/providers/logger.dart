@@ -5,5 +5,5 @@ part 'logger.g.dart';
 
 @riverpod
 Talker logger(Ref ref) {
-  return Talker();
+  throw UnimplementedError();
 }

@@ -1,10 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nissay_401k/app/hooks/single_action_guard.dart';
+import 'package:nissay_401k/app/models/nissay_dashboard_model.dart';
 import 'package:nissay_401k/app/pages/dashboard/dashboard_style.dart';
+import 'package:nissay_401k/app/pages/debug_log_page.dart';
 import 'package:nissay_401k/app/providers/logger.dart';
 import 'package:nissay_401k/app/providers/nissay_dashboard_provider.dart';
 import 'package:nissay_401k/app/providers/nissay_session_provider.dart';
+import 'package:nissay_401k/app/providers/package_info.dart';
+import 'package:nissay_401k/app/ui/app_information.dart';
 import 'package:nissay_401k/app/ui/future_button.dart';
 
 class UserPage extends ConsumerWidget {
@@ -37,12 +43,7 @@ class UserPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               switch (dashboard) {
-                AsyncData(:final value) => _UserOverviewCard(
-                  userName: value.userName,
-                  planName: value.planName,
-                  lastLogin: formatDashboardDateTime(value.lastLogin),
-                  latestUpdatedAt: formatDashboardDateTime(value.date),
-                ),
+                AsyncData(:final value) => _UserOverviewCard(data: value),
                 AsyncError() => _UserErrorCard(
                   onRetry: () => ref.invalidate(nissayDashboardProvider),
                 ),
@@ -89,13 +90,7 @@ class UserPage extends ConsumerWidget {
                 },
               ),
               const SizedBox(height: 24),
-              _UserInfoActionCard(
-                onShowPlaceholder: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('未実装です。')),
-                  );
-                },
-              ),
+              const _UserInfoActionCard(),
             ],
           ),
         ),
@@ -106,16 +101,10 @@ class UserPage extends ConsumerWidget {
 
 class _UserOverviewCard extends StatelessWidget {
   const _UserOverviewCard({
-    required this.userName,
-    required this.planName,
-    required this.lastLogin,
-    required this.latestUpdatedAt,
+    required this.data,
   });
 
-  final String userName;
-  final String planName;
-  final String lastLogin;
-  final String latestUpdatedAt;
+  final NissayDashboard data;
 
   @override
   Widget build(BuildContext context) {
@@ -135,10 +124,10 @@ class _UserOverviewCard extends StatelessWidget {
             spacing: 12,
             runSpacing: 12,
             children: [
-              _UserInfoChip(label: '加入者名', value: userName),
-              _UserInfoChip(label: 'プラン名', value: planName),
-              _UserInfoChip(label: '前回ログイン', value: lastLogin),
-              _UserInfoChip(label: '最新照会日時', value: latestUpdatedAt),
+              _UserInfoChip(label: const Text('加入者名'), value: Text(data.userName)),
+              _UserInfoChip(label: const Text('プラン名'), value: Text(data.planName)),
+              _UserInfoChip(label: const Text('前回ログイン'), value: Text(formatDashboardDateTime(data.lastLogin))),
+              _UserInfoChip(label: const Text('最新照会日時'), value: Text(formatDashboardDateTime(data.date))),
             ],
           ),
         ],
@@ -213,13 +202,11 @@ class _UserLoadingCard extends StatelessWidget {
   }
 }
 
-class _UserInfoActionCard extends StatelessWidget {
-  const _UserInfoActionCard({required this.onShowPlaceholder});
-
-  final VoidCallback onShowPlaceholder;
+class _UserInfoActionCard extends ConsumerWidget {
+  const _UserInfoActionCard();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return _UserCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,20 +230,60 @@ class _UserInfoActionCard extends StatelessWidget {
             spacing: 12,
             runSpacing: 12,
             children: [
-              _UserInfoActionButton(
-                icon: Icons.info_outline_rounded,
-                label: 'アプリ情報',
-                onPressed: onShowPlaceholder,
+              _ActionButton(
+                icon: const Icon(Icons.info_outline_rounded),
+                label: const Text('アプリ情報'),
+                onPressed: () async {
+                  final packageInfo = await ref.read(packageInfoProvider.future);
+                  await showDialog<void>(
+                    context: context,
+                    builder: (context) => AboutDialog(
+                      applicationName: packageInfo.appName,
+                      applicationVersion: packageInfo.version,
+                      applicationIcon: const ApplicationBadge(size: 52),
+                      children: [
+                        const SizedBox(height: 12),
+                        AppInfoLine(
+                          label: 'パッケージ',
+                          value: packageInfo.packageName,
+                        ),
+                        AppInfoLine(
+                          label: 'ビルド番号',
+                          value: packageInfo.buildNumber,
+                        ),
+                        AppInfoLine(
+                          label: 'インストーラ',
+                          value: packageInfo.installerStore ?? '不明',
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
-              _UserInfoActionButton(
-                icon: Icons.gavel_rounded,
-                label: 'ライセンス',
-                onPressed: onShowPlaceholder,
+              _ActionButton(
+                icon: const Icon(Icons.gavel_rounded),
+                label: const Text('ライセンス'),
+                onPressed: () {
+                  showLicensePage(
+                    context: context,
+                    applicationName: 'NISSAY 401k',
+                    applicationVersion: '1.0.0',
+                    applicationIcon: const ApplicationBadge(size: 52),
+                  );
+                },
               ),
-              _UserInfoActionButton(
-                icon: Icons.bug_report_outlined,
-                label: 'デバッグログ',
-                onPressed: onShowPlaceholder,
+              _ActionButton(
+                icon: const Icon(Icons.bug_report_outlined),
+                label: const Text('デバッグログ'),
+                onPressed: () {
+                  unawaited(
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const DebugLogPage(),
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -295,23 +322,23 @@ class _UserErrorCard extends StatelessWidget {
   }
 }
 
-class _UserInfoActionButton extends StatelessWidget {
-  const _UserInfoActionButton({
+class _ActionButton extends StatelessWidget {
+  const _ActionButton({
     required this.icon,
     required this.label,
     required this.onPressed,
   });
 
-  final IconData icon;
-  final String label;
+  final Widget icon;
+  final Text label;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
       onPressed: onPressed,
-      icon: Icon(icon),
-      label: Text(label),
+      icon: icon,
+      label: label,
       style: OutlinedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         foregroundColor: DashboardPalette.ink,
@@ -361,8 +388,8 @@ class _UserInfoChip extends StatelessWidget {
     required this.value,
   });
 
-  final String label;
-  final String value;
+  final Widget label;
+  final Widget value;
 
   @override
   Widget build(BuildContext context) {
@@ -376,20 +403,20 @@ class _UserInfoChip extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+          DefaultTextStyle(
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
               color: DashboardPalette.ink.withValues(alpha: 0.64),
               fontWeight: FontWeight.w600,
             ),
+            child: label,
           ),
           const SizedBox(height: 6),
-          Text(
-            value,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          DefaultTextStyle(
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
               color: DashboardPalette.ink,
               fontWeight: FontWeight.w800,
             ),
+            child: value,
           ),
         ],
       ),
