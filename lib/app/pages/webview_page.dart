@@ -46,7 +46,6 @@ class _WebViewPageContent extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final title = useState('');
-    final url = useState(_initialUrl);
     final canGoBackWebView = useState(false);
     final webviewController = useRef<InAppWebViewController?>(null);
 
@@ -59,6 +58,7 @@ class _WebViewPageContent extends HookWidget {
         final controller = webviewController.value;
         if (controller != null) {
           await controller.goBack();
+          canGoBackWebView.value = await controller.canGoBack();
         }
       },
       child: Scaffold(
@@ -71,6 +71,7 @@ class _WebViewPageContent extends HookWidget {
                 final controller = webviewController.value;
                 if (controller != null) {
                   await controller.goBack();
+                  canGoBackWebView.value = await controller.canGoBack();
                 }
               },
               false => null,
@@ -90,25 +91,14 @@ class _WebViewPageContent extends HookWidget {
           ],
         ),
         body: InAppWebView(
-          initialUrlRequest: URLRequest(url: url.value),
+          initialUrlRequest: URLRequest(url: _initialUrl),
           onWebViewCreated: (controller) {
             webviewController.value = controller;
           },
-          onLoadStart: (controller, uri) {
-            if (uri != null) {
-              url.value = uri;
-            }
-          },
           onTitleChanged: (controller, newTitle) {
-            if (newTitle == null || newTitle.startsWith(url.value.host)) {
-              return;
-            }
-            title.value = newTitle;
+            title.value = newTitle ?? '';
           },
           onUpdateVisitedHistory: (controller, uri, _) async {
-            if (uri != null) {
-              url.value = uri;
-            }
             canGoBackWebView.value = await controller.canGoBack();
           },
         ),

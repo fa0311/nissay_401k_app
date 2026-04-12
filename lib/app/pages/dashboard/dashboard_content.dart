@@ -271,6 +271,7 @@ class DashboardHoldingCard extends StatelessWidget {
           const SizedBox(height: 16),
 
           SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
             child: Row(
               spacing: 12,
@@ -629,6 +630,7 @@ class _DashboardHistoryRow extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
           child: Row(
             spacing: 12,

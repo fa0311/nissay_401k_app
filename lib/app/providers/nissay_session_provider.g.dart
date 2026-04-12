@@ -41,7 +41,7 @@ final class NissaySessionCheckProvider
 }
 
 String _$nissaySessionCheckHash() =>
-    r'3fe9b3a699721b38d270a067ed88357e4f9b4b1c';
+    r'bcfadb452a692fa4aa7c4607a43acf67a25d02c3';
 
 @ProviderFor(NissaySession)
 final nissaySessionProvider = NissaySessionProvider._();

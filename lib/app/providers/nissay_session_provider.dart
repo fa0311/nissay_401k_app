@@ -9,19 +9,19 @@ part 'nissay_session_provider.g.dart';
 Future<void> nissaySessionCheck(Ref ref) async {
   final session = ref.watch(nissaySessionProvider.notifier);
   final savedAuth = await ref.watch(authStorageProvider.future);
-  final log = ref.watch(loggerProvider);
+  final logger = ref.watch(loggerProvider);
+  final repository = await ref.watch(nissayRepositoryProvider.future);
 
   try {
-    await ref.watch(nissayHeaderProvider.future);
+    await repository.fetchHeader();
   } on Exception catch (error, stackTrace) {
-    log.error('Failed to fetch Nissay data', error, stackTrace);
-
+    logger.error('Failed to fetch Nissay data', error, stackTrace);
     if (savedAuth case final AuthState auth) {
       await session.login(
         userId: auth.userId,
         password: auth.password,
       );
-      await ref.watch(nissayHeaderProvider.future);
+      await repository.fetchHeader();
     } else {
       rethrow;
     }

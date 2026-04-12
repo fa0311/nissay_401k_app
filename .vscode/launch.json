@@ -17,6 +17,12 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "release"
+    },
+    {
+      "name": "nissay_401k (with mock)",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--dart-define=USE_MOCK=true"]
     }
   ]
 }

@@ -7,11 +7,13 @@ part 'nissay_dashboard_provider.g.dart';
 
 @riverpod
 Future<NissayDashboard> nissayDashboard(Ref ref) async {
+  final repository = await ref.watch(nissayRepositoryProvider.future);
+
   final (header, currentAssets, contribution, historicalAssets) = await (
-    ref.watch(nissayHeaderProvider.future),
-    ref.watch(nissayCurrentAssetsProvider.future),
-    ref.watch(nissayContributionProvider.future),
-    ref.watch(nissayHistoricalAssetsProvider.future),
+    repository.fetchHeader(),
+    repository.fetchCurrentAssets(),
+    repository.fetchContribution(),
+    repository.fetchHistoricalAssets(),
   ).wait;
 
   return NissayDashboard(

@@ -13,8 +13,6 @@ class UserPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dashboard = ref.watch(nissayDashboardProvider);
-    final session = ref.watch(nissaySessionProvider);
-    final userId = session.asData?.value?.userId ?? '';
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -41,7 +39,6 @@ class UserPage extends ConsumerWidget {
               switch (dashboard) {
                 AsyncData(:final value) => _UserOverviewCard(
                   userName: value.userName,
-                  userId: _maskUserId(userId),
                   planName: value.planName,
                   lastLogin: formatDashboardDateTime(value.lastLogin),
                   latestUpdatedAt: formatDashboardDateTime(value.date),
@@ -91,6 +88,14 @@ class UserPage extends ConsumerWidget {
                   }
                 },
               ),
+              const SizedBox(height: 24),
+              _UserInfoActionCard(
+                onShowPlaceholder: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('未実装です。')),
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -99,27 +104,15 @@ class UserPage extends ConsumerWidget {
   }
 }
 
-String _maskUserId(String value) {
-  if (value.isEmpty) {
-    return '未取得';
-  }
-  if (value.length <= 2) {
-    return '*' * value.length;
-  }
-  return '${'*' * (value.length - 2)}${value.substring(value.length - 2)}';
-}
-
 class _UserOverviewCard extends StatelessWidget {
   const _UserOverviewCard({
     required this.userName,
-    required this.userId,
     required this.planName,
     required this.lastLogin,
     required this.latestUpdatedAt,
   });
 
   final String userName;
-  final String userId;
   final String planName;
   final String lastLogin;
   final String latestUpdatedAt;
@@ -143,7 +136,6 @@ class _UserOverviewCard extends StatelessWidget {
             runSpacing: 12,
             children: [
               _UserInfoChip(label: '加入者名', value: userName),
-              _UserInfoChip(label: 'ユーザーID', value: userId),
               _UserInfoChip(label: 'プラン名', value: planName),
               _UserInfoChip(label: '前回ログイン', value: lastLogin),
               _UserInfoChip(label: '最新照会日時', value: latestUpdatedAt),
@@ -221,6 +213,59 @@ class _UserLoadingCard extends StatelessWidget {
   }
 }
 
+class _UserInfoActionCard extends StatelessWidget {
+  const _UserInfoActionCard({required this.onShowPlaceholder});
+
+  final VoidCallback onShowPlaceholder;
+
+  @override
+  Widget build(BuildContext context) {
+    return _UserCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '情報',
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              color: DashboardPalette.ink,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'アプリの詳細や利用情報を確認できます。',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: DashboardPalette.ink.withValues(alpha: 0.72),
+            ),
+          ),
+          const SizedBox(height: 18),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: [
+              _UserInfoActionButton(
+                icon: Icons.info_outline_rounded,
+                label: 'アプリ情報',
+                onPressed: onShowPlaceholder,
+              ),
+              _UserInfoActionButton(
+                icon: Icons.gavel_rounded,
+                label: 'ライセンス',
+                onPressed: onShowPlaceholder,
+              ),
+              _UserInfoActionButton(
+                icon: Icons.bug_report_outlined,
+                label: 'デバッグログ',
+                onPressed: onShowPlaceholder,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _UserErrorCard extends StatelessWidget {
   const _UserErrorCard({required this.onRetry});
 
@@ -245,6 +290,38 @@ class _UserErrorCard extends StatelessWidget {
             child: const Text('再読み込み'),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _UserInfoActionButton extends StatelessWidget {
+  const _UserInfoActionButton({
+    required this.icon,
+    required this.label,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton.icon(
+      onPressed: onPressed,
+      icon: Icon(icon),
+      label: Text(label),
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        foregroundColor: DashboardPalette.ink,
+        side: BorderSide(
+          color: DashboardPalette.teal.withValues(alpha: 0.28),
+        ),
+        backgroundColor: Colors.white.withValues(alpha: 0.4),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+        ),
       ),
     );
   }

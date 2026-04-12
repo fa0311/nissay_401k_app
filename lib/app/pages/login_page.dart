@@ -6,7 +6,6 @@ import 'package:nissay_401k/app/providers/auth.dart';
 import 'package:nissay_401k/app/providers/logger.dart';
 import 'package:nissay_401k/app/providers/nissay_session_provider.dart';
 import 'package:nissay_401k/app/ui/future_button.dart';
-import 'package:nissay_client/nissay_client.dart' as api;
 
 class LoginPage extends HookConsumerWidget {
   const LoginPage({super.key});
@@ -17,16 +16,6 @@ class LoginPage extends HookConsumerWidget {
     final auth = ref.watch(authStorageProvider);
     final userIdController = useTextEditingController(text: auth.value?.userId);
     final passwordController = useTextEditingController(text: auth.value?.password);
-
-    ref.listen(nissaySessionCheckProvider, (previous, next) {
-      if (next case AsyncError(:final api.NissayException error)) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Login check failed: $error')),
-          );
-        }
-      }
-    });
 
     return Scaffold(
       appBar: AppBar(title: const Text('NISSAY 401k Login')),
