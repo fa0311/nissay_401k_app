@@ -1,0 +1,155 @@
+import 'package:flutter/material.dart';
+import 'package:nissay_401k/app/models/nissay_dashboard_model.dart';
+import 'package:nissay_401k/app/pages/dashboard/dashboard_style.dart';
+
+class DashboardHeroCard extends StatelessWidget {
+  const DashboardHeroCard({required this.data, super.key});
+
+  final NissayDashboard data;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            DashboardPalette.navy,
+            DashboardPalette.teal,
+          ],
+        ),
+        borderRadius: BorderRadius.circular(32),
+        boxShadow: [
+          BoxShadow(
+            color: DashboardPalette.navy.withValues(alpha: 0.22),
+            blurRadius: 32,
+            offset: const Offset(0, 18),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'ASSET OVERVIEW',
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: Colors.white.withValues(alpha: 0.72),
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.4,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              data.planName,
+              style: theme.textTheme.titleLarge?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                height: 1.2,
+              ),
+            ),
+            const SizedBox(height: 28),
+            Text(
+              '総資産評価額',
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: Colors.white.withValues(alpha: 0.76),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              formatDashboardCurrency(data.totalAsset),
+              style: theme.textTheme.displaySmall?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -1.4,
+              ),
+            ),
+            const SizedBox(height: 18),
+            _DashboardHeroMetaTile(
+              icon: Icons.trending_up_rounded,
+              label: '評価損益',
+              value: formatDashboardSignedCurrency(data.totalProfitLoss),
+              accent: dashboardValueColor(data.totalProfitLoss),
+            ),
+            const SizedBox(height: 12),
+            _DashboardHeroMetaTile(
+              icon: Icons.show_chart_rounded,
+              label: '利回り',
+              value: '${formatDashboardPercent(data.roi)}%',
+              accent: DashboardPalette.gold,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DashboardHeroMetaTile extends StatelessWidget {
+  const _DashboardHeroMetaTile({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.accent,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 42,
+            height: 42,
+            decoration: BoxDecoration(
+              color: accent.withValues(alpha: 0.18),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(icon, color: Colors.white),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: Colors.white.withValues(alpha: 0.72),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  value,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
