@@ -37,7 +37,7 @@ Color dashboardValueColor(int value) {
   if (value < 0) {
     return const Color(0xFFC25548);
   }
-  return DashboardPalette.ink.withValues(alpha: 0.52);
+  return DashboardPalette.ink;
 }
 
 String formatDashboardCurrency(int value) => _currencyFormat.format(value);
@@ -54,15 +54,3 @@ String formatDashboardDate(DateTime value) => dashboardDateFormat.format(value);
 String formatDashboardDateTime(DateTime value) => dashboardDateTimeFormat.format(value);
 
 String formatDashboardMonth(DateTime value) => dashboardMonthFormat.format(value);
-
-Color dashboardAllocationColor(int index) {
-  const colors = [
-    DashboardPalette.gold,
-    DashboardPalette.teal,
-    DashboardPalette.sky,
-    DashboardPalette.coral,
-    Color(0xFF6C8C7C),
-    Color(0xFF8B7AA8),
-  ];
-  return colors[index % colors.length];
-}

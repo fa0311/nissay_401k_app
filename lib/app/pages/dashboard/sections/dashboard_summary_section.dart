@@ -10,29 +10,6 @@ class DashboardSummarySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final summaryTiles = [
-      _DashboardSummaryTile(
-        icon: Icons.account_balance_wallet_outlined,
-        label: '拠出金額累計',
-        value: formatDashboardCurrency(data.totalContribution),
-      ),
-      _DashboardSummaryTile(
-        icon: Icons.savings_outlined,
-        label: '次回掛金額',
-        value: formatDashboardCurrency(data.contributionAmount),
-      ),
-      _DashboardSummaryTile(
-        icon: Icons.event_outlined,
-        label: '次回拠出日',
-        value: formatDashboardDate(data.contributionDate),
-      ),
-      _DashboardSummaryTile(
-        icon: Icons.schedule_outlined,
-        label: '照会日時',
-        value: formatDashboardDateTime(data.date),
-      ),
-    ];
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -41,30 +18,28 @@ class DashboardSummarySection extends StatelessWidget {
           title: 'サマリー',
         ),
         const SizedBox(height: 14),
-        LayoutBuilder(
-          builder: (context, constraints) {
-            const spacing = 12.0;
-            final columns = switch (constraints.maxWidth) {
-              >= 980 => 4,
-              >= 560 => 2,
-              _ => 1,
-            };
-            final tileWidth = columns == 1
-                ? constraints.maxWidth
-                : (constraints.maxWidth - (spacing * (columns - 1))) / columns;
-
-            return Wrap(
-              spacing: spacing,
-              runSpacing: spacing,
-              children: [
-                for (final tile in summaryTiles)
-                  SizedBox(
-                    width: tileWidth,
-                    child: tile,
-                  ),
-              ],
-            );
-          },
+        _DashboardSummaryTile(
+          icon: Icons.account_balance_wallet_outlined,
+          label: '拠出金額累計',
+          value: formatDashboardCurrency(data.totalContribution),
+        ),
+        const SizedBox(height: 14),
+        _DashboardSummaryTile(
+          icon: Icons.savings_outlined,
+          label: '次回掛金額',
+          value: formatDashboardCurrency(data.contributionAmount),
+        ),
+        const SizedBox(height: 14),
+        _DashboardSummaryTile(
+          icon: Icons.event_outlined,
+          label: '次回拠出日',
+          value: formatDashboardDate(data.contributionDate),
+        ),
+        const SizedBox(height: 14),
+        _DashboardSummaryTile(
+          icon: Icons.schedule_outlined,
+          label: '照会日時',
+          value: formatDashboardDateTime(data.date),
         ),
       ],
     );

@@ -50,20 +50,15 @@ class _DashboardHistoryCard extends StatelessWidget {
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: DashboardPalette.ink.withValues(alpha: 0.64),
               ),
-            )
-          else
-            Column(
-              children: [
-                for (var index = 0; index < entries.length; index++) ...[
-                  _DashboardHistoryRow(entry: entries[index]),
-                  if (index != entries.length - 1)
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      child: Divider(height: 1),
-                    ),
-                ],
-              ],
             ),
+          for (final entry in entries) ...[
+            _DashboardHistoryRow(entry: entry),
+            if (entry != entries.last)
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 12),
+                child: Divider(height: 1),
+              ),
+          ],
         ],
       ),
     );

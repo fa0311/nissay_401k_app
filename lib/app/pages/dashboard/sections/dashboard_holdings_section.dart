@@ -1,7 +1,9 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:nissay_401k/app/models/nissay_dashboard_model.dart';
 import 'package:nissay_401k/app/pages/dashboard/dashboard_style.dart';
 import 'package:nissay_401k/app/pages/dashboard/widgets/dashboard_shared_widgets.dart';
+import 'package:nissay_client/nissay_client.dart' as api;
 
 class DashboardHoldingsSection extends StatelessWidget {
   const DashboardHoldingsSection({
@@ -27,12 +29,11 @@ class DashboardHoldingsSection extends StatelessWidget {
           const DashboardEmptyCard(
             message: '保有商品の情報はまだありません。',
           ),
-        for (var index = 0; index < sortedHoldings.length; index++)
+        for (final holding in sortedHoldings)
           Padding(
             padding: const EdgeInsets.only(bottom: 16),
             child: _DashboardHoldingCard(
-              holding: sortedHoldings[index],
-              color: dashboardAllocationColor(index),
+              holding: holding,
             ),
           ),
       ],
@@ -43,15 +44,16 @@ class DashboardHoldingsSection extends StatelessWidget {
 class _DashboardHoldingCard extends StatelessWidget {
   const _DashboardHoldingCard({
     required this.holding,
-    required this.color,
   });
 
   final NissayDashboardHolding holding;
-  final Color color;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    final type = api.NissayOperationType.values.firstWhereOrNull((e) => e.label == holding.operationType);
+    final color = Color(type?.color ?? 0xFF888888);
 
     return DashboardGlassCard(
       child: Column(
@@ -63,13 +65,13 @@ class _DashboardHoldingCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.1),
+                  color: color.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
                   holding.operationType,
                   style: theme.textTheme.labelMedium?.copyWith(
-                    color: color,
+                    color: HSLColor.fromColor(color).withLightness(0.45).toColor(),
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -105,7 +107,7 @@ class _DashboardHoldingCard extends StatelessWidget {
                   icon: Icons.donut_small_rounded,
                   label: '資産比率',
                   value: '${formatDashboardPercent(holding.assetRatio)}%',
-                  color: color,
+                  color: DashboardPalette.teal,
                 ),
                 DashboardInfoChip(
                   icon: Icons.trending_up_rounded,

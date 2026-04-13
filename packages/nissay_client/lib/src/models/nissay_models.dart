@@ -107,3 +107,20 @@ abstract class NissayHistoricalAssetEntry with _$NissayHistoricalAssetEntry {
     required int totalProfitLoss,
   }) = _NissayHistoricalAssetEntry;
 }
+
+enum NissayOperationType {
+  deposit('預金(元本確保型)', 0xFF3c78b4),
+  insurance('保険(元本確保型)', 0xFF6ee1fe),
+  domesticBond('国内債券型', 0xFF6ebe5b),
+  foreignBond('外国債券型', 0xFFfae647),
+  domesticStock('国内株式型', 0xFFff8755),
+  foreignStock('外国株式型', 0xFF82ddb4),
+  balance('バランス型', 0xFFb48c4f),
+  pending('処理待機資金', 0xFFebebeb)
+  ;
+
+  const NissayOperationType(this.label, this.color);
+
+  final String label;
+  final int color;
+}
