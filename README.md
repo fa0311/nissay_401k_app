@@ -28,12 +28,10 @@
 <table>
   <tr>
     <td align="center">
-      <img src="./docs/screenshots/dashboard1.png" alt="ダッシュボード" width="220" /><br />
-      <b>ログイン</b>
+      <img src="./docs/screenshots/dashboard1.png" alt="ダッシュボード" width="220" />
     </td>
     <td align="center">
-      <img src="./docs/screenshots/dashboard2.png" alt="ダッシュボード" width="220" /><br />
-      <b>ダッシュボード</b>
+      <img src="./docs/screenshots/dashboard2.png" alt="ダッシュボード" width="220" />
     </td>
   </tr>
 </table>
