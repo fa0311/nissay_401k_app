@@ -1,0 +1,64 @@
+name: Android Release
+
+run-name: Android Release ${{ inputs.version }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (no leading v)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release-android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.41.6
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate launcher icons
+        run: dart run flutter_launcher_icons
+
+      - name: Run build_runner (root)
+        run: dart run build_runner build -d
+
+      - name: Run build_runner (packages/nissay_client)
+        working-directory: packages/nissay_client
+        run: dart run build_runner build -d
+
+      - name: Build Android APK
+        run: flutter build apk --release
+
+      - name: Prepare release asset
+        run: |
+          mkdir -p dist
+          cp build/app/outputs/flutter-apk/app-release.apk dist/nissay_401k-${{ inputs.version }}-android-release.apk
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.version }}
+          name: ${{ inputs.version }}
+          target_commitish: ${{ github.sha }}
+          generate_release_notes: true
+          files: dist/nissay_401k-${{ inputs.version }}-android-release.apk
