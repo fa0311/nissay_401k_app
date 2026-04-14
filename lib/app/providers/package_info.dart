@@ -4,6 +4,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'package_info.g.dart';
 
 @riverpod
-Future<PackageInfo> packageInfo(Ref ref) {
-  return PackageInfo.fromPlatform();
+PackageInfo packageInfo(Ref ref) {
+  throw UnimplementedError('packageInfoProvider is not implemented');
 }

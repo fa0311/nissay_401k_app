@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nissay_401k/app/models/nissay_dashboard_model.dart';
-import 'package:nissay_401k/app/pages/dashboard/dashboard_style.dart';
+import 'package:nissay_401k/app/ui/nissay_formatters.dart';
+import 'package:nissay_401k/app/ui/theme/app_gradients.dart';
+import 'package:nissay_401k/app/ui/theme/app_palette.dart';
 
 class DashboardHeroCard extends StatelessWidget {
   const DashboardHeroCard({required this.data, super.key});
@@ -13,18 +15,11 @@ class DashboardHeroCard extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            DashboardPalette.navy,
-            DashboardPalette.teal,
-          ],
-        ),
+        gradient: AppGradients.hero,
         borderRadius: BorderRadius.circular(32),
         boxShadow: [
           BoxShadow(
-            color: DashboardPalette.navy.withValues(alpha: 0.22),
+            color: AppPalette.navy.withValues(alpha: 0.22),
             blurRadius: 32,
             offset: const Offset(0, 18),
           ),
@@ -74,14 +69,14 @@ class DashboardHeroCard extends StatelessWidget {
               icon: Icons.trending_up_rounded,
               label: '評価損益',
               value: formatDashboardSignedCurrency(data.totalProfitLoss),
-              accent: dashboardValueColor(data.totalProfitLoss),
+              accent: appValueColor(data.totalProfitLoss),
             ),
             const SizedBox(height: 12),
             _DashboardHeroMetaTile(
               icon: Icons.show_chart_rounded,
               label: '利回り',
               value: '${formatDashboardPercent(data.roi)}%',
-              accent: DashboardPalette.gold,
+              accent: AppPalette.gold,
             ),
           ],
         ),

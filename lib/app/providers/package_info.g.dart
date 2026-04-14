@@ -13,13 +13,8 @@ part of 'package_info.dart';
 final packageInfoProvider = PackageInfoProvider._();
 
 final class PackageInfoProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<PackageInfo>,
-          PackageInfo,
-          FutureOr<PackageInfo>
-        >
-    with $FutureModifier<PackageInfo>, $FutureProvider<PackageInfo> {
+    extends $FunctionalProvider<PackageInfo, PackageInfo, PackageInfo>
+    with $Provider<PackageInfo> {
   PackageInfoProvider._()
     : super(
         from: null,
@@ -36,14 +31,21 @@ final class PackageInfoProvider
 
   @$internal
   @override
-  $FutureProviderElement<PackageInfo> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
+  $ProviderElement<PackageInfo> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
-  FutureOr<PackageInfo> create(Ref ref) {
+  PackageInfo create(Ref ref) {
     return packageInfo(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(PackageInfo value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<PackageInfo>(value),
+    );
   }
 }
 
-String _$packageInfoHash() => r'fa7b5c86cf20000b7b73a545cdb68853c01e0ac1';
+String _$packageInfoHash() => r'0d658d37450b3fcb8f4c3d3e32bbf009db1bd126';

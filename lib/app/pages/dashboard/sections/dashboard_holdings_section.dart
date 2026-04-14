@@ -1,8 +1,12 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:nissay_401k/app/models/nissay_dashboard_model.dart';
-import 'package:nissay_401k/app/pages/dashboard/dashboard_style.dart';
-import 'package:nissay_401k/app/pages/dashboard/widgets/dashboard_shared_widgets.dart';
+import 'package:nissay_401k/app/ui/components/app_metric_chip.dart';
+import 'package:nissay_401k/app/ui/components/app_section_header.dart';
+import 'package:nissay_401k/app/ui/components/app_status_card.dart';
+import 'package:nissay_401k/app/ui/components/app_surface_card.dart';
+import 'package:nissay_401k/app/ui/nissay_formatters.dart';
+import 'package:nissay_401k/app/ui/theme/app_palette.dart';
 import 'package:nissay_client/nissay_client.dart' as api;
 
 class DashboardHoldingsSection extends StatelessWidget {
@@ -20,14 +24,15 @@ class DashboardHoldingsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const DashboardSectionHeader(
+        const AppSectionHeader(
           eyebrow: 'HOLDINGS',
           title: '現在の資産',
         ),
         const SizedBox(height: 14),
         if (sortedHoldings.isEmpty)
-          const DashboardEmptyCard(
-            message: '保有商品の情報はまだありません。',
+          const AppStatusCard(
+            title: '保有商品の情報はまだありません',
+            message: '資産の内訳が取得できると、ここに商品ごとの状況が表示されます。',
           ),
         for (final holding in sortedHoldings)
           Padding(
@@ -55,7 +60,7 @@ class _DashboardHoldingCard extends StatelessWidget {
     final type = api.NissayOperationType.values.firstWhereOrNull((e) => e.label == holding.operationType);
     final color = Color(type?.color ?? 0xFF888888);
 
-    return DashboardGlassCard(
+    return AppSurfaceCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -81,7 +86,7 @@ class _DashboardHoldingCard extends StatelessWidget {
                 child: Text(
                   holding.productName,
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: DashboardPalette.ink,
+                    color: AppPalette.ink,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -90,7 +95,7 @@ class _DashboardHoldingCard extends StatelessWidget {
               Text(
                 formatDashboardCurrency(holding.totalAsset),
                 style: theme.textTheme.titleMedium?.copyWith(
-                  color: DashboardPalette.ink,
+                  color: AppPalette.ink,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -103,23 +108,23 @@ class _DashboardHoldingCard extends StatelessWidget {
             child: Row(
               spacing: 12,
               children: [
-                DashboardInfoChip(
+                AppMetricChip(
                   icon: Icons.donut_small_rounded,
                   label: '資産比率',
                   value: '${formatDashboardPercent(holding.assetRatio)}%',
-                  color: DashboardPalette.teal,
+                  color: AppPalette.teal,
                 ),
-                DashboardInfoChip(
+                AppMetricChip(
                   icon: Icons.trending_up_rounded,
                   label: '評価損益',
                   value: formatDashboardSignedCurrency(holding.profitLoss),
-                  color: dashboardValueColor(holding.profitLoss),
+                  color: appValueColor(holding.profitLoss),
                 ),
-                DashboardInfoChip(
+                AppMetricChip(
                   icon: Icons.savings_outlined,
                   label: '次回掛金配分',
                   value: '${formatDashboardPercent(holding.nextContributionRatio ?? 0)}%',
-                  color: DashboardPalette.sky,
+                  color: AppPalette.sky,
                 ),
               ],
             ),

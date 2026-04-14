@@ -98,6 +98,10 @@ class NissayRepository {
     }
   }
 
+  Future<void> logout() async {
+    await _dio.get<void>('/dmckanyusha/transactions/menu_logout?reason_code=1299');
+  }
+
   Future<Document> fetch(String path) async {
     final response = await _dio.get<String>(
       path,

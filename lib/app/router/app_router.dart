@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nissay_401k/app/pages/dashboard/dashboard_page.dart';
-import 'package:nissay_401k/app/pages/login_page.dart';
-import 'package:nissay_401k/app/pages/splash_page.dart';
-import 'package:nissay_401k/app/pages/user_page.dart';
-import 'package:nissay_401k/app/pages/webview_page.dart';
+import 'package:nissay_401k/app/pages/login/login_page.dart';
+import 'package:nissay_401k/app/pages/splash/splash_page.dart';
+import 'package:nissay_401k/app/pages/user/user_page.dart';
+import 'package:nissay_401k/app/pages/webview/webview_page.dart';
 import 'package:nissay_401k/app/providers/logger.dart';
 import 'package:nissay_401k/app/router/app_route_paths.dart';
 import 'package:nissay_401k/app/router/session_route_guard.dart';
+import 'package:nissay_401k/app/ui/navigation/app_shell_navigation_bar.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
@@ -133,8 +134,9 @@ class _AuthenticatedShellScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: navigationShell,
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: AppShellNavigationBar(
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: (index) {
           navigationShell.goBranch(
@@ -142,23 +144,6 @@ class _AuthenticatedShellScaffold extends StatelessWidget {
             initialLocation: index == navigationShell.currentIndex,
           );
         },
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.space_dashboard_outlined),
-            selectedIcon: Icon(Icons.space_dashboard_rounded),
-            label: 'Dashboard',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.public_outlined),
-            selectedIcon: Icon(Icons.public_rounded),
-            label: 'Web',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline_rounded),
-            selectedIcon: Icon(Icons.person_rounded),
-            label: 'User',
-          ),
-        ],
       ),
     );
   }

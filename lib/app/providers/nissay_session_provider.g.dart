@@ -67,7 +67,7 @@ final class NissaySessionProvider
   NissaySession create() => NissaySession();
 }
 
-String _$nissaySessionHash() => r'6adefb7c7acb64f3aa5488cc540dc40c1ce7427a';
+String _$nissaySessionHash() => r'85c35ab07755bec4d27832e8d5628f97f7856e59';
 
 abstract class _$NissaySession extends $AsyncNotifier<AuthState?> {
   FutureOr<AuthState?> build();

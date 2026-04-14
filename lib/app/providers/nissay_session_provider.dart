@@ -68,20 +68,28 @@ class NissaySession extends _$NissaySession {
 
   Future<void> logout() async {
     final logger = ref.read(loggerProvider);
-    final cookieJar = await ref.read(nissayCookieJarProvider.future);
-    await cookieJar.deleteAll();
-    await ref.read(authStorageProvider.notifier).clear();
-    ref.invalidate(nissayRepositoryProvider);
-    state = const AsyncData(null);
+    state = await AsyncValue.guard(() async {
+      final repository = await ref.read(nissayRepositoryProvider.future);
+      await repository.logout();
+      final cookieJar = await ref.read(nissayCookieJarProvider.future);
+      await cookieJar.deleteAll();
+      await ref.read(authStorageProvider.notifier).clear();
+      ref.invalidate(nissayRepositoryProvider);
+      return null;
+    });
     logger.info('Logout completed');
   }
 
   Future<void> refresh() async {
     final logger = ref.read(loggerProvider);
-    final cookieJar = await ref.read(nissayCookieJarProvider.future);
-    await cookieJar.deleteAll();
-    ref.invalidate(nissayRepositoryProvider);
-    state = await AsyncValue.guard(() => ref.read(authStorageProvider.future));
+    state = await AsyncValue.guard(() async {
+      final repository = await ref.read(nissayRepositoryProvider.future);
+      await repository.logout();
+      final cookieJar = await ref.read(nissayCookieJarProvider.future);
+      await cookieJar.deleteAll();
+      ref.invalidate(nissayRepositoryProvider);
+      return ref.read(authStorageProvider.future);
+    });
     if (state case AsyncData()) {
       logger.info('Session refresh completed');
       return;

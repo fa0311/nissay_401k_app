@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:nissay_401k/app/models/nissay_dashboard_model.dart';
-import 'package:nissay_401k/app/pages/dashboard/dashboard_style.dart';
-import 'package:nissay_401k/app/pages/dashboard/widgets/dashboard_shared_widgets.dart';
+import 'package:nissay_401k/app/ui/components/app_metric_chip.dart';
+import 'package:nissay_401k/app/ui/components/app_section_header.dart';
+import 'package:nissay_401k/app/ui/components/app_status_card.dart';
+import 'package:nissay_401k/app/ui/components/app_surface_card.dart';
+import 'package:nissay_401k/app/ui/nissay_formatters.dart';
+import 'package:nissay_401k/app/ui/theme/app_palette.dart';
 
 class DashboardHistorySection extends StatelessWidget {
   const DashboardHistorySection({
@@ -18,7 +22,7 @@ class DashboardHistorySection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const DashboardSectionHeader(
+        const AppSectionHeader(
           eyebrow: 'HISTORY',
           title: '資産推移',
         ),
@@ -38,19 +42,17 @@ class _DashboardHistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    if (entries.isEmpty) {
+      return const AppStatusCard(
+        title: '履歴はまだありません',
+        message: '資産推移が取得できると、ここに時系列で表示されます。',
+      );
+    }
 
-    return DashboardGlassCard(
+    return AppSurfaceCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (entries.isEmpty)
-            Text(
-              '履歴はまだありません。',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: DashboardPalette.ink.withValues(alpha: 0.64),
-              ),
-            ),
           for (final entry in entries) ...[
             _DashboardHistoryRow(entry: entry),
             if (entry != entries.last)
@@ -80,7 +82,7 @@ class _DashboardHistoryRow extends StatelessWidget {
         Text(
           formatDashboardMonth(entry.date),
           style: theme.textTheme.titleMedium?.copyWith(
-            color: DashboardPalette.ink,
+            color: AppPalette.ink,
             fontWeight: FontWeight.w800,
           ),
         ),
@@ -91,23 +93,23 @@ class _DashboardHistoryRow extends StatelessWidget {
           child: Row(
             spacing: 12,
             children: [
-              DashboardInfoChip(
+              AppMetricChip(
                 icon: Icons.account_balance_wallet_outlined,
                 label: '総資産',
                 value: formatDashboardCurrency(entry.totalAsset),
-                color: DashboardPalette.teal,
+                color: AppPalette.teal,
               ),
-              DashboardInfoChip(
+              AppMetricChip(
                 icon: Icons.savings_outlined,
                 label: '拠出累計',
                 value: formatDashboardCurrency(entry.totalContribution),
-                color: DashboardPalette.sky,
+                color: AppPalette.sky,
               ),
-              DashboardInfoChip(
+              AppMetricChip(
                 icon: Icons.trending_up_rounded,
                 label: '評価損益',
                 value: formatDashboardSignedCurrency(entry.totalProfitLoss),
-                color: dashboardValueColor(entry.totalProfitLoss),
+                color: appValueColor(entry.totalProfitLoss),
               ),
             ],
           ),

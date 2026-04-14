@@ -12,20 +12,16 @@ class DashboardLoadedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          DashboardHeroCard(data: data),
-          const SizedBox(height: 24),
-          DashboardSummarySection(data: data),
-          const SizedBox(height: 32),
-          DashboardHoldingsSection(holdings: data.holdings),
-          const SizedBox(height: 32),
-          DashboardHistorySection(entries: data.historyEntries),
-        ],
-      ),
+    return Column(
+      children: [
+        DashboardHeroCard(data: data),
+        const SizedBox(height: 24),
+        DashboardSummarySection(data: data),
+        const SizedBox(height: 32),
+        DashboardHoldingsSection(holdings: data.holdings),
+        const SizedBox(height: 32),
+        DashboardHistorySection(entries: data.historyEntries),
+      ],
     );
   }
 }

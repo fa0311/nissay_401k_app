@@ -10,7 +10,10 @@ import 'package:nissay_401k/app/models/nissay_dashboard_model.dart';
 import 'package:nissay_401k/app/providers/logger.dart';
 import 'package:nissay_401k/app/providers/nissay_dashboard_provider.dart';
 import 'package:nissay_401k/app/providers/nissay_session_provider.dart';
+import 'package:nissay_401k/app/providers/package_info.dart';
 import 'package:nissay_401k/app/router/app_router.dart';
+import 'package:nissay_401k/app/ui/theme/app_theme.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 Future<void> main() async {
@@ -51,6 +54,7 @@ Future<void> main() async {
   };
 
   await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
+  final packageInfo = await PackageInfo.fromPlatform();
 
   runApp(
     ProviderScope(
@@ -60,6 +64,7 @@ Future<void> main() async {
           nissayDashboardProvider.overrideWith((_) => NissayDashboard.mock()),
           nissaySessionCheckProvider.overrideWith((_) => null),
         ],
+        packageInfoProvider.overrideWithValue(packageInfo),
       ],
       observers: [
         _AppProviderObserver(talker),
@@ -78,10 +83,9 @@ class Nissay401kApp extends ConsumerWidget {
     final router = ref.watch(appRouterProvider);
 
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       title: 'NISSAY 401k',
-      theme: ThemeData(
-        useMaterial3: true,
-      ),
+      theme: buildAppTheme(),
       routerConfig: router,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,

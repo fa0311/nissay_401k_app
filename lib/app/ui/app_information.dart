@@ -1,7 +1,8 @@
 // This file intentionally uses a compile-time flag to show the current app mode.
 
 import 'package:flutter/material.dart';
-import 'package:nissay_401k/app/pages/dashboard/dashboard_style.dart';
+import 'package:nissay_401k/app/ui/theme/app_gradients.dart';
+import 'package:nissay_401k/app/ui/theme/app_palette.dart';
 
 class ApplicationBadge extends StatelessWidget {
   const ApplicationBadge({
@@ -18,17 +19,10 @@ class ApplicationBadge extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(size * 0.28),
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            DashboardPalette.navy,
-            DashboardPalette.teal,
-          ],
-        ),
+        gradient: AppGradients.hero,
         boxShadow: [
           BoxShadow(
-            color: DashboardPalette.navy.withValues(alpha: 0.18),
+            color: AppPalette.navy.withValues(alpha: 0.18),
             blurRadius: 18,
             offset: const Offset(0, 8),
           ),
