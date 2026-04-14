@@ -5,7 +5,7 @@ import 'package:nissay_401k/app/ui/theme/app_palette.dart';
 class AppLogo extends StatelessWidget {
   const AppLogo({
     super.key,
-    this.size = 44,
+    this.size = 72,
   });
 
   final double size;
@@ -15,7 +15,7 @@ class AppLogo extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 100),
-        const Center(child: ApplicationBadge(size: 72)),
+        Center(child: ApplicationBadge(size: size)),
         const SizedBox(height: 20),
         Text(
           'NISSAY 401k',

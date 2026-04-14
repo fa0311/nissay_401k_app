@@ -1,8 +1,9 @@
 // This file intentionally uses a compile-time flag to show the current app mode.
 
 import 'package:flutter/material.dart';
-import 'package:nissay_401k/app/ui/theme/app_gradients.dart';
 import 'package:nissay_401k/app/ui/theme/app_palette.dart';
+
+const _applicationIconAssetPath = 'assets/branding/app_icon_foreground.png';
 
 class ApplicationBadge extends StatelessWidget {
   const ApplicationBadge({
@@ -14,24 +15,33 @@ class ApplicationBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final borderRadius = BorderRadius.circular(size * 0.28);
+
     return Container(
       width: size,
       height: size,
+      padding: EdgeInsets.all(size * 0.08),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(size * 0.28),
-        gradient: AppGradients.hero,
+        color: Colors.white,
+        borderRadius: borderRadius,
+        border: Border.all(
+          color: AppPalette.ink.withValues(alpha: 0.08),
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppPalette.navy.withValues(alpha: 0.18),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
+            color: AppPalette.navy.withValues(alpha: 0.12),
+            blurRadius: size * 0.24,
+            offset: Offset(0, size * 0.1),
           ),
         ],
       ),
-      child: Icon(
-        Icons.account_balance_wallet_rounded,
-        color: Colors.white,
-        size: size * 0.48,
+      child: ClipRRect(
+        borderRadius: borderRadius,
+        child: Image.asset(
+          _applicationIconAssetPath,
+          fit: BoxFit.contain,
+          filterQuality: FilterQuality.high,
+        ),
       ),
     );
   }
