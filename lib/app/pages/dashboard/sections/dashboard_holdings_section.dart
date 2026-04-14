@@ -56,6 +56,7 @@ class _DashboardHoldingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final formatter = DashboardFormatter();
 
     final type = api.NissayOperationType.values.firstWhereOrNull((e) => e.label == holding.operationType);
     final color = Color(type?.color ?? 0xFF888888);
@@ -93,7 +94,7 @@ class _DashboardHoldingCard extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Text(
-                formatDashboardCurrency(holding.totalAsset),
+                formatter.toCurrency(holding.totalAsset),
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: AppPalette.ink,
                   fontWeight: FontWeight.w800,
@@ -111,19 +112,19 @@ class _DashboardHoldingCard extends StatelessWidget {
                 AppMetricChip(
                   icon: Icons.donut_small_rounded,
                   label: '資産比率',
-                  value: '${formatDashboardPercent(holding.assetRatio)}%',
+                  value: formatter.toPercent(holding.assetRatio),
                   color: AppPalette.teal,
                 ),
                 AppMetricChip(
                   icon: Icons.trending_up_rounded,
                   label: '評価損益',
-                  value: formatDashboardSignedCurrency(holding.profitLoss),
+                  value: formatter.toSignedCurrency(holding.profitLoss),
                   color: appValueColor(holding.profitLoss),
                 ),
                 AppMetricChip(
                   icon: Icons.savings_outlined,
                   label: '次回掛金配分',
-                  value: '${formatDashboardPercent(holding.nextContributionRatio ?? 0)}%',
+                  value: formatter.toPercent(holding.nextContributionRatio ?? 0),
                   color: AppPalette.sky,
                 ),
               ],

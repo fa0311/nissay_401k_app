@@ -75,12 +75,13 @@ class _DashboardHistoryRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final formatter = DashboardFormatter();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          formatDashboardMonth(entry.date),
+          formatter.toMonth(entry.date),
           style: theme.textTheme.titleMedium?.copyWith(
             color: AppPalette.ink,
             fontWeight: FontWeight.w800,
@@ -96,19 +97,19 @@ class _DashboardHistoryRow extends StatelessWidget {
               AppMetricChip(
                 icon: Icons.account_balance_wallet_outlined,
                 label: '総資産',
-                value: formatDashboardCurrency(entry.totalAsset),
+                value: formatter.toCurrency(entry.totalAsset),
                 color: AppPalette.teal,
               ),
               AppMetricChip(
                 icon: Icons.savings_outlined,
                 label: '拠出累計',
-                value: formatDashboardCurrency(entry.totalContribution),
+                value: formatter.toCurrency(entry.totalContribution),
                 color: AppPalette.sky,
               ),
               AppMetricChip(
                 icon: Icons.trending_up_rounded,
                 label: '評価損益',
-                value: formatDashboardSignedCurrency(entry.totalProfitLoss),
+                value: formatter.toSignedCurrency(entry.totalProfitLoss),
                 color: appValueColor(entry.totalProfitLoss),
               ),
             ],

@@ -11,6 +11,8 @@ class DashboardSummarySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formatter = DashboardFormatter();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -22,25 +24,25 @@ class DashboardSummarySection extends StatelessWidget {
         AppOverviewTile(
           icon: Icons.account_balance_wallet_outlined,
           label: '拠出金額累計',
-          value: formatDashboardCurrency(data.totalContribution),
+          value: formatter.toCurrency(data.totalContribution),
         ),
         const SizedBox(height: 14),
         AppOverviewTile(
           icon: Icons.savings_outlined,
           label: '次回掛金額',
-          value: formatDashboardCurrency(data.contributionAmount),
+          value: formatter.toCurrency(data.contributionAmount),
         ),
         const SizedBox(height: 14),
         AppOverviewTile(
           icon: Icons.event_outlined,
           label: '次回拠出日',
-          value: formatDashboardDate(data.contributionDate),
+          value: formatter.toDate(data.contributionDate),
         ),
         const SizedBox(height: 14),
         AppOverviewTile(
           icon: Icons.schedule_outlined,
           label: '照会日時',
-          value: formatDashboardDateTime(data.date),
+          value: formatter.toDateTime(data.date),
         ),
       ],
     );

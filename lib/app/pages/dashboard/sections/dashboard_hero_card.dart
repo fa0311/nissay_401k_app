@@ -12,6 +12,7 @@ class DashboardHeroCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final formatter = DashboardFormatter();
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -57,7 +58,7 @@ class DashboardHeroCard extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              formatDashboardCurrency(data.totalAsset),
+              formatter.toCurrency(data.totalAsset),
               style: theme.textTheme.displaySmall?.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.w800,
@@ -68,14 +69,14 @@ class DashboardHeroCard extends StatelessWidget {
             _DashboardHeroMetaTile(
               icon: Icons.trending_up_rounded,
               label: '評価損益',
-              value: formatDashboardSignedCurrency(data.totalProfitLoss),
+              value: formatter.toSignedCurrency(data.totalProfitLoss),
               accent: appValueColor(data.totalProfitLoss),
             ),
             const SizedBox(height: 12),
             _DashboardHeroMetaTile(
               icon: Icons.show_chart_rounded,
               label: '利回り',
-              value: '${formatDashboardPercent(data.roi)}%',
+              value: formatter.toPercent(data.roi),
               accent: AppPalette.gold,
             ),
           ],

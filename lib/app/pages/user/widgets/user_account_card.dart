@@ -15,6 +15,7 @@ class UserAccountCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final formatter = DashboardFormatter();
 
     return AppSurfaceCard(
       child: Column(
@@ -80,7 +81,7 @@ class UserAccountCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        formatDashboardDateTime(data.lastLogin),
+                        formatter.toDateTime(data.lastLogin),
                         style: theme.textTheme.titleMedium?.copyWith(
                           color: AppPalette.ink,
                           fontWeight: FontWeight.w800,
