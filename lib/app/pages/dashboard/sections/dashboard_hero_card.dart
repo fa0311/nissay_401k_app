@@ -112,15 +112,7 @@ class _DashboardHeroMetaTile extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: accent.withValues(alpha: 0.18),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Icon(icon, color: Colors.white),
-          ),
+          _DashboardHeroIconBadge(icon: icon, color: accent),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -145,6 +137,31 @@ class _DashboardHeroMetaTile extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _DashboardHeroIconBadge extends StatelessWidget {
+  const _DashboardHeroIconBadge({
+    required this.icon,
+    required this.color,
+  });
+
+  final IconData icon;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 42,
+      height: 42,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.18),
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Icon(icon, color: Colors.white),
       ),
     );
   }

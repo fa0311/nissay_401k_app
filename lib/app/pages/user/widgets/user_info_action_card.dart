@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nissay_401k/app/constants/github_links.dart';
 import 'package:nissay_401k/app/pages/debug_log/debug_log_page.dart';
-import 'package:nissay_401k/app/pages/user/widgets/user_leading_badge.dart';
 import 'package:nissay_401k/app/providers/package_info.dart';
 import 'package:nissay_401k/app/ui/app_information.dart';
+import 'package:nissay_401k/app/ui/components/app_icon_badge.dart';
 import 'package:nissay_401k/app/ui/components/app_surface_card.dart';
 import 'package:nissay_401k/app/ui/theme/app_palette.dart';
 import 'package:nissay_401k/app/utils/launch_url.dart';
@@ -91,7 +91,7 @@ class UserInfoActionCard extends ConsumerWidget {
             icon: Icons.new_releases_outlined,
             iconColor: AppPalette.coral,
             title: 'リリース',
-            description: '最新のリリース情報をGitHubで確認します。 ',
+            description: '最新のリリース情報をGitHubで確認します。',
             onTap: () async {
               await UrlLauncher.of(context).safeLaunch(appGithubReleasesUri);
             },
@@ -169,7 +169,7 @@ class _UserMenuRow extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              UserLeadingBadge(icon: icon, color: iconColor),
+              AppIconBadge(icon: icon, color: iconColor),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(

@@ -2,21 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nissay_401k/app/hooks/single_action_guard.dart';
-import 'package:nissay_401k/app/pages/user/widgets/user_leading_badge.dart';
-import 'package:nissay_401k/app/providers/auth.dart';
 import 'package:nissay_401k/app/providers/logger.dart';
 import 'package:nissay_401k/app/providers/nissay_session_provider.dart';
+import 'package:nissay_401k/app/ui/components/app_icon_badge.dart';
 import 'package:nissay_401k/app/ui/components/app_surface_card.dart';
 import 'package:nissay_401k/app/ui/theme/app_palette.dart';
 import 'package:nissay_401k/app/utils/scaffold_messenger.dart';
 
 class UserSessionCard extends ConsumerWidget {
-  const UserSessionCard({
-    required this.session,
-    super.key,
-  });
-
-  final AsyncValue<AuthState?> session;
+  const UserSessionCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,14 +25,6 @@ class UserSessionCard extends ConsumerWidget {
             style: theme.textTheme.titleMedium?.copyWith(
               color: AppPalette.ink,
               fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            'この端末に保存されている認証情報の状態と、利用できる操作を確認できます。',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppPalette.ink.withValues(alpha: 0.72),
-              height: 1.5,
             ),
           ),
           const Padding(
@@ -134,7 +120,7 @@ class _UserSessionActionRow extends HookWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              UserLeadingBadge(icon: icon, color: iconColor),
+              AppIconBadge(icon: icon, color: iconColor),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(

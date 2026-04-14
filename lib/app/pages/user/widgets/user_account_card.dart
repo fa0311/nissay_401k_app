@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nissay_401k/app/models/nissay_dashboard_model.dart';
+import 'package:nissay_401k/app/ui/components/app_icon_badge.dart';
 import 'package:nissay_401k/app/ui/components/app_surface_card.dart';
 import 'package:nissay_401k/app/ui/nissay_formatters.dart';
 import 'package:nissay_401k/app/ui/theme/app_palette.dart';
@@ -55,17 +56,9 @@ class UserAccountCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: AppPalette.sky.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: const Icon(
-                    Icons.schedule_rounded,
-                    color: AppPalette.sky,
-                  ),
+                const AppIconBadge(
+                  icon: Icons.schedule_rounded,
+                  color: AppPalette.sky,
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -85,14 +78,6 @@ class UserAccountCard extends StatelessWidget {
                         style: theme.textTheme.titleMedium?.copyWith(
                           color: AppPalette.ink,
                           fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '最後にログインした日時です。',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppPalette.ink.withValues(alpha: 0.6),
-                          height: 1.4,
                         ),
                       ),
                     ],

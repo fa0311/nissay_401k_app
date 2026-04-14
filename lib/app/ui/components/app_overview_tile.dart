@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nissay_401k/app/ui/components/app_icon_badge.dart';
 import 'package:nissay_401k/app/ui/components/app_surface_card.dart';
 import 'package:nissay_401k/app/ui/theme/app_palette.dart';
 
@@ -23,15 +24,7 @@ class AppOverviewTile extends StatelessWidget {
     return AppSurfaceCard(
       child: Row(
         children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: accentColor.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Icon(icon, color: accentColor),
-          ),
+          AppIconBadge(icon: icon, color: accentColor),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

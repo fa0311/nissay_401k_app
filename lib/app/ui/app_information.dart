@@ -1,5 +1,3 @@
-// This file intentionally uses a compile-time flag to show the current app mode.
-
 import 'package:flutter/material.dart';
 import 'package:nissay_401k/app/ui/theme/app_palette.dart';
 

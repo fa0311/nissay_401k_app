@@ -1,8 +1,6 @@
 import 'package:intl/intl.dart';
 
 class DashboardFormatter {
-  DashboardFormatter();
-
   final _currencyFormat = NumberFormat.currency(
     locale: 'ja_JP',
     symbol: '¥',

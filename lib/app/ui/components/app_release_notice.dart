@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nissay_401k/app/constants/github_links.dart';
 import 'package:nissay_401k/app/providers/github_release_provider.dart';
 import 'package:nissay_401k/app/providers/package_info.dart';
+import 'package:nissay_401k/app/ui/components/app_icon_badge.dart';
 import 'package:nissay_401k/app/ui/components/app_surface_card.dart';
 import 'package:nissay_401k/app/ui/theme/app_palette.dart';
 import 'package:nissay_401k/app/utils/launch_url.dart';
@@ -99,17 +100,9 @@ class _ReleaseNoticeAction extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: AppPalette.coral.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: const Icon(
-                    Icons.new_releases_outlined,
-                    color: AppPalette.coral,
-                  ),
+                const AppIconBadge(
+                  icon: Icons.new_releases_outlined,
+                  color: AppPalette.coral,
                 ),
                 const SizedBox(width: 12),
                 Expanded(

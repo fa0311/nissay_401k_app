@@ -4,7 +4,6 @@ import 'package:nissay_401k/app/pages/user/widgets/user_account_card.dart';
 import 'package:nissay_401k/app/pages/user/widgets/user_info_action_card.dart';
 import 'package:nissay_401k/app/pages/user/widgets/user_session_card.dart';
 import 'package:nissay_401k/app/providers/nissay_dashboard_provider.dart';
-import 'package:nissay_401k/app/providers/nissay_session_provider.dart';
 import 'package:nissay_401k/app/ui/components/app_section_header.dart';
 import 'package:nissay_401k/app/ui/components/app_status_card.dart';
 import 'package:nissay_401k/app/ui/layout/app_page_scaffold.dart';
@@ -15,7 +14,6 @@ class UserPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dashboard = ref.watch(nissayDashboardProvider);
-    final session = ref.watch(nissaySessionProvider);
 
     return AppPageScaffold(
       appBar: const AppPageAppBar(title: 'User'),
@@ -43,7 +41,7 @@ class UserPage extends ConsumerWidget {
             title: 'セッション',
           ),
           const SizedBox(height: 14),
-          UserSessionCard(session: session),
+          const UserSessionCard(),
           const SizedBox(height: 32),
           const AppSectionHeader(
             eyebrow: 'APP',

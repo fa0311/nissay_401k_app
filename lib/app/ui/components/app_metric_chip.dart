@@ -31,12 +31,13 @@ class AppMetricChip extends StatelessWidget {
           Icon(icon, size: 18, color: color),
           const SizedBox(width: 8),
           Text(
-            '$label  ',
+            label,
             style: theme.textTheme.labelMedium?.copyWith(
               color: AppPalette.ink.withValues(alpha: 0.64),
               fontWeight: FontWeight.w600,
             ),
           ),
+          const SizedBox(width: 6),
           Text(
             value,
             style: theme.textTheme.labelLarge?.copyWith(
