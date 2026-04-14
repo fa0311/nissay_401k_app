@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nissay_401k/app/hooks/single_action_guard.dart';
 import 'package:nissay_401k/app/pages/dashboard/dashboard_content.dart';
 import 'package:nissay_401k/app/providers/nissay_dashboard_provider.dart';
+import 'package:nissay_401k/app/ui/components/app_release_notice.dart';
 import 'package:nissay_401k/app/ui/layout/app_page_scaffold.dart';
 
 class DashboardPage extends ConsumerWidget {
@@ -21,8 +22,13 @@ class DashboardPage extends ConsumerWidget {
           appBar: const AppPageAppBar(
             title: 'Dashboard',
           ),
-          body: DashboardLoadedView(
-            data: value,
+          body: Column(
+            children: [
+              const AppReleaseNotice(),
+              DashboardLoadedView(
+                data: value,
+              ),
+            ],
           ),
         ),
       ),

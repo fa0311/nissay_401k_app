@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nissay_401k/app/constants/github_links.dart';
 import 'package:nissay_401k/app/hooks/single_action_guard.dart';
 import 'package:nissay_401k/app/providers/package_info.dart';
 import 'package:nissay_401k/app/ui/components/app_surface_card.dart';
@@ -9,8 +10,6 @@ import 'package:nissay_401k/app/utils/launch_url.dart';
 import 'package:nissay_401k/app/utils/package_info.dart';
 import 'package:nissay_401k/app/utils/scaffold_messenger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-
-final _githubIssueBaseUri = Uri.https('github.com', '/fa0311/nissay_401k/issues/new');
 
 class AppPageError extends ConsumerWidget {
   const AppPageError({
@@ -120,7 +119,7 @@ class AppPageError extends ConsumerWidget {
                   ),
                   OutlinedButton.icon(
                     onPressed: () async {
-                      await UrlLauncher.of(context).safeLaunch(_githubIssueBaseUri);
+                      await UrlLauncher.of(context).safeLaunch(appGithubIssueBaseUri);
                     },
                     icon: const Icon(Icons.open_in_new_rounded),
                     label: const Text('GitHub'),

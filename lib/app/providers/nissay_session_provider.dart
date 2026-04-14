@@ -67,7 +67,6 @@ class NissaySession extends _$NissaySession {
   }
 
   Future<void> logout() async {
-    final logger = ref.read(loggerProvider);
     state = await AsyncValue.guard(() async {
       final repository = await ref.read(nissayRepositoryProvider.future);
       await repository.logout();
@@ -77,11 +76,10 @@ class NissaySession extends _$NissaySession {
       ref.invalidate(nissayRepositoryProvider);
       return null;
     });
-    logger.info('Logout completed');
+    await _throwIfError();
   }
 
   Future<void> refresh() async {
-    final logger = ref.read(loggerProvider);
     state = await AsyncValue.guard(() async {
       final repository = await ref.read(nissayRepositoryProvider.future);
       await repository.logout();
@@ -90,6 +88,11 @@ class NissaySession extends _$NissaySession {
       ref.invalidate(nissayRepositoryProvider);
       return ref.read(authStorageProvider.future);
     });
+    await _throwIfError();
+  }
+
+  Future<void> _throwIfError() async {
+    final logger = ref.read(loggerProvider);
     if (state case AsyncData()) {
       logger.info('Session refresh completed');
       return;

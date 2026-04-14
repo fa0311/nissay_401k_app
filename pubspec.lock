@@ -493,6 +493,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  github:
+    dependency: "direct main"
+    description:
+      name: github
+      sha256: c88cd9f11e131a05b1910e1c742c80e6dc7708701884d1fcf28147fc95933aa8
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.25.0"
   glob:
     dependency: transitive
     description:
@@ -846,7 +854,7 @@ packages:
     source: hosted
     version: "6.5.0"
   pub_semver:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: pub_semver
       sha256: "5bfcf68ca79ef689f8990d1160781b4bad40a3bd5e5218ad4076ddb7f4081585"

@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nissay_401k/app/constants/github_links.dart';
 import 'package:nissay_401k/app/pages/debug_log/debug_log_page.dart';
 import 'package:nissay_401k/app/pages/user/widgets/user_leading_badge.dart';
 import 'package:nissay_401k/app/providers/package_info.dart';
 import 'package:nissay_401k/app/ui/app_information.dart';
 import 'package:nissay_401k/app/ui/components/app_surface_card.dart';
 import 'package:nissay_401k/app/ui/theme/app_palette.dart';
+import 'package:nissay_401k/app/utils/launch_url.dart';
 
 class UserInfoActionCard extends ConsumerWidget {
   const UserInfoActionCard({super.key});
@@ -30,7 +32,7 @@ class UserInfoActionCard extends ConsumerWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'バージョン情報、ライセンス、デバッグログを確認できます。',
+            'バージョン情報、GitHub、ライセンス、デバッグログを確認できます。',
             style: theme.textTheme.bodyMedium?.copyWith(
               color: AppPalette.ink.withValues(alpha: 0.72),
               height: 1.5,
@@ -66,6 +68,32 @@ class UserInfoActionCard extends ConsumerWidget {
                   ],
                 ),
               );
+            },
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: Divider(height: 1),
+          ),
+          _UserMenuRow(
+            icon: Icons.code_rounded,
+            iconColor: AppPalette.teal,
+            title: 'GitHub',
+            description: 'リポジトリを開きます。',
+            onTap: () async {
+              await UrlLauncher.of(context).safeLaunch(appGithubRepositoryUri);
+            },
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: Divider(height: 1),
+          ),
+          _UserMenuRow(
+            icon: Icons.new_releases_outlined,
+            iconColor: AppPalette.coral,
+            title: 'リリース',
+            description: '最新のリリース情報をGitHubで確認します。 ',
+            onTap: () async {
+              await UrlLauncher.of(context).safeLaunch(appGithubReleasesUri);
             },
           ),
           const Padding(

@@ -6,6 +6,7 @@ import 'package:nissay_401k/app/pages/login/widgets/login_form_card.dart';
 import 'package:nissay_401k/app/providers/auth.dart';
 import 'package:nissay_401k/app/providers/nissay_session_provider.dart';
 import 'package:nissay_401k/app/ui/components/app_logo.dart';
+import 'package:nissay_401k/app/ui/components/app_release_notice.dart';
 import 'package:nissay_401k/app/ui/components/app_surface_card.dart';
 import 'package:nissay_401k/app/ui/layout/app_page_scaffold.dart';
 import 'package:nissay_401k/app/utils/scaffold_messenger.dart';
@@ -37,6 +38,7 @@ class LoginPage extends HookConsumerWidget {
       body: Column(
         children: [
           const AppLogo(),
+          const AppReleaseNotice(),
           AppSurfaceCard(
             child: LoginFormCard(
               userIdController: userIdController,
