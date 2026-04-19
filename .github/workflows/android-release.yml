@@ -1,6 +1,9 @@
 name: Android Release
 
 on:
+  push:
+    paths:
+      - pubspec.yaml
   workflow_dispatch:
 
 permissions:
