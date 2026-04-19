@@ -7,7 +7,6 @@ environment:
   sdk: ^3.11.4
   flutter: ^3.41.6
 
-resolution: workspace
 workspace:
   - packages/nissay_client
 
