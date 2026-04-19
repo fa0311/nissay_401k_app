@@ -3,23 +3,23 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:dio_redirect_interceptor/dio_redirect_interceptor.dart';
 import 'package:html/dom.dart';
-import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:nissay_client/src/exceptions.dart';
 import 'package:nissay_client/src/http/chrome_like_headers_interceptor.dart';
 import 'package:nissay_client/src/models/nissay_models.dart';
 import 'package:nissay_client/src/parsing/html_element_parser.dart';
+import 'package:nissay_client/src/parsing/safe_parse_document.dart';
 
 class NissayRepository {
-  NissayRepository({required Dio dio}) : _dio = dio;
+  NissayRepository({required Dio dio, required this.debugPrint}) : _dio = dio;
 
-  factory NissayRepository.create({required CookieJar cookieJar}) {
+  factory NissayRepository.create({required CookieJar cookieJar, required void Function(String) debugPrint}) {
     final dio = Dio(
       BaseOptions(
         baseUrl: 'https://401k.nissay.co.jp',
         connectTimeout: const Duration(seconds: 15),
         receiveTimeout: const Duration(seconds: 15),
-        validateStatus: (status) => status != null && status < 400,
+        validateStatus: (_) => true,
         followRedirects: false,
       ),
     );
@@ -28,8 +28,10 @@ class NissayRepository {
     dio.interceptors.add(CookieManager(cookieJar));
     dio.interceptors.add(RedirectInterceptor(() => dio));
 
-    return NissayRepository(dio: dio);
+    return NissayRepository(dio: dio, debugPrint: debugPrint);
   }
+
+  void Function(String) debugPrint;
 
   final Dio _dio;
 
@@ -54,7 +56,7 @@ class NissayRepository {
   }) async {
     await _dio.get<void>('/dmckanyusha/salsa_open/auth/extra/Login_ip.jsp');
 
-    final loginResponse = await _dio.post<String>(
+    final loginResponse = await _dio.post<List<int>>(
       '/dmckanyusha/transactions/login',
       data: {
         'auth_key': '5',
@@ -64,6 +66,7 @@ class NissayRepository {
       }.toFormBody(),
       options: Options(
         contentType: Headers.formUrlEncodedContentType,
+        responseType: ResponseType.bytes,
         headers: {
           'referer': '${_dio.options.baseUrl}/dmckanyusha/salsa_open/auth/extra/Login_ip.jsp',
         },
@@ -71,19 +74,21 @@ class NissayRepository {
     );
 
     final loginPath = loginResponse.realUri.path;
-    _throwIfAuthenticationFailed(loginPath, parse(loginResponse.data ?? ''));
+    final loginDocument = safeParseDocument(loginResponse.data, loginResponse.headers.map);
+    _throwIfAuthenticationFailed(loginPath, loginDocument);
     if (loginPath != '/dmckanyusha/transactions/menu_init') {
       throw NissayAuthException('Unexpected response URI: $loginPath');
     }
 
-    final h1 = parse(loginResponse.data ?? '').querySelector('h1');
+    final h1 = loginDocument.querySelector('h1');
 
     if (h1?.text == 'ユーザーID保存確認 / User ID saving check') {
-      final menuInitResponse = await _dio.post<String>(
+      final menuInitResponse = await _dio.post<List<int>>(
         '/dmckanyusha/transactions/ck1._V300100_ck100041',
         data: {'NEED_SAVE': '1'}.toFormBody(),
         options: Options(
           contentType: Headers.formUrlEncodedContentType,
+          responseType: ResponseType.bytes,
           headers: {
             'referer': '${_dio.options.baseUrl}/dmckanyusha/transactions/menu_init',
           },
@@ -91,7 +96,8 @@ class NissayRepository {
       );
 
       final menuInitPath = menuInitResponse.realUri.path;
-      _throwIfAuthenticationFailed(menuInitPath, parse(menuInitResponse.data ?? ''));
+      final menuInitDocument = safeParseDocument(menuInitResponse.data, menuInitResponse.headers.map);
+      _throwIfAuthenticationFailed(menuInitPath, menuInitDocument);
       if (menuInitPath != '/dmckanyusha/transactions/ck1._V300100_ck100041') {
         throw NissayAuthException('Unexpected response URI: $menuInitPath');
       }
@@ -103,9 +109,10 @@ class NissayRepository {
   }
 
   Future<Document> fetch(String path) async {
-    final response = await _dio.get<String>(
+    final response = await _dio.get<List<int>>(
       path,
       options: Options(
+        responseType: ResponseType.bytes,
         headers: {
           'referer': '${_dio.options.baseUrl}/dmckanyusha/transactions/ck1._V300100_ck100041',
         },
@@ -113,7 +120,9 @@ class NissayRepository {
     );
 
     final responsePath = response.realUri.path;
-    final document = parse(response.data ?? '');
+    final document = safeParseDocument(response.data, response.headers.map);
+    debugPrint(document.outerHtml);
+
     _throwIfAuthenticationFailed(responsePath, document);
     if (responsePath != path) {
       throw NissayException('Unexpected response URI: $responsePath');

@@ -4,25 +4,29 @@
     {
       "name": "nissay_401k",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "program": "lib/main.dart"
     },
     {
       "name": "nissay_401k (profile mode)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "profile"
+      "flutterMode": "profile",
+      "program": "lib/main.dart"
     },
     {
       "name": "nissay_401k (release mode)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "release"
+      "flutterMode": "release",
+      "program": "lib/main.dart"
     },
     {
       "name": "nissay_401k (with mock)",
       "request": "launch",
       "type": "dart",
-      "args": ["--dart-define=USE_MOCK=true"]
+      "args": ["--dart-define=USE_MOCK=true"],
+      "program": "lib/main.dart"
     }
   ]
 }

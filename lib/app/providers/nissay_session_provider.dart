@@ -12,22 +12,18 @@ Future<void> nissaySessionCheck(Ref ref) async {
   final logger = ref.watch(loggerProvider);
   final repository = await ref.watch(nissayRepositoryProvider.future);
 
-  try {
-    logger.debug('Checking persisted Nissay session');
-    await repository.fetchHeader();
-    logger.info('Persisted Nissay session is available');
-  } on Exception catch (error, stackTrace) {
-    logger.error('Failed to fetch Nissay data', error, stackTrace);
-    if (savedAuth case final AuthState auth) {
-      logger.warning('Re-authenticating with stored credentials');
-      await session.login(
-        userId: auth.userId,
-        password: auth.password,
-      );
+  if (savedAuth case final AuthState _) {
+    try {
+      logger.debug('Checking persisted Nissay session');
       await repository.fetchHeader();
-    } else {
-      rethrow;
+      logger.info('Persisted Nissay session is available');
+    } on Exception catch (error, stackTrace) {
+      logger.error('Failed to fetch Nissay data', error, stackTrace);
+      await session.login();
+      await repository.fetchHeader();
     }
+  } else {
+    throw Exception('No stored credentials');
   }
 }
 
@@ -38,32 +34,26 @@ class NissaySession extends _$NissaySession {
     return ref.watch(authStorageProvider.future);
   }
 
-  Future<void> login({
+  Future<void> save({
     required String userId,
     required String password,
   }) async {
-    final logger = ref.read(loggerProvider);
-    state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      final repository = await ref.read(nissayRepositoryProvider.future);
-      await repository.login(userId: userId, password: password);
       await ref
           .read(authStorageProvider.notifier)
           .save(
             userId: userId,
             password: password,
           );
-      ref.invalidate(nissayRepositoryProvider);
       return AuthState(userId: userId, password: password);
     });
-    if (state case AsyncData()) {
-      logger.info('Login completed');
-      return;
-    }
-    if (state case AsyncError(:final Exception error, :final stackTrace)) {
-      logger.error('Login failed', error, stackTrace);
-      throw error;
-    }
+  }
+
+  Future<void> login() async {
+    state = const AsyncLoading();
+    final repository = await ref.read(nissayRepositoryProvider.future);
+    await repository.login(userId: state.value!.userId, password: state.value!.password);
+    ref.invalidate(nissayRepositoryProvider);
   }
 
   Future<void> logout() async {

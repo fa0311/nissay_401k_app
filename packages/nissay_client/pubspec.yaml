@@ -8,6 +8,7 @@ environment:
   sdk: ^3.11.4
 
 dependencies:
+  charset: ^2.0.1
   cookie_jar: ^4.0.8
   dio: ^5.9.2
   dio_cookie_manager: ^3.3.0

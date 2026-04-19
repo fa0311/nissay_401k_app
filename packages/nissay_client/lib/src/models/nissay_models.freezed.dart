@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$NissayHeader {
 
-// ログイン後ヘッダーに表示される加入者名
+// 加入者名
  String get name;
 /// Create a copy of NissayHeader
 /// with the given fields replaced by the non-null parameter values.
@@ -210,7 +210,7 @@ class _NissayHeader implements NissayHeader {
   const _NissayHeader({required this.name});
   
 
-// ログイン後ヘッダーに表示される加入者名
+// 加入者名
 @override final  String name;
 
 /// Create a copy of NissayHeader

@@ -24,9 +24,11 @@ class LoginPage extends HookConsumerWidget {
       () {
         final error = ref.read(nissaySessionCheckProvider);
         if (error case AsyncError(:final error)) {
-          if (auth != null && context.mounted) {
+          if (auth != null) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              ScaffoldMessenger.of(context).showMessage('セッションの確認に失敗しました: $error');
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showMessage('セッションの確認に失敗しました: $error');
+              }
             });
           }
         }
@@ -47,7 +49,7 @@ class LoginPage extends HookConsumerWidget {
                 try {
                   await ref
                       .read(nissaySessionProvider.notifier)
-                      .login(
+                      .save(
                         userId: userIdController.text,
                         password: passwordController.text,
                       );

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nissay_401k/app/constants/github_links.dart';
 import 'package:nissay_401k/app/hooks/single_action_guard.dart';
+import 'package:nissay_401k/app/providers/nissay_session_provider.dart';
 import 'package:nissay_401k/app/providers/package_info.dart';
 import 'package:nissay_401k/app/ui/components/app_surface_card.dart';
 import 'package:nissay_401k/app/ui/theme/app_palette.dart';
@@ -11,17 +12,15 @@ import 'package:nissay_401k/app/utils/package_info.dart';
 import 'package:nissay_401k/app/utils/scaffold_messenger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-class AppPageError extends ConsumerWidget {
+class AppPageError extends HookConsumerWidget {
   const AppPageError({
     required this.error,
     required this.stackTrace,
-    required this.onRetry,
     super.key,
   });
 
   final Object error;
   final StackTrace stackTrace;
-  final Future<OnCompleted> Function() onRetry;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -104,8 +103,13 @@ class AppPageError extends ConsumerWidget {
                 spacing: 12,
                 runSpacing: 12,
                 children: [
-                  FilledButton.icon(
-                    onPressed: lock(callback: onRetry),
+                  OutlinedButton.icon(
+                    onPressed: lock(
+                      callback: () async {
+                        await ref.read(nissaySessionProvider.notifier).refresh();
+                        return OnCompleted.keep;
+                      },
+                    ),
                     icon: const Icon(Icons.refresh_rounded),
                     label: const Text('再試行'),
                   ),

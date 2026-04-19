@@ -48,7 +48,7 @@ final class GithubAppProvider
   }
 }
 
-String _$githubAppHash() => r'a975a5e7f244073f15d137451ddb3bb8795ed0ae';
+String _$githubAppHash() => r'2067c470fab18788c0c423615552040329a96504';
 
 @ProviderFor(githubLatestVersion)
 final githubLatestVersionProvider = GithubLatestVersionProvider._();
@@ -82,4 +82,4 @@ final class GithubLatestVersionProvider
 }
 
 String _$githubLatestVersionHash() =>
-    r'dd93f554e695ac923cd31a8857880879a1c3d1e7';
+    r'ba5d0a98629504fd24dea05f2775d999abc7a651';

@@ -2,20 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nissay_401k/app/hooks/single_action_guard.dart';
 import 'package:nissay_401k/app/providers/nissay_client_provider.dart';
+import 'package:nissay_401k/app/providers/nissay_session_provider.dart';
 import 'package:nissay_401k/app/services/webview_cookie_sync.dart';
 import 'package:nissay_401k/app/ui/layout/app_page_scaffold.dart';
 import 'package:nissay_401k/app/ui/theme/app_palette.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'webview_page.g.dart';
 
 final _initialUrl = WebUri(
   'https://401k.nissay.co.jp/dmckanyusha/transactions/menu_init',
 );
 
-final webViewInitProvider = FutureProvider<void>((ref) async {
-  final cookieJar = await ref.read(nissayCookieJarProvider.future);
+@riverpod
+Future<void> webViewInit(Ref ref) async {
+  final _ = ref.watch(nissaySessionProvider.notifier);
+  final cookieJar = await ref.watch(nissayCookieJarProvider.future);
   await syncCookieJarToWebView(cookieJar);
-});
+}
 
 typedef WebViewPageContentBuilder = Widget Function();
 
@@ -40,10 +45,6 @@ class WebViewPage extends ConsumerWidget {
         body: AppPageError(
           error: error,
           stackTrace: stackTrace,
-          onRetry: () async {
-            final _ = await ref.refresh(webViewInitProvider.future);
-            return OnCompleted.release;
-          },
         ),
       ),
     };

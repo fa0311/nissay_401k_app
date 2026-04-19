@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:nissay_401k/app/hooks/single_action_guard.dart';
 import 'package:nissay_401k/app/pages/dashboard/dashboard_content.dart';
 import 'package:nissay_401k/app/providers/nissay_dashboard_provider.dart';
 import 'package:nissay_401k/app/ui/components/app_release_notice.dart';
@@ -37,10 +36,6 @@ class DashboardPage extends ConsumerWidget {
         body: AppPageError(
           error: error,
           stackTrace: stackTrace,
-          onRetry: () async {
-            final _ = await ref.refresh(nissayDashboardProvider.future);
-            return OnCompleted.release;
-          },
         ),
       ),
       AsyncLoading() => const AppPageScaffold(

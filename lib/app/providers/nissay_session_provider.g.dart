@@ -41,7 +41,7 @@ final class NissaySessionCheckProvider
 }
 
 String _$nissaySessionCheckHash() =>
-    r'dce335d859b8dd0aedcf81fff6efdf76d32d5e67';
+    r'351dda048bc33a41a97da02c2552bc758b781338';
 
 @ProviderFor(NissaySession)
 final nissaySessionProvider = NissaySessionProvider._();
@@ -67,7 +67,7 @@ final class NissaySessionProvider
   NissaySession create() => NissaySession();
 }
 
-String _$nissaySessionHash() => r'85c35ab07755bec4d27832e8d5628f97f7856e59';
+String _$nissaySessionHash() => r'3947432125c7e754b42065c9b130bd9b411b536c';
 
 abstract class _$NissaySession extends $AsyncNotifier<AuthState?> {
   FutureOr<AuthState?> build();
