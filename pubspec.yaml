@@ -1,11 +1,13 @@
 name: nissay_401k
-description: "A Flutter application for managing NISSAY 401k accounts. This app provides features such as account overview, transaction history, and performance tracking for NISSAY 401k users."
-publish_to: "none"
-version: 0.0.1+1
+description: NISSAY 401k account management app built with Flutter.
+publish_to: none
+version: 0.0.2+2
+
 environment:
   sdk: ^3.11.4
   flutter: ^3.41.6
 
+resolution: workspace
 workspace:
   - packages/nissay_client
 
