@@ -62,7 +62,7 @@ Future<void> main() async {
         loggerProvider.overrideWithValue(talker),
         if (useMock) ...[
           nissayDashboardProvider.overrideWith((_) => NissayDashboard.mock()),
-          nissaySessionCheckProvider.overrideWith((_) => null),
+          nissaySessionCheckProvider.overrideWithBuild((_, _) => DateTime.now()),
         ],
         packageInfoProvider.overrideWithValue(packageInfo),
       ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nissay_401k/app/pages/dashboard/dashboard_content.dart';
 import 'package:nissay_401k/app/providers/nissay_dashboard_provider.dart';
+import 'package:nissay_401k/app/providers/nissay_session_provider.dart';
 import 'package:nissay_401k/app/ui/components/app_release_notice.dart';
 import 'package:nissay_401k/app/ui/layout/app_page_scaffold.dart';
 
@@ -15,6 +16,7 @@ class DashboardPage extends ConsumerWidget {
     return switch (dashboard) {
       AsyncData(:final value) => RefreshIndicator(
         onRefresh: () async {
+          await ref.read(nissaySessionCheckProvider.notifier).orRefresh();
           final _ = await ref.refresh(nissayDashboardProvider.future);
         },
         child: AppPageScaffold(

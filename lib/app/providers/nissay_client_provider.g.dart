@@ -86,4 +86,4 @@ final class NissayRepositoryProvider
   }
 }
 
-String _$nissayRepositoryHash() => r'ce0bd3aa5a48adb603a47795bc54e41bb8423f5b';
+String _$nissayRepositoryHash() => r'9bdf0f3f9fa1770b0b9489d6603d564b63b74145';

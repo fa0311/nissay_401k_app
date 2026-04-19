@@ -1,0 +1,11 @@
+name: nissay_lints
+description: Shared lint rules for the Nissay 401k workspace.
+publish_to: "none"
+version: 0.1.0
+resolution: workspace
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  yumemi_lints: ^4.4.0

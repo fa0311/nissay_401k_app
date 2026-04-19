@@ -1,29 +1,44 @@
+import 'dart:async';
+
 import 'package:nissay_401k/app/providers/auth.dart';
 import 'package:nissay_401k/app/providers/logger.dart';
 import 'package:nissay_401k/app/providers/nissay_client_provider.dart';
+import 'package:nissay_401k/app/utils/async_value.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'nissay_session_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<void> nissaySessionCheck(Ref ref) async {
-  final session = ref.watch(nissaySessionProvider.notifier);
-  final savedAuth = await ref.watch(authStorageProvider.future);
-  final logger = ref.watch(loggerProvider);
-  final repository = await ref.watch(nissayRepositoryProvider.future);
+class NissaySessionCheck extends _$NissaySessionCheck {
+  @override
+  Future<DateTime> build() async {
+    final session = ref.watch(nissaySessionProvider.notifier);
+    final savedAuth = await ref.watch(authStorageProvider.future);
+    final logger = ref.watch(loggerProvider);
+    final repository = await ref.watch(nissayRepositoryProvider.future);
 
-  if (savedAuth case final AuthState _) {
-    try {
-      logger.debug('Checking persisted Nissay session');
-      await repository.fetchHeader();
-      logger.info('Persisted Nissay session is available');
-    } on Exception catch (error, stackTrace) {
-      logger.error('Failed to fetch Nissay data', error, stackTrace);
-      await session.login();
-      await repository.fetchHeader();
+    if (savedAuth case final AuthState _) {
+      try {
+        logger.info('Checking persisted Nissay session');
+        await repository.fetchHeader();
+        logger.info('Persisted Nissay session is available');
+      } on Exception catch (error, stackTrace) {
+        logger.error('Failed to fetch Nissay data', error, stackTrace);
+        await session.login();
+        await repository.fetchHeader();
+      }
+      return DateTime.now();
+    } else {
+      throw Exception('No stored credentials');
     }
-  } else {
-    throw Exception('No stored credentials');
+  }
+
+  Future<void> orRefresh() async {
+    final before = DateTime.now().subtract(const Duration(minutes: 30));
+    if (state.requireValue.isBefore(before)) {
+      state = await AsyncValue.guard(build);
+      state.throwIfError(ref.read(loggerProvider));
+    }
   }
 }
 
@@ -47,6 +62,7 @@ class NissaySession extends _$NissaySession {
           );
       return AuthState(userId: userId, password: password);
     });
+    state.throwIfError(ref.read(loggerProvider));
   }
 
   Future<void> login() async {
@@ -66,7 +82,7 @@ class NissaySession extends _$NissaySession {
       ref.invalidate(nissayRepositoryProvider);
       return null;
     });
-    await _throwIfError();
+    state.throwIfError(ref.read(loggerProvider));
   }
 
   Future<void> refresh() async {
@@ -78,18 +94,6 @@ class NissaySession extends _$NissaySession {
       ref.invalidate(nissayRepositoryProvider);
       return ref.read(authStorageProvider.future);
     });
-    await _throwIfError();
-  }
-
-  Future<void> _throwIfError() async {
-    final logger = ref.read(loggerProvider);
-    if (state case AsyncData()) {
-      logger.info('Session refresh completed');
-      return;
-    }
-    if (state case AsyncError(:final Exception error, :final stackTrace)) {
-      logger.error('Session refresh failed', error, stackTrace);
-      throw error;
-    }
+    state.throwIfError(ref.read(loggerProvider));
   }
 }

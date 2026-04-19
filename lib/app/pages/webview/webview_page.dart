@@ -97,6 +97,7 @@ class WebViewBrowserPage extends HookConsumerWidget {
                 icon: const Icon(Icons.refresh_rounded),
                 onPressed: () async {
                   if (webviewController.value case final controller?) {
+                    await ref.read(nissaySessionCheckProvider.notifier).orRefresh();
                     await controller.reload();
                     return;
                   }

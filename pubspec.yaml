@@ -9,6 +9,7 @@ environment:
 
 workspace:
   - packages/nissay_client
+  - packages/nissay_lints
 
 dependencies:
   collection: ^1.19.1
@@ -32,6 +33,7 @@ dependencies:
   path_provider: ^2.1.5
   pub_semver: ^2.2.0
   riverpod_annotation: ^4.0.2
+  talker_dio_logger: ^5.1.16
   talker_flutter: ^5.1.16
   url_launcher: ^6.3.2
 
@@ -44,8 +46,8 @@ dev_dependencies:
   freezed: ^3.2.5
   go_router_builder: ^4.2.1
   json_serializable: ^6.13.0
+  nissay_lints: ^0.1.0
   riverpod_generator: ^4.0.3
-  yumemi_lints: ^4.4.0
 
 flutter:
   uses-material-design: true

@@ -1,32 +1,49 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'chrome_like_headers_interceptor.freezed.dart';
+part 'chrome_like_headers_interceptor.g.dart';
 
 class ChromeLikeHeadersInterceptor extends Interceptor {
-  ChromeLikeHeadersInterceptor();
+  ChromeLikeHeadersInterceptor._(this._headers);
 
-  static const _defaultHeaders = <String, String>{
-    'accept':
-        'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-    'accept-language': 'ja,en;q=0.9,zh-CN;q=0.8,zh;q=0.7',
-    'cache-control': 'no-cache',
-    'pragma': 'no-cache',
-    'sec-ch-ua': '"Chromium";v="146", "Not-A.Brand";v="24", "Google Chrome";v="146"',
-    'sec-ch-ua-mobile': '?0',
-    'sec-ch-ua-platform': '"macOS"',
-    'sec-fetch-dest': 'document',
-    'sec-fetch-mode': 'navigate',
-    'sec-fetch-site': 'same-origin',
-    'sec-fetch-user': '?1',
-    'upgrade-insecure-requests': '1',
-    'user-agent':
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36',
+  static const latestHeadersUrl =
+      'https://raw.githubusercontent.com/fa0311/latest-user-agent/refs/heads/main/header.json';
+
+  static const _ignoredRemoteHeaders = <String>{
+    'accept-encoding',
+    'connection',
+    'host',
   };
+
+  final Map<String, String> _headers;
+
+  static Future<ChromeLikeHeadersInterceptor> create(Dio dio) async {
+    final response = await dio.getUri<String>(
+      Uri.parse(latestHeadersUrl),
+      options: Options(responseType: ResponseType.plain),
+    );
+
+    if (response.data case final String data) {
+      final json = jsonDecode(data) as Map<String, dynamic>;
+      final latestHeaders = LatestHeadersResponse.fromJson(json);
+      return ChromeLikeHeadersInterceptor._({
+        for (final entry in latestHeaders.chrome.entries)
+          if (!_ignoredRemoteHeaders.contains(entry.key)) entry.key: entry.value,
+      });
+    }
+
+    throw const FormatException('Remote header response body was empty.');
+  }
 
   @override
   void onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) {
-    for (final entry in _defaultHeaders.entries) {
+    for (final entry in _headers.entries) {
       if (!_hasHeader(options, entry.key)) {
         options.headers[entry.key] = entry.value;
       }
@@ -40,4 +57,13 @@ class ChromeLikeHeadersInterceptor extends Interceptor {
       (existingKey) => existingKey.toLowerCase() == key.toLowerCase(),
     );
   }
+}
+
+@freezed
+abstract class LatestHeadersResponse with _$LatestHeadersResponse {
+  const factory LatestHeadersResponse({
+    required Map<String, String> chrome,
+  }) = _LatestHeadersResponse;
+
+  factory LatestHeadersResponse.fromJson(Map<String, dynamic> json) => _$LatestHeadersResponseFromJson(json);
 }

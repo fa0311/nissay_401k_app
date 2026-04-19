@@ -27,9 +27,7 @@ class HtmlElementParser {
   List<HtmlElementParser> querySelectorAll(String selector, {int? length}) {
     final children = element.querySelectorAll(selector);
     if (length != null && children.length != length) {
-      throw NissayException(
-        'Expected $length elements, but found ${children.length}',
-      );
+      throw NissayException('Expected $length elements, but found ${children.length}');
     }
     return children.map(HtmlElementParser.new).toList();
   }

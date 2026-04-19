@@ -11,9 +11,12 @@ import 'package:nissay_client/src/parsing/html_element_parser.dart';
 import 'package:nissay_client/src/parsing/safe_parse_document.dart';
 
 class NissayRepository {
-  NissayRepository({required Dio dio, required this.debugPrint}) : _dio = dio;
+  NissayRepository({required Dio dio}) : _dio = dio;
 
-  factory NissayRepository.create({required CookieJar cookieJar, required void Function(String) debugPrint}) {
+  static Future<NissayRepository> create({
+    required CookieJar cookieJar,
+    Iterable<Interceptor> interceptors = const [],
+  }) async {
     final dio = Dio(
       BaseOptions(
         baseUrl: 'https://401k.nissay.co.jp',
@@ -24,14 +27,15 @@ class NissayRepository {
       ),
     );
 
-    dio.interceptors.add(ChromeLikeHeadersInterceptor());
+    final chromeLikeHeadersInterceptor = await ChromeLikeHeadersInterceptor.create(dio);
+
+    dio.interceptors.addAll(interceptors);
+    dio.interceptors.add(chromeLikeHeadersInterceptor);
     dio.interceptors.add(CookieManager(cookieJar));
     dio.interceptors.add(RedirectInterceptor(() => dio));
 
-    return NissayRepository(dio: dio, debugPrint: debugPrint);
+    return NissayRepository(dio: dio);
   }
-
-  void Function(String) debugPrint;
 
   final Dio _dio;
 
@@ -121,7 +125,6 @@ class NissayRepository {
 
     final responsePath = response.realUri.path;
     final document = safeParseDocument(response.data, response.headers.map);
-    debugPrint(document.outerHtml);
 
     _throwIfAuthenticationFailed(responsePath, document);
     if (responsePath != path) {

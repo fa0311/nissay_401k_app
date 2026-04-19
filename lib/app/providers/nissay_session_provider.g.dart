@@ -9,12 +9,11 @@ part of 'nissay_session_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(nissaySessionCheck)
+@ProviderFor(NissaySessionCheck)
 final nissaySessionCheckProvider = NissaySessionCheckProvider._();
 
 final class NissaySessionCheckProvider
-    extends $FunctionalProvider<AsyncValue<void>, void, FutureOr<void>>
-    with $FutureModifier<void>, $FutureProvider<void> {
+    extends $AsyncNotifierProvider<NissaySessionCheck, DateTime> {
   NissaySessionCheckProvider._()
     : super(
         from: null,
@@ -31,17 +30,29 @@ final class NissaySessionCheckProvider
 
   @$internal
   @override
-  $FutureProviderElement<void> $createElement($ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<void> create(Ref ref) {
-    return nissaySessionCheck(ref);
-  }
+  NissaySessionCheck create() => NissaySessionCheck();
 }
 
 String _$nissaySessionCheckHash() =>
-    r'351dda048bc33a41a97da02c2552bc758b781338';
+    r'2611b27f7f216448ca1231a5308f547746982690';
+
+abstract class _$NissaySessionCheck extends $AsyncNotifier<DateTime> {
+  FutureOr<DateTime> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<DateTime>, DateTime>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<DateTime>, DateTime>,
+              AsyncValue<DateTime>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}
 
 @ProviderFor(NissaySession)
 final nissaySessionProvider = NissaySessionProvider._();
@@ -67,7 +78,7 @@ final class NissaySessionProvider
   NissaySession create() => NissaySession();
 }
 
-String _$nissaySessionHash() => r'3947432125c7e754b42065c9b130bd9b411b536c';
+String _$nissaySessionHash() => r'c98c70280ffc3d4beaccdbb2e536eb390df3304b';
 
 abstract class _$NissaySession extends $AsyncNotifier<AuthState?> {
   FutureOr<AuthState?> build();
