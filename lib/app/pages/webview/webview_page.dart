@@ -17,7 +17,7 @@ final _initialUrl = WebUri(
 
 @riverpod
 Future<void> webViewInit(Ref ref) async {
-  final _ = ref.watch(nissaySessionProvider.notifier);
+  final _ = ref.watch(nissaySessionCheckProvider.notifier);
   final cookieJar = await ref.watch(nissayCookieJarProvider.future);
   await syncCookieJarToWebView(cookieJar);
 }

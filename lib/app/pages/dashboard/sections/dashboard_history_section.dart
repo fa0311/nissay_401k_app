@@ -95,16 +95,16 @@ class _DashboardHistoryRow extends StatelessWidget {
             spacing: 12,
             children: [
               AppMetricChip(
-                icon: Icons.account_balance_wallet_outlined,
-                label: '総資産',
-                value: formatter.toCurrency(entry.totalAsset),
-                color: AppPalette.teal,
-              ),
-              AppMetricChip(
                 icon: Icons.savings_outlined,
                 label: '拠出累計',
                 value: formatter.toCurrency(entry.totalContribution),
                 color: AppPalette.sky,
+              ),
+              AppMetricChip(
+                icon: Icons.account_balance_wallet_outlined,
+                label: '総資産',
+                value: formatter.toCurrency(entry.totalAsset),
+                color: AppPalette.teal,
               ),
               AppMetricChip(
                 icon: Icons.trending_up_rounded,

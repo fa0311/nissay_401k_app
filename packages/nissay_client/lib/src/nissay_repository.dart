@@ -225,8 +225,8 @@ class NissayRepository {
         for (final history in detailBodies)
           NissayHistoricalAssetEntry(
             date: DateFormat('yyyy年M月末').parse(history[0].text),
-            totalAsset: history[1].text.parseSignedInt(),
-            totalContribution: history[2].text.parseSignedInt(),
+            totalContribution: history[1].text.parseSignedInt(),
+            totalAsset: history[2].text.parseSignedInt(),
             totalProfitLoss: history[3].text.parseSignedInt(),
           ),
       ],
