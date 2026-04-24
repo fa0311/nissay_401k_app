@@ -95,12 +95,6 @@ class _DashboardHistoryRow extends StatelessWidget {
             spacing: 12,
             children: [
               AppMetricChip(
-                icon: Icons.savings_outlined,
-                label: '拠出累計',
-                value: formatter.toCurrency(entry.totalContribution),
-                color: AppPalette.sky,
-              ),
-              AppMetricChip(
                 icon: Icons.account_balance_wallet_outlined,
                 label: '総資産',
                 value: formatter.toCurrency(entry.totalAsset),
@@ -111,6 +105,12 @@ class _DashboardHistoryRow extends StatelessWidget {
                 label: '評価損益',
                 value: formatter.toSignedCurrency(entry.totalProfitLoss),
                 color: appValueColor(entry.totalProfitLoss),
+              ),
+              AppMetricChip(
+                icon: Icons.savings_outlined,
+                label: '拠出累計',
+                value: formatter.toCurrency(entry.totalContribution),
+                color: AppPalette.sky,
               ),
             ],
           ),
