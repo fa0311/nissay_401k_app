@@ -5,7 +5,7 @@ version: 0.1.0
 resolution: workspace
 
 environment:
-  sdk: ^3.11.4
+  sdk: ^3.12.2
 
 dependencies:
   yumemi_lints: ^4.4.0

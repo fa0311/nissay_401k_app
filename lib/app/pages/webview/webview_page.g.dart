@@ -40,4 +40,4 @@ final class WebViewInitProvider
   }
 }
 
-String _$webViewInitHash() => r'951acb38b19e1e160d9008018c26b05aebed28e4';
+String _$webViewInitHash() => r'296bb2845d31cb54934029c94f60d36c451f9546';

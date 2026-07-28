@@ -14,19 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$NissayDashboard {
 
-// 加入者名
- String get userName;// プラン名
- String get planName;// 前回ログイン日時
- DateTime get lastLogin;// 総資産評価額
- int get totalAsset;// 拠出金額累計
- int get totalContribution;// 評価損益
- int get totalProfitLoss;// 利回り
- double get roi;// 照会日時
- DateTime get date;// 次回拠出予定の掛金額
- int get contributionAmount;// 次回拠出日
- DateTime get contributionDate;// 内訳
- List<NissayDashboardHolding> get holdings;// 資産推移
- List<NissayDashboardHistoryEntry> get historyEntries;
+ String get userName; String get planName; DateTime get lastLogin; int get totalAsset; int get totalContribution; int get totalProfitLoss; double get roi; DateTime get date; int get contributionAmount; DateTime get contributionDate; List<NissayDashboardHolding> get holdings; List<NissayDashboardHistoryEntry> get historyEntries;
 /// Create a copy of NissayDashboard
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -232,38 +220,24 @@ class _NissayDashboard implements NissayDashboard {
   const _NissayDashboard({required this.userName, required this.planName, required this.lastLogin, required this.totalAsset, required this.totalContribution, required this.totalProfitLoss, required this.roi, required this.date, required this.contributionAmount, required this.contributionDate, required final  List<NissayDashboardHolding> holdings, required final  List<NissayDashboardHistoryEntry> historyEntries}): _holdings = holdings,_historyEntries = historyEntries;
   
 
-// 加入者名
 @override final  String userName;
-// プラン名
 @override final  String planName;
-// 前回ログイン日時
 @override final  DateTime lastLogin;
-// 総資産評価額
 @override final  int totalAsset;
-// 拠出金額累計
 @override final  int totalContribution;
-// 評価損益
 @override final  int totalProfitLoss;
-// 利回り
 @override final  double roi;
-// 照会日時
 @override final  DateTime date;
-// 次回拠出予定の掛金額
 @override final  int contributionAmount;
-// 次回拠出日
 @override final  DateTime contributionDate;
-// 内訳
  final  List<NissayDashboardHolding> _holdings;
-// 内訳
 @override List<NissayDashboardHolding> get holdings {
   if (_holdings is EqualUnmodifiableListView) return _holdings;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_holdings);
 }
 
-// 資産推移
  final  List<NissayDashboardHistoryEntry> _historyEntries;
-// 資産推移
 @override List<NissayDashboardHistoryEntry> get historyEntries {
   if (_historyEntries is EqualUnmodifiableListView) return _historyEntries;
   // ignore: implicit_dynamic_type
@@ -342,13 +316,7 @@ as List<NissayDashboardHistoryEntry>,
 /// @nodoc
 mixin _$NissayDashboardHolding {
 
-// 運用タイプ
- String get operationType;// 商品名
- String get productName;// 資産評価額
- int get totalAsset;// 評価損益
- int get profitLoss;// 資産比率
- double get assetRatio;// 次回掛金の運用割合
- double? get nextContributionRatio;
+ String get operationType; String get productName; int get totalAsset; int get profitLoss; double get assetRatio; double? get nextContributionRatio;
 /// Create a copy of NissayDashboardHolding
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -548,17 +516,11 @@ class _NissayDashboardHolding implements NissayDashboardHolding {
   const _NissayDashboardHolding({required this.operationType, required this.productName, required this.totalAsset, required this.profitLoss, required this.assetRatio, required this.nextContributionRatio});
   
 
-// 運用タイプ
 @override final  String operationType;
-// 商品名
 @override final  String productName;
-// 資産評価額
 @override final  int totalAsset;
-// 評価損益
 @override final  int profitLoss;
-// 資産比率
 @override final  double assetRatio;
-// 次回掛金の運用割合
 @override final  double? nextContributionRatio;
 
 /// Create a copy of NissayDashboardHolding
@@ -626,11 +588,7 @@ as double?,
 /// @nodoc
 mixin _$NissayDashboardHistoryEntry {
 
-// 年月
- DateTime get date;// 総資産評価額
- int get totalAsset;// 拠出金額累計
- int get totalContribution;// 評価損益
- int get totalProfitLoss;
+ DateTime get date; int get totalAsset; int get totalContribution; int get totalProfitLoss;
 /// Create a copy of NissayDashboardHistoryEntry
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -828,13 +786,9 @@ class _NissayDashboardHistoryEntry implements NissayDashboardHistoryEntry {
   const _NissayDashboardHistoryEntry({required this.date, required this.totalAsset, required this.totalContribution, required this.totalProfitLoss});
   
 
-// 年月
 @override final  DateTime date;
-// 総資産評価額
 @override final  int totalAsset;
-// 拠出金額累計
 @override final  int totalContribution;
-// 評価損益
 @override final  int totalProfitLoss;
 
 /// Create a copy of NissayDashboardHistoryEntry

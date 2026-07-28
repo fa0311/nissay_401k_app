@@ -1,4 +1,4 @@
 [tools]
 node = "25.9.0"
-flutter = "3.41.6"
+flutter = "3.44.5-stable"
 pnpm = "10.33.0"

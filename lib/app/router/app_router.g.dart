@@ -12,8 +12,11 @@ List<RouteBase> get $appRoutes => [
   $authenticatedShellRoute,
 ];
 
-RouteBase get $splashRoute =>
-    GoRouteData.$route(path: '/splash', factory: $SplashRoute._fromState);
+RouteBase get $splashRoute => GoRouteData.$route(
+  path: '/splash',
+  hasOverriddenOnExit: false,
+  factory: $SplashRoute._fromState,
+);
 
 mixin $SplashRoute on GoRouteData {
   static SplashRoute _fromState(GoRouterState state) => const SplashRoute();
@@ -35,8 +38,11 @@ mixin $SplashRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $loginRoute =>
-    GoRouteData.$route(path: '/login', factory: $LoginRoute._fromState);
+RouteBase get $loginRoute => GoRouteData.$route(
+  path: '/login',
+  hasOverriddenOnExit: false,
+  factory: $LoginRoute._fromState,
+);
 
 mixin $LoginRoute on GoRouteData {
   static LoginRoute _fromState(GoRouterState state) => const LoginRoute();
@@ -65,18 +71,27 @@ RouteBase get $authenticatedShellRoute => StatefulShellRouteData.$route(
       routes: [
         GoRouteData.$route(
           path: '/dashboard',
+          hasOverriddenOnExit: false,
           factory: $DashboardRoute._fromState,
         ),
       ],
     ),
     StatefulShellBranchData.$branch(
       routes: [
-        GoRouteData.$route(path: '/webview', factory: $WebViewRoute._fromState),
+        GoRouteData.$route(
+          path: '/webview',
+          hasOverriddenOnExit: false,
+          factory: $WebViewRoute._fromState,
+        ),
       ],
     ),
     StatefulShellBranchData.$branch(
       routes: [
-        GoRouteData.$route(path: '/user', factory: $UserRoute._fromState),
+        GoRouteData.$route(
+          path: '/user',
+          hasOverriddenOnExit: false,
+          factory: $UserRoute._fromState,
+        ),
       ],
     ),
   ],

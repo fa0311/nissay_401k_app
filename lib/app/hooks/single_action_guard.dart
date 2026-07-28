@@ -44,10 +44,9 @@ SingleActionGuard useSingleActionLock() {
 
 class SingleActionGuard {
   SingleActionGuard({
-    required BuildContext context,
-    required ValueNotifier<bool> isLocked,
-  }) : _context = context,
-       _isLocked = isLocked;
+    required this._context,
+    required this._isLocked,
+  });
 
   final BuildContext _context;
   final ValueNotifier<bool> _isLocked;

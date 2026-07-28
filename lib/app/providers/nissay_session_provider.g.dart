@@ -40,7 +40,7 @@ abstract class _$NissaySessionCheck extends $AsyncNotifier<DateTime> {
   FutureOr<DateTime> build();
   @$mustCallSuper
   @override
-  void runBuild() {
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<AsyncValue<DateTime>, DateTime>;
     final element =
         ref.element
@@ -50,7 +50,7 @@ abstract class _$NissaySessionCheck extends $AsyncNotifier<DateTime> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    return element.handleCreate(ref, build);
   }
 }
 
@@ -84,7 +84,7 @@ abstract class _$NissaySession extends $AsyncNotifier<AuthState?> {
   FutureOr<AuthState?> build();
   @$mustCallSuper
   @override
-  void runBuild() {
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<AsyncValue<AuthState?>, AuthState?>;
     final element =
         ref.element
@@ -94,6 +94,6 @@ abstract class _$NissaySession extends $AsyncNotifier<AuthState?> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    return element.handleCreate(ref, build);
   }
 }

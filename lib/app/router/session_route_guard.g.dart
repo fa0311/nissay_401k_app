@@ -48,7 +48,7 @@ abstract class _$SessionRouteStatus extends $Notifier<SessionRouteState> {
   SessionRouteState build();
   @$mustCallSuper
   @override
-  void runBuild() {
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<SessionRouteState, SessionRouteState>;
     final element =
         ref.element
@@ -58,6 +58,6 @@ abstract class _$SessionRouteStatus extends $Notifier<SessionRouteState> {
               Object?,
               Object?
             >;
-    element.handleCreate(ref, build);
+    return element.handleCreate(ref, build);
   }
 }

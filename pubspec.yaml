@@ -4,8 +4,8 @@ publish_to: none
 version: 0.0.4+4
 
 environment:
-  sdk: ^3.11.4
-  flutter: ^3.41.6
+  sdk: ^3.12.2
+  flutter: ^3.44.6
 
 workspace:
   - packages/nissay_client
@@ -15,6 +15,7 @@ dependencies:
   collection: ^1.19.1
   cookie_jar: ^4.0.8
   cupertino_icons: ^1.0.8
+  fl_chart: ^1.2.0
   flutter:
     sdk: flutter
   flutter_hooks: ^0.21.3+1
@@ -25,14 +26,14 @@ dependencies:
   freezed_annotation: ^3.1.0
   github: ^9.25.0
   go_router: ^17.2.0
-  hooks_riverpod: ^3.3.1
+  hooks_riverpod: ^3.3.2
   intl: ^0.20.2
-  json_annotation: ^4.11.0
+  json_annotation: ^4.12.0
   nissay_client: ^0.1.0
-  package_info_plus: ^8.3.1
+  package_info_plus: ^10.2.1
   path_provider: ^2.1.5
   pub_semver: ^2.2.0
-  riverpod_annotation: ^4.0.2
+  riverpod_annotation: ^4.0.3
   talker_dio_logger: ^5.1.16
   talker_flutter: ^5.1.16
   url_launcher: ^6.3.2
@@ -45,9 +46,9 @@ dev_dependencies:
     sdk: flutter
   freezed: ^3.2.5
   go_router_builder: ^4.2.1
-  json_serializable: ^6.13.0
+  json_serializable: ^6.14.0
   nissay_lints: ^0.1.0
-  riverpod_generator: ^4.0.3
+  riverpod_generator: ^4.0.4
 
 flutter:
   uses-material-design: true

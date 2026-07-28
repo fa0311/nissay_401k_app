@@ -11,7 +11,7 @@ import 'package:nissay_client/src/parsing/html_element_parser.dart';
 import 'package:nissay_client/src/parsing/safe_parse_document.dart';
 
 class NissayRepository {
-  NissayRepository({required Dio dio}) : _dio = dio;
+  NissayRepository({required this._dio});
 
   static Future<NissayRepository> create({
     required CookieJar cookieJar,
