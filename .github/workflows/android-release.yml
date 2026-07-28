@@ -49,33 +49,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Set up Java
-        uses: actions/setup-java@v5
+      - name: Set up tools
+        uses: jdx/mise-action@v4
         with:
-          distribution: temurin
-          java-version: "17"
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          flutter-version: 3.41.6
+          install_args: java flutter
 
       - name: Get dependencies
-        run: flutter pub get
+        run: mise exec -- flutter pub get
 
       - name: Generate launcher icons
-        run: dart run flutter_launcher_icons
+        run: mise exec -- dart run flutter_launcher_icons
 
       - name: Run build_runner (root)
-        run: dart run build_runner build -d
+        run: mise exec -- dart run build_runner build -d
 
       - name: Run build_runner (packages/nissay_client)
         working-directory: packages/nissay_client
-        run: dart run build_runner build -d
+        run: mise exec -- dart run build_runner build -d
 
       - name: Build Android APK
-        run: flutter build apk --release
+        run: mise exec -- flutter build apk --release
 
       - name: Prepare release asset
         run: |
