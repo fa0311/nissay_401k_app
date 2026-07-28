@@ -1,7 +1,7 @@
 name: nissay_401k
 description: NISSAY 401k account management app built with Flutter.
 publish_to: none
-version: 0.0.4+4
+version: 0.0.5+5
 
 environment:
   sdk: ^3.12.2
